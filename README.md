@@ -1,6 +1,6 @@
 # openbsd-mailstack
 
-`openbsd-mailstack` is a public, operator-focused mail platform for OpenBSD 7.8 (`initially`). It provides a reproducible baseline for building and maintaining a hardened single-host mail system with Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, optional SOGo, and supporting network and operations controls.
+`openbsd-mailstack` is a public, operator-focused mail platform for OpenBSD 7.8. It provides a reproducible baseline for building and maintaining a hardened single-host mail system with Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, optional SOGo, and supporting network and operations controls.
 
 This repository is intended to hold reusable code, templates, documentation, and verification tooling. Site-specific credentials, private recovery data, and encrypted backup artifacts are intentionally kept out of scope.
 
@@ -132,6 +132,7 @@ The intended baseline is security-first and operator-auditable:
 
 `openbsd-mailstack` is intended to be the public successor to an internal operations repository. The target public baseline is a reproducible OpenBSD 7.8 mail platform with a documented install flow, verification gates, and a clean boundary between public stack code and private DR state.
 
-## License
+## Project Policies
 
-See `LICENSE`.
+- Security reporting: see `SECURITY.md`
+- Contribution guidance: see `CONTRIBUTING.md`
