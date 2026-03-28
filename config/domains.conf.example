@@ -10,11 +10,14 @@
 #   PRIMARY_DOMAIN="example.com"
 #   DOMAINS="example.com example.net example.org"
 #
-# POSTFIX_VIRTUAL_TRANSPORT can remain at the default value for most setups.
-# Later Postfix and Dovecot phases use it when generating SQL-backed examples.
+# DOVECOT_MAIL_LOCATION can remain at the default value for most setups.
+# Later Dovecot phases use it when generating auth, SQL, and mailbox examples.
 
 PRIMARY_DOMAIN="example.com"
 DOMAINS="example.com example.net example.org"
 INITIAL_MAILBOXES="postmaster@example.com abuse@example.com admin@example.net"
 DOMAIN_ADMIN_EMAIL="ops@example.com"
 POSTFIX_VIRTUAL_TRANSPORT="dovecot"
+DOVECOT_MAIL_LOCATION="maildir:/var/vmail/%d/%n"
+VMAIL_UID="2000"
+VMAIL_GID="2000"
