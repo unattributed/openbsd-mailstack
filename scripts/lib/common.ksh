@@ -178,9 +178,40 @@ validate_ipv4() {
   '
 }
 
+validate_ipv4_cidr() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || return 1
+  _ip="${_value%/*}"
+  _prefix="${_value#*/}"
+  validate_ipv4 "${_ip}" || return 1
+  print -- "${_prefix}" | grep -Eq '^[0-9]+$' || return 1
+  [ "${_prefix}" -ge 0 ] && [ "${_prefix}" -le 32 ] || return 1
+  return 0
+}
+
 validate_email() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
+}
+
+validate_port() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[0-9]+$' || return 1
+  [ "${_value}" -ge 1 ] && [ "${_value}" -le 65535 ] || return 1
+  return 0
+}
+
+validate_port_list() {
+  _value="$1"
+  [ -n "${_value}" ] || return 0
+  for _port in ${_value}; do
+    validate_port "${_port}" || return 1
+  done
+  return 0
+}
+
+normalize_space_list() {
+  print -- "$1" | awk '{for(i=1;i<=NF;i++) if(!seen[$i]++) printf "%s%s", sep, $i; sep=" "} END{print ""}'
 }
 
 require_valid_hostname() {

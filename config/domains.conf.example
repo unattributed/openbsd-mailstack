@@ -3,19 +3,24 @@
 # Copy this file to config/domains.conf and edit it, or let later phase scripts
 # prompt for missing values during execution.
 #
-# This file defines the hosted mail domains for the project.
+# This file defines the mail domains hosted by this server.
 #
-# Usage notes:
-# - PRIMARY_DOMAIN is the main domain used as the default identity for the stack.
-# - DOMAINS is a space-separated list of all hosted domains.
-# - Every domain listed in DOMAINS should be one that you control and will
-#   configure at your registrar or DNS provider.
-# - Later phases can use this file to generate DKIM keys, DNS guidance, virtual
-#   mailbox mappings, and per-domain configuration.
+# Multiple domain usage notes:
+# - PRIMARY_DOMAIN is the main reference domain used in examples and defaults.
+# - DOMAINS is the complete space-separated list of mail domains hosted by the
+#   server.
+# - All domains listed here will later be used for DNS record generation,
+#   DKIM key generation, virtual mailbox routing, and webmail guidance.
+# - The same MAIL_HOSTNAME can serve many domains.
 #
-# Multi-domain example:
+# Example:
 #   PRIMARY_DOMAIN="example.com"
 #   DOMAINS="example.com example.net example.org"
-
+#
+# In that example:
+# - the server hostname may still be mail.example.com
+# - users can have addresses in example.com, example.net, and example.org
+# - the router and public IP settings remain host-based, not domain-based
+#
 PRIMARY_DOMAIN="example.com"
 DOMAINS="example.com example.net example.org"
