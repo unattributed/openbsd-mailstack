@@ -116,6 +116,11 @@ validate_password_strength_min() {
   [ "${#_value}" -ge 16 ]
 }
 
+validate_transport_name() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[A-Za-z0-9_-]+$'
+}
+
 validate_space_separated_domains() {
   _value="$1"
   [ -n "${_value}" ] || return 1
