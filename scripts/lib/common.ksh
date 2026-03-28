@@ -178,40 +178,9 @@ validate_ipv4() {
   '
 }
 
-validate_ipv4_cidr() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || return 1
-  _ip="${_value%/*}"
-  _prefix="${_value#*/}"
-  validate_ipv4 "${_ip}" || return 1
-  print -- "${_prefix}" | grep -Eq '^[0-9]+$' || return 1
-  [ "${_prefix}" -ge 0 ] && [ "${_prefix}" -le 32 ] || return 1
-  return 0
-}
-
 validate_email() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
-}
-
-validate_port() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^[0-9]+$' || return 1
-  [ "${_value}" -ge 1 ] && [ "${_value}" -le 65535 ] || return 1
-  return 0
-}
-
-validate_port_list() {
-  _value="$1"
-  [ -n "${_value}" ] || return 0
-  for _port in ${_value}; do
-    validate_port "${_port}" || return 1
-  done
-  return 0
-}
-
-normalize_space_list() {
-  print -- "$1" | awk '{for(i=1;i<=NF;i++) if(!seen[$i]++) printf "%s%s", sep, $i; sep=" "} END{print ""}'
 }
 
 require_valid_hostname() {
@@ -242,6 +211,32 @@ require_valid_email() {
   validate_email "${_value}" || die "invalid email address for ${_var_name}: ${_value}"
 }
 
+validate_identifier() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[A-Za-z_][A-Za-z0-9_]*$'
+}
+
+require_valid_identifier() {
+  _var_name="$1"
+  eval "_value=\${${_var_name}:-}"
+  [ -n "${_value}" ] || die "required identifier setting ${_var_name} is missing"
+  validate_identifier "${_value}" || die "invalid identifier for ${_var_name}: ${_value}"
+}
+
+validate_password_value() {
+  _value="$1"
+  [ -n "${_value}" ] || return 1
+  [ "${#_value}" -ge 12 ] || return 1
+  return 0
+}
+
+require_valid_password_value() {
+  _var_name="$1"
+  eval "_value=\${${_var_name}:-}"
+  [ -n "${_value}" ] || die "required password setting ${_var_name} is missing"
+  validate_password_value "${_value}" || die "password for ${_var_name} must be at least 12 characters long"
+}
+
 write_kv_config() {
   _file="$1"
   shift
@@ -264,4 +259,14 @@ print_phase_header() {
   print -- "${_phase_id} ${_phase_name}"
   print -- "============================================================"
   print
+}
+
+detect_mariadb_service_name() {
+  for _svc in mysqld mariadb; do
+    if rcctl get "${_svc}" status >/dev/null 2>&1; then
+      print -- "${_svc}"
+      return 0
+    fi
+  done
+  return 1
 }

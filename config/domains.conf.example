@@ -1,26 +1,37 @@
 # config/domains.conf.example
 #
-# Copy this file to config/domains.conf and edit it, or let later phase scripts
-# prompt for missing values during execution.
+# Copy this file to config/domains.conf and edit it with the mail domains you
+# plan to host on this system.
 #
-# This file defines the mail domains hosted by this server.
+# This file exists to make multi-domain hosting explicit and easy to understand.
+# The project is designed so one OpenBSD mail host can serve one or more
+# domains, as long as DNS, TLS, DKIM, mailbox routing, and account definitions
+# are configured correctly in later phases.
 #
-# Multiple domain usage notes:
-# - PRIMARY_DOMAIN is the main reference domain used in examples and defaults.
-# - DOMAINS is the complete space-separated list of mail domains hosted by the
-#   server.
-# - All domains listed here will later be used for DNS record generation,
-#   DKIM key generation, virtual mailbox routing, and webmail guidance.
-# - The same MAIL_HOSTNAME can serve many domains.
+# Key ideas:
+# - PRIMARY_DOMAIN is the main administrative and reference domain
+# - DOMAINS is the full list of domains the server will host
+# - domains should be separated by spaces
+# - every domain listed here must later receive its own DNS records
+# - every hosted domain will later need DKIM, SPF, DMARC, MX, and mailbox policy
 #
-# Example:
+# Single-domain example:
+#   PRIMARY_DOMAIN="example.com"
+#   DOMAINS="example.com"
+#
+# Multi-domain example:
 #   PRIMARY_DOMAIN="example.com"
 #   DOMAINS="example.com example.net example.org"
 #
-# In that example:
-# - the server hostname may still be mail.example.com
-# - users can have addresses in example.com, example.net, and example.org
-# - the router and public IP settings remain host-based, not domain-based
+# In the multi-domain example above:
+# - example.com is the primary domain
+# - example.net and example.org are additional hosted domains
+# - all three domains will later need to be added to PostfixAdmin and the mail
+#   routing tables
 #
+# Advanced note:
+# Later phases can use this list to generate or validate SQL domain records,
+# DKIM selectors, DNS output, and hosted mailbox policy.
+
 PRIMARY_DOMAIN="example.com"
 DOMAINS="example.com example.net example.org"
