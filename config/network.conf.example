@@ -1,0 +1,33 @@
+# config/network.conf.example
+#
+# Copy this file to config/network.conf and edit it, or let the phase scripts
+# prompt for missing values during execution.
+#
+# This file defines network-level settings for the OpenBSD mail host.
+# These values are used by later phases for interface validation, local routing,
+# firewall generation, WireGuard setup, and service exposure decisions.
+#
+# Usage notes:
+# - LAN_INTERFACE is the internal interface connected to your local network.
+# - WAN_INTERFACE is the interface connected to your upstream router or modem.
+# - LAN_IPV4 is the static IPv4 address assigned to the OpenBSD mail host.
+# - LAN_CIDR is the subnet prefix length for the LAN network.
+# - ENABLE_WIREGUARD controls whether later phases prepare VPN-only access paths.
+# - WIREGUARD_INTERFACE and WIREGUARD_SUBNET are only used when WireGuard is enabled.
+#
+# Example:
+#   LAN_INTERFACE="em0"
+#   WAN_INTERFACE="em1"
+#   LAN_IPV4="192.168.1.10"
+#   LAN_CIDR="24"
+#   ENABLE_WIREGUARD="yes"
+#   WIREGUARD_INTERFACE="wg0"
+#   WIREGUARD_SUBNET="10.44.0.0/24"
+
+LAN_INTERFACE="em0"
+WAN_INTERFACE="em1"
+LAN_IPV4="192.168.1.10"
+LAN_CIDR="24"
+ENABLE_WIREGUARD="yes"
+WIREGUARD_INTERFACE="wg0"
+WIREGUARD_SUBNET="10.44.0.0/24"

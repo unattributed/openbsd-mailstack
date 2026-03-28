@@ -1,0 +1,21 @@
+# config/domains.conf.example
+#
+# Copy this file to config/domains.conf and edit it, or let later phase scripts
+# prompt for missing values during execution.
+#
+# This file defines the hosted mail domains for the project.
+#
+# Usage notes:
+# - PRIMARY_DOMAIN is the main domain used as the default identity for the stack.
+# - DOMAINS is a space-separated list of all hosted domains.
+# - Every domain listed in DOMAINS should be one that you control and will
+#   configure at your registrar or DNS provider.
+# - Later phases can use this file to generate DKIM keys, DNS guidance, virtual
+#   mailbox mappings, and per-domain configuration.
+#
+# Multi-domain example:
+#   PRIMARY_DOMAIN="example.com"
+#   DOMAINS="example.com example.net example.org"
+
+PRIMARY_DOMAIN="example.com"
+DOMAINS="example.com example.net example.org"
