@@ -1,0 +1,25 @@
+# maint/qemu/qemu-lab.conf.example
+#
+# Copy to qemu-lab.conf.local and adjust as needed.
+# Do not commit local overrides.
+
+OPENBSD_VERSION="7.8"
+OPENBSD_ARCH="amd64"
+OPENBSD_MIRROR="https://cdn.openbsd.org/pub/OpenBSD"
+
+QEMU_ISO_DIR="/home/foo/VMs/iso"
+QEMU_VM_DIR="/home/foo/VMs/openbsd-mail"
+QEMU_DISK="/home/foo/VMs/openbsd-mail/disk-lab.qcow2"
+QEMU_ISO="/home/foo/VMs/iso/install78.iso"
+QEMU_MEM="4096"
+QEMU_SMP="2"
+
+LAB_SSH_HOST="127.0.0.1"
+LAB_SSH_PORT="2222"
+LAB_VM_NAME="openbsd-mail-lab"
+
+LAB_OPERATOR_USER="foo"
+LAB_OPERATOR_PASSWORD="g2monkey"
+LAB_ROOT_PASSWORD="g2monkey"
+
+HOST_REPO_PATH="/home/foo/Workspace/openbsd-mailstack"

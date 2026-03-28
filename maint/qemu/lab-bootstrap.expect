@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+set timeout 1200
+
+set disk [expr {[info exists ::env(QEMU_DISK)] ? $::env(QEMU_DISK) : "/home/foo/VMs/openbsd-mail/disk-lab.qcow2"}]
+set mem  [expr {[info exists ::env(QEMU_MEM)] ? $::env(QEMU_MEM) : "4096"}]
+set smp  [expr {[info exists ::env(QEMU_SMP)] ? $::env(QEMU_SMP) : "2"}]
+set rootpw [expr {[info exists ::env(LAB_ROOT_PASSWORD)] ? $::env(LAB_ROOT_PASSWORD) : "g2monkey"}]
+
+spawn qemu-system-x86_64 \
+  -m $mem \
+  -smp $smp \
+  -drive file=$disk,if=virtio,format=qcow2 \
+  -netdev user,id=n1,hostfwd=tcp::2222-:22 \
+  -device e1000,netdev=n1 \
+  -nographic
+
+expect "login:" { send "root\r" }
+expect "Password:" { send "$rootpw\r" }
+
+expect "#" { send "usermod -G wheel foo\r" }
+expect "#" { send "printf 'permit persist :wheel\\n' > /etc/doas.conf\r" }
+expect "#" { send "chmod 600 /etc/doas.conf\r" }
+expect "#" { send "pkg_add git rsync\r" }
+expect "#" { send "shutdown -h now\r" }
+expect eof

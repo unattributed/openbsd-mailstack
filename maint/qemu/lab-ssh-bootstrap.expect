@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+set timeout 600
+
+set host [expr {[info exists ::env(LAB_SSH_HOST)] ? $::env(LAB_SSH_HOST) : "127.0.0.1"}]
+set port [expr {[info exists ::env(LAB_SSH_PORT)] ? $::env(LAB_SSH_PORT) : "2222"}]
+set foopw [expr {[info exists ::env(LAB_OPERATOR_PASSWORD)] ? $::env(LAB_OPERATOR_PASSWORD) : "g2monkey"}]
+set pubkey [expr {[info exists ::env(LAB_SSH_PUBKEY)] ? $::env(LAB_SSH_PUBKEY) : ""}]
+
+if {$pubkey eq ""} {
+  catch { set fh [open "/home/foo/.ssh/id_ed25519.pub" r] ; set pubkey [string trim [read $fh]] ; close $fh }
+}
+
+spawn ssh -o StrictHostKeyChecking=no -p $port foo@$host
+expect "yes/no" { send "yes\r"; exp_continue }
+expect "assword:" { send "$foopw\r" }
+expect "\\$" { send "mkdir -p ~/.ssh && chmod 700 ~/.ssh\r" }
+expect "\\$" { send "printf '%s\\n' '$pubkey' >> ~/.ssh/authorized_keys\r" }
+expect "\\$" { send "chmod 600 ~/.ssh/authorized_keys\r" }
+expect "\\$" { send "exit\r" }
+expect eof

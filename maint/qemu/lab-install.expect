@@ -1,0 +1,44 @@
+#!/usr/bin/expect -f
+set timeout 1800
+
+set disk [expr {[info exists ::env(QEMU_DISK)] ? $::env(QEMU_DISK) : "/home/foo/VMs/openbsd-mail/disk-lab.qcow2"}]
+set version [expr {[info exists ::env(OPENBSD_VERSION)] ? $::env(OPENBSD_VERSION) : "7.8"}]
+set tag [string map {. ""} $version]
+set iso [expr {[info exists ::env(QEMU_ISO)] ? $::env(QEMU_ISO) : "/home/foo/VMs/iso/install${tag}.iso"}]
+set mem [expr {[info exists ::env(QEMU_MEM)] ? $::env(QEMU_MEM) : "4096"}]
+set smp [expr {[info exists ::env(QEMU_SMP)] ? $::env(QEMU_SMP) : "2"}]
+set rootpw [expr {[info exists ::env(LAB_ROOT_PASSWORD)] ? $::env(LAB_ROOT_PASSWORD) : "g2monkey"}]
+set foopw [expr {[info exists ::env(LAB_OPERATOR_PASSWORD)] ? $::env(LAB_OPERATOR_PASSWORD) : "g2monkey"}]
+
+spawn qemu-system-x86_64 \
+  -m $mem \
+  -smp $smp \
+  -drive file=$disk,if=virtio,format=qcow2 \
+  -cdrom $iso \
+  -netdev user,id=n1,hostfwd=tcp::2222-:22 \
+  -device e1000,netdev=n1 \
+  -nographic
+
+expect {
+  "boot>" { send "\r"; exp_continue }
+  "(I)nstall" { send "I\r" }
+}
+
+# Minimal unattended flow for lab installs, operator may refine later.
+expect "System hostname" { send "mail\r" }
+expect "Network interface" { send "\r" }
+expect "IPv4 address" { send "dhcp\r" }
+expect "Password for root account" { send "$rootpw\r" }
+expect "Password for root account" { send "$rootpw\r" }
+expect "Start sshd" { send "yes\r" }
+expect "Setup a user" { send "foo\r" }
+expect "Full name for user foo" { send "\r" }
+expect "Password for user foo" { send "$foopw\r" }
+expect "Password for user foo" { send "$foopw\r" }
+expect "Allow root ssh login" { send "yes\r" }
+expect "Do you expect to run the X Window System" { send "no\r" }
+expect "Use (W)hole disk MBR" { send "W\r" }
+expect "Location of sets" { send "cd0\r" }
+expect "Continue without verification" { send "yes\r" }
+expect "INSTALL.*COMPLETE" { }
+expect eof
