@@ -3,15 +3,24 @@
 # Copy this file to config/domains.conf and edit it, or let later phase scripts
 # prompt for missing values during execution.
 #
-# This file controls hosted mail domains and initial mailbox planning for the
-# SQL-backed mail stack.
+# This file controls hosted mail domains and DNS identity publishing inputs.
 #
-# Multi-domain example:
+# Public DNS identity baseline:
+# - one public mail hostname used by all hosted domains
+# - each hosted domain gets its own MX, SPF, DKIM, and DMARC records
+# - all MX records can point to the same mail host
+#
+# Example:
 #   PRIMARY_DOMAIN="example.com"
 #   DOMAINS="example.com example.net example.org"
+#   MAIL_HOSTNAME="mail.example.com"   # defined in config/system.conf
+#   DKIM_SELECTOR="mail"
 #
-# DOVECOT_MAIL_LOCATION can remain at the default value for most setups.
-# Later Dovecot phases use it when generating auth, SQL, and mailbox examples.
+# In that model:
+# - MX for example.com points to mail.example.com
+# - MX for example.net points to mail.example.com
+# - MX for example.org points to mail.example.com
+# - each domain still gets distinct DKIM and DMARC records
 
 PRIMARY_DOMAIN="example.com"
 DOMAINS="example.com example.net example.org"
@@ -21,3 +30,9 @@ POSTFIX_VIRTUAL_TRANSPORT="dovecot"
 DOVECOT_MAIL_LOCATION="maildir:/var/vmail/%d/%n"
 VMAIL_UID="2000"
 VMAIL_GID="2000"
+
+DKIM_SELECTOR="mail"
+SPF_POLICY="v=spf1 mx a:mail.example.com -all"
+DMARC_POLICY="v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com"
+MX_PRIORITY="10"
+MTA_STS_MODE="testing"

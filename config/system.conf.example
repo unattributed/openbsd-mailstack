@@ -3,22 +3,21 @@
 # Copy this file to config/system.conf and edit it, or let the phase scripts
 # prompt for missing values during execution.
 #
-# Public web access model for MVP:
-# - MAIL_HOSTNAME remains the public service hostname
-# - Roundcube is used as the interim webmail interface
-# - Roundcube, PostfixAdmin, and Rspamd UI remain VPN only
-# - public HTTPS for webmail and admin surfaces is intentionally deferred
+# Public DNS identity model:
+# - one public service hostname used for mail transport and TLS identity
+# - one or more hosted mail domains
+# - DNS records for all hosted domains point back to the same service hostname
 #
 # Example:
 #   MAIL_HOSTNAME="mail.example.com"
 #   PRIMARY_DOMAIN="example.com"
-#   ROUNDCUBE_WEB_HOSTNAME="mail.example.com"
-#   POSTFIXADMIN_WEB_HOSTNAME="mail.example.com"
-#   RSPAMD_UI_HOSTNAME="mail.example.com"
+#   DOMAINS="example.com example.net example.org"   # in config/domains.conf
 #
 # In that model:
-# - one hostname remains the operational identity
-# - nginx access control, not hostname sprawl, enforces VPN only access
+# - the certificate is issued for MAIL_HOSTNAME
+# - hosted domains publish MX records pointing to MAIL_HOSTNAME
+# - DKIM is generated per hosted domain
+# - SPF and DMARC are published per hosted domain
 
 OPENBSD_VERSION="7.8"
 MAIL_HOSTNAME="mail.example.com"
