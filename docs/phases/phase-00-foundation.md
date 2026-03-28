@@ -18,7 +18,9 @@ This ensures:
 
 - DNS authority is established
 - the domain can later be delegated correctly
-- API credentials exist for future DNS workflows
+- a Vultr account already exists
+- the Vultr API key already exists for future DNS workflows
+- the API key is stored securely outside the repository
 - secrets are handled securely from the start
 
 ## Who this phase is for
@@ -83,7 +85,7 @@ The apply script can:
 - prepare the project for later installation phases
 - verify foundation-level assumptions
 
-This phase does not claim to deploy live mail services by itself. It prepares the
+This phase does not claim to install the full mail stack. It only prepares the
 public repo and operator environment for those phases.
 
 ## Run the phase

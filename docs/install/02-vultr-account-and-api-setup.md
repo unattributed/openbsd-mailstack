@@ -8,7 +8,10 @@ This document defines the required setup for:
 - API access
 - secure handling of credentials
 
-This is a prerequisite for DNS configuration in Phase 09.
+This is a prerequisite for:
+
+- Phase 00, foundation
+- Phase 09, DNS and identity publishing
 
 ---
 
@@ -71,6 +74,7 @@ The API key is a secret.
 
 - never commit it to Git
 - never place it in tracked repository config files
+- never hardcode it into apply or verify scripts
 - store it in a secure secret manager or protected local secret file
 
 Recommended options:
@@ -123,6 +127,13 @@ Primary usage in this project:
 
 - Phase 09, DNS and identity publishing
 
+Expected usage pattern:
+
+- the public repo generates DNS record guidance
+- the operator applies those records in Vultr DNS
+- any later API-driven automation must load `VULTR_API_KEY` securely at runtime
+- no tracked config file in this repository should contain the live key
+
 Potential future usage:
 
 - DNS automation
@@ -136,6 +147,7 @@ Potential future usage:
 - treat the API key as equivalent to privileged DNS control
 - rotate it periodically
 - revoke it immediately if exposed
+- review where it is stored before each major DNS change
 
 ---
 
@@ -147,3 +159,4 @@ Potential future usage:
 - [ ] API key generated
 - [ ] API key securely stored
 - [ ] API key not present in repository
+- [ ] chosen storage approach works on the operator workstation

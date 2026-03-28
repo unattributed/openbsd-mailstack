@@ -13,6 +13,18 @@ Phase 09 standardizes the public identity model around:
 - per-domain SPF, DKIM, and DMARC publishing
 - optional MTA-STS guidance
 
+## External dependency
+
+Before using this phase in a real deployment, complete:
+
+- `docs/install/02-vultr-account-and-api-setup.md`
+
+The public baseline assumes:
+
+- the domain is already delegated to Vultr DNS
+- the operator already has a Vultr account
+- the Vultr API key exists and is stored securely outside the repository
+
 ## Why this matters
 
 A modern mail stack needs consistent identity records so other systems can:
@@ -59,6 +71,7 @@ Before running Phase 09, you should know:
 - the DMARC policy text
 - the MX priority you want to publish
 - whether you want MTA-STS notes included
+- that real DNS changes will be made in Vultr DNS, not in the repository itself
 
 These values can be placed in:
 
@@ -79,7 +92,7 @@ The apply script is intentionally conservative. It prepares the repo workflow by
 - generating an identity summary for operator review
 
 The generated files are helper artifacts. They are intended to guide later live
-deployment with your DNS provider and DKIM key generation tooling.
+deployment with Vultr DNS and DKIM key generation tooling.
 
 ## Outputs created by Phase 09
 

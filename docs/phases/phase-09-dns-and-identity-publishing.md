@@ -16,7 +16,7 @@ This phase defines how hosted domains should publish:
 It uses the public baseline where one mail host identity serves one or more
 hosted domains.
 
-## External Dependency
+## External dependency
 
 This phase depends on:
 
@@ -26,7 +26,7 @@ Specifically:
 
 - the domain must already be delegated to Vultr DNS
 - the operator must already have a Vultr account
-- the API key must exist and be securely stored
+- the API key must exist and be securely stored outside the repository
 
 ## Who this phase is for
 
@@ -50,7 +50,7 @@ You should have:
 - a valid `MX_PRIORITY`
 - an optional `MTA_STS_MODE`
 
-## Required External Inputs
+## Required external inputs
 
 - domain hosted in Vultr DNS
 - `VULTR_API_KEY` loaded securely at runtime if you later extend DNS automation
@@ -96,7 +96,7 @@ DKIM_SELECTOR="mail"
 MX_PRIORITY="10"
 ```
 
-## Security Requirement
+## Security requirement
 
 Do NOT:
 

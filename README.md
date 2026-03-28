@@ -17,11 +17,19 @@ This repository is intended to hold reusable code, templates, documentation, and
 
 ## Step 0, External Prerequisites
 
-Before starting any phase, complete:
+Before starting any phase, complete the install prerequisite documentation under `docs/install/`.
+
+Required first document:
 
 - `docs/install/02-vultr-account-and-api-setup.md`
 
-This project requires external DNS and API configuration before Phase 00.
+This project requires external DNS and API preparation before Phase 00 and before Phase 09. In practice, that means:
+
+- creating a Vultr account
+- adding the target domain to Vultr DNS
+- updating the registrar to use Vultr nameservers
+- generating a Vultr API key
+- securely storing the API key outside the repository
 
 ## Supported Deployment Topologies
 
