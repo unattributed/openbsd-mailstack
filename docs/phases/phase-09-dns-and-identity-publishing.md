@@ -16,6 +16,18 @@ This phase defines how hosted domains should publish:
 It uses the public baseline where one mail host identity serves one or more
 hosted domains.
 
+## External Dependency
+
+This phase depends on:
+
+- `docs/install/02-vultr-account-and-api-setup.md`
+
+Specifically:
+
+- the domain must already be delegated to Vultr DNS
+- the operator must already have a Vultr account
+- the API key must exist and be securely stored
+
 ## Who this phase is for
 
 This phase is required for users who want a complete identity publishing model
@@ -37,6 +49,12 @@ You should have:
 - a valid `DMARC_POLICY`
 - a valid `MX_PRIORITY`
 - an optional `MTA_STS_MODE`
+
+## Required External Inputs
+
+- domain hosted in Vultr DNS
+- `VULTR_API_KEY` loaded securely at runtime if you later extend DNS automation
+- no API keys stored inside version-controlled config files
 
 ## How user customization works
 
@@ -78,6 +96,16 @@ DKIM_SELECTOR="mail"
 MX_PRIORITY="10"
 ```
 
+## Security Requirement
+
+Do NOT:
+
+- hardcode API keys in scripts
+- store API keys in tracked config files
+- commit provider credentials to Git
+
+All API usage must reference secure runtime values or protected local files.
+
 ## Preconditions
 
 Before running this phase:
@@ -86,6 +114,7 @@ Before running this phase:
 - the mail hostname should already be chosen
 - the hosted domains should already be defined
 - TLS hostname planning should already be complete
+- the Vultr prerequisite document should already be completed
 
 ## What the script changes
 
@@ -167,7 +196,7 @@ Run the apply phase first, then rerun the verify phase.
 ### If you are new to self-hosting
 
 Use the prompts, then review the generated DNS records carefully before adding
-them to your registrar or DNS provider.
+them to Vultr DNS.
 
 ### If you are already comfortable with mail DNS
 

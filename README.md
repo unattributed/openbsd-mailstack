@@ -15,6 +15,14 @@ This repository is intended to hold reusable code, templates, documentation, and
 - Optional DNS/DDNS, smart relay, and reputation-provider integrations
 - Recovery payload staging and integration hooks for private DR backends
 
+## Step 0, External Prerequisites
+
+Before starting any phase, complete:
+
+- `docs/install/02-vultr-account-and-api-setup.md`
+
+This project requires external DNS and API configuration before Phase 00.
+
 ## Supported Deployment Topologies
 
 `openbsd-mailstack` supports both of these public deployment models:
@@ -85,11 +93,12 @@ Generated runtime configuration should derive from these values rather than from
 
 The preferred operator experience is:
 
-1. Start with a clean OpenBSD 7.8 host.
-2. Use the guided installer or bootstrap workflow to generate host-local install assets.
-3. Provide local configuration for hostname, domain topology, networking, and optional integrations.
-4. Apply the phase-driven build and verification flow.
-5. Enable optional provider integrations only after the core mail path passes verification.
+1. Complete the external prerequisite documents under `docs/install/`
+2. Start with a clean OpenBSD 7.8 host.
+3. Use the guided installer or bootstrap workflow to generate host-local install assets.
+4. Provide local configuration for hostname, domain topology, networking, and optional integrations.
+5. Apply the phase-driven build and verification flow.
+6. Enable optional provider integrations only after the core mail path passes verification.
 
 The public repo should support:
 
