@@ -3,26 +3,27 @@
 # Copy this file to config/system.conf and edit it, or let the phase scripts
 # prompt for missing values during execution.
 #
-# Public DNS identity model:
-# - one public service hostname used for mail transport and TLS identity
-# - one or more hosted mail domains
-# - DNS records for all hosted domains point back to the same service hostname
+# Public operations baseline:
+# - one primary mail host identity
+# - local health checks and generated operational guidance
+# - no destructive automation by default
+# - optional alert email target for future notifications
 #
 # Example:
 #   MAIL_HOSTNAME="mail.example.com"
-#   PRIMARY_DOMAIN="example.com"
-#   DOMAINS="example.com example.net example.org"   # in config/domains.conf
+#   ADMIN_EMAIL="ops@example.com"
+#   ALERT_EMAIL="ops@example.com"
 #
 # In that model:
-# - the certificate is issued for MAIL_HOSTNAME
-# - hosted domains publish MX records pointing to MAIL_HOSTNAME
-# - DKIM is generated per hosted domain
-# - SPF and DMARC are published per hosted domain
+# - operational summaries reference one host identity
+# - checks can validate core services locally
+# - alerting remains optional and conservative in MVP
 
 OPENBSD_VERSION="7.8"
 MAIL_HOSTNAME="mail.example.com"
 PRIMARY_DOMAIN="example.com"
 ADMIN_EMAIL="ops@example.com"
+ALERT_EMAIL="ops@example.com"
 PUBLIC_IPV4="203.0.113.10"
 TIMEZONE="UTC"
 
@@ -36,3 +37,9 @@ ROUNDCUBE_ENABLED="yes"
 ROUNDCUBE_WEB_HOSTNAME="mail.example.com"
 POSTFIXADMIN_WEB_HOSTNAME="mail.example.com"
 RSPAMD_UI_HOSTNAME="mail.example.com"
+
+OPS_BACKUP_MODE="local"
+OPS_RETENTION_DAYS="14"
+OPS_ENABLE_ALERTS="yes"
+OPS_ENABLE_HEALTHCHECKS="yes"
+OPS_ENABLE_LOG_SUMMARY="yes"

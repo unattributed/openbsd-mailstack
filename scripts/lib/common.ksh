@@ -58,17 +58,8 @@ validate_hostname() {
 validate_domain() { validate_hostname "$1"; }
 validate_email() { _value="$1"; print -- "${_value}" | grep -Eq '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'; }
 validate_numeric() { _value="$1"; print -- "${_value}" | grep -Eq '^[0-9]+$'; }
-validate_selector() { _value="$1"; print -- "${_value}" | grep -Eq '^[A-Za-z0-9_-]+$'; }
-validate_dns_text() { _value="$1"; [ -n "${_value}" ]; }
-
-validate_space_separated_domains() {
-  _value="$1"
-  [ -n "${_value}" ] || return 1
-  for _domain in ${_value}; do
-    validate_domain "${_domain}" || return 1
-  done
-  return 0
-}
+validate_yes_no() { _value="$1"; [ "${_value}" = "yes" ] || [ "${_value}" = "no" ]; }
+validate_mode_word() { _value="$1"; print -- "${_value}" | grep -Eq '^[A-Za-z0-9_-]+$'; }
 
 write_kv_config() {
   _file="$1"

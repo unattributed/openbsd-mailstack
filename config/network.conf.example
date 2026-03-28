@@ -3,23 +3,16 @@
 # Copy this file to config/network.conf and edit it, or let later phase scripts
 # prompt for missing values during execution.
 #
-# Public project baseline:
-# - public SMTP exposed as needed
-# - WireGuard used for trusted administrative and web access
-# - nginx webmail and admin surfaces restricted to the WireGuard subnet
+# Public operations baseline:
+# - WireGuard used for trusted administrative access
+# - operational review paths assume VPN-only admin surfaces
+# - service health checks are local-first
 #
 # Example:
 #   ENABLE_WIREGUARD="yes"
 #   WIREGUARD_INTERFACE="wg0"
 #   WIREGUARD_SUBNET="10.44.0.0/24"
 #   WEB_VPN_ONLY="yes"
-#
-# In that model:
-# - Roundcube is reachable only from the WireGuard subnet
-# - PostfixAdmin is reachable only from the WireGuard subnet
-# - Rspamd UI is reachable only from the WireGuard subnet
-# - public HTTPS exposure is intentionally avoided until the broader project
-#   matures beyond MVP and has been fully tested
 
 LAN_INTERFACE="em0"
 WAN_INTERFACE="em1"
