@@ -1,0 +1,27 @@
+# config/system.conf.example
+#
+# Copy this file to config/system.conf and edit it, or let the phase scripts
+# prompt for missing values during execution.
+#
+# This file defines system-wide settings for the mail host.
+# For multi-domain setups, keep the mail host identity here, and define the
+# full domain list in config/domains.conf.
+#
+# Example:
+#   MAIL_HOSTNAME="mail.example.com"
+#   PRIMARY_DOMAIN="example.com"
+#
+#   In config/domains.conf you might then define:
+#   DOMAINS="example.com example.net example.org"
+#
+# In that example:
+# - mail.example.com is the server hostname
+# - example.com is the primary domain
+# - example.net and example.org are additional hosted mail domains
+
+OPENBSD_VERSION="7.8"
+MAIL_HOSTNAME="mail.example.com"
+PRIMARY_DOMAIN="example.com"
+ADMIN_EMAIL="ops@example.com"
+PUBLIC_IPV4="203.0.113.10"
+TIMEZONE="UTC"
