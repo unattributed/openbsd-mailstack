@@ -5,9 +5,9 @@
 Phase 07 prepares mail filtering and anti-abuse guidance for the public
 `openbsd-mailstack` project.
 
-This phase defines how Postfix, Rspamd, Redis, and optional ClamAV should align
-using a localhost-first layout suitable for one public mail host serving one or
-more hosted domains.
+This phase defines how Postfix, Rspamd, Redis, optional ClamAV, and optional
+Brevo relay support should align using a localhost-first layout suitable for one
+public mail host serving one or more hosted domains.
 
 It focuses on:
 
@@ -16,6 +16,20 @@ It focuses on:
 - validating Redis settings
 - checking for required filtering commands
 - generating public-safe filtering fragments for review
+
+## External dependency
+
+If you intend to use Brevo as an outbound smart-relay or deliverability support
+layer, complete:
+
+- `docs/install/03-brevo-account-and-relay-setup.md`
+
+Specifically:
+
+- the operator must already have a Brevo account
+- any required Brevo users or admin users must already exist
+- API and SMTP keys must already exist and be stored securely outside the repository
+- any sender-domain authentication records must be managed outside Git
 
 ## Who this phase is for
 
@@ -26,6 +40,7 @@ This phase is required for users who want a practical filtering baseline for:
 - Postfix milter integration
 - optional antivirus scanning
 - multi-domain mail hosting behind one mail hostname
+- optional smart-relay support for self-hosted outbound delivery
 
 ## Information you need before starting
 
@@ -70,6 +85,7 @@ This public repo uses:
 - optional local ClamAV integration
 - one or more hosted domains
 - Postfix milter integration over localhost
+- optional Brevo relay support when direct outbound delivery is not appropriate
 
 Example:
 
@@ -86,6 +102,16 @@ RSPAMD_REDIS_PORT="6379"
 RSPAMD_CLAMAV_ENABLED="yes"
 ```
 
+## Security requirement
+
+Do NOT:
+
+- hardcode Brevo API keys in scripts
+- hardcode Brevo SMTP keys in tracked config files
+- commit sender credentials or relay secrets to Git
+
+All live Brevo usage must reference secure runtime values or protected local files.
+
 ## Preconditions
 
 Before running this phase:
@@ -94,6 +120,7 @@ Before running this phase:
 - Rspamd should be installed
 - Redis should be available if you intend to use it
 - you should know the bind addresses and filtering choices you intend to use
+- if you intend to use Brevo relay support, the Brevo prerequisite document should already be complete
 
 ## What the script changes
 
@@ -106,7 +133,7 @@ The apply script can:
 - create a Postfix milter fragment
 - write a filtering summary file for review
 
-This phase does not claim to fully deploy the live filtering stack by itself. It
+This phase does not claim to fully deploy the live filtering stack or live relay stack by itself. It
 prepares a clean, public-repo-friendly baseline for that deployment.
 
 ## Run the phase

@@ -12,6 +12,20 @@ Phase 07 standardizes the public filtering model around:
 - optional ClamAV integration for malware scanning
 - Redis-backed caching where applicable
 - a localhost-first service layout for filtering components
+- optional Brevo smart-relay support for outbound deliverability resilience
+
+## External dependency
+
+Before using Brevo-backed outbound relay or deliverability support, complete:
+
+- `docs/install/03-brevo-account-and-relay-setup.md`
+
+The public baseline assumes:
+
+- the operator already has a Brevo account
+- any required Brevo users or admin users already exist
+- Brevo API and SMTP credentials already exist
+- those credentials are stored securely outside the repository
 
 ## Why this matters
 
@@ -25,6 +39,7 @@ This phase prepares the repo for:
 - milter integration with Postfix
 - anti-abuse controls that fit one mail host serving multiple domains
 - malware scanning guidance without hardcoding production secrets
+- optional relay support when self-hosted outbound delivery is constrained
 
 ## Public filtering baseline
 
@@ -35,6 +50,7 @@ The public baseline is:
 - one local Rspamd deployment
 - one or more hosted domains listed in `DOMAINS`
 - optional local ClamAV integration
+- optional Brevo relay support for outbound deliverability resilience
 
 Example:
 
@@ -60,6 +76,7 @@ Before running Phase 07, you should know:
 - the bind addresses for Rspamd workers
 - the Redis host and port to use
 - whether you want Postfix milter integration fragments generated
+- whether you plan to use Brevo as an outbound relay support layer
 
 These values can be placed in:
 

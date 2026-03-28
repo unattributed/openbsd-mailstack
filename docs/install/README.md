@@ -7,6 +7,7 @@ This directory contains external prerequisites and install-side preparation docu
 ## Required order
 
 1. `02-vultr-account-and-api-setup.md`
+2. `03-brevo-account-and-relay-setup.md`
 
 ## Why this exists
 
@@ -26,6 +27,19 @@ The Vultr prerequisite document covers:
 - API key creation
 - secure storage of the API key
 - safe usage expectations for later DNS-related phases
+
+### Brevo
+
+The project uses Brevo as the public baseline smart relay and deliverability support layer.
+
+The Brevo prerequisite document covers:
+
+- account creation
+- optional additional user and admin user creation
+- API key and SMTP key creation
+- secure storage of those credentials
+- sender domain authentication expectations
+- safe usage expectations for the filtering and relay phases
 
 ## Security rule
 
