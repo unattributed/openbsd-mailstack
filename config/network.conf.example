@@ -1,64 +1,31 @@
 # config/network.conf.example
 #
-# Copy this file to config/network.conf and edit it, or let the phase scripts
+# Copy this file to config/network.conf and edit it, or let later phase scripts
 # prompt for missing values during execution.
 #
-# This file defines the host networking model, router requirements, public
-# service exposure, and VPN expectations for the mail host.
+# Public project baseline:
+# - public SMTP exposed as needed
+# - WireGuard used for trusted administrative and web access
+# - nginx webmail and admin surfaces restricted to the WireGuard subnet
 #
-# Important notes:
-# - These values describe one mail server that may host one or many domains.
-# - Multiple domains do not require multiple public IP addresses for the basic
-#   mailstack design.
-# - The same router, NAT, DMZ, and public port policy can support multiple
-#   hosted domains, as long as DNS for each domain points mail traffic to this
-#   server.
-# - Administrative interfaces should stay VPN-only wherever possible.
+# Example:
+#   ENABLE_WIREGUARD="yes"
+#   WIREGUARD_INTERFACE="wg0"
+#   WIREGUARD_SUBNET="10.44.0.0/24"
+#   WEB_VPN_ONLY="yes"
 #
-# Example multi-domain model:
-# - MAIL_HOSTNAME in config/system.conf:  mail.example.com
-# - PRIMARY_DOMAIN in config/system.conf: example.com
-# - DOMAINS in config/domains.conf:       example.com example.net example.org
-# - One server, one public IP, one router policy, multiple hosted domains
-#
-# Interface and addressing
+# In that model:
+# - Roundcube is reachable only from the WireGuard subnet
+# - PostfixAdmin is reachable only from the WireGuard subnet
+# - Rspamd UI is reachable only from the WireGuard subnet
+# - public HTTPS exposure is intentionally avoided until the broader project
+#   matures beyond MVP and has been fully tested
+
 LAN_INTERFACE="em0"
 WAN_INTERFACE="em1"
-LAN_IPV4="192.168.1.44"
+LAN_IPV4="192.168.1.10"
 LAN_CIDR="24"
-ROUTER_LAN_IPV4="192.168.1.1"
-PUBLIC_IPV4="203.0.113.10"
-
-# Router exposure model
-# Set DMZ_MODE to yes only if your router forwards unsolicited inbound traffic
-# for the server to the DMZ target host.
-DMZ_MODE="no"
-DMZ_TARGET_IPV4="192.168.1.44"
-
-# Public service exposure
-# These lists define what must be reachable from the Internet to support the
-# public mailstack functions.
-#
-# Typical public TCP services:
-# - 25  for inbound SMTP
-# - 80  for initial ACME HTTP validation if you use HTTP validation
-# - 443 for HTTPS webmail and other web endpoints
-#
-# Typical public UDP services:
-# - 51820 for WireGuard
-PORT_FORWARD_TCP="25 80 443"
-PORT_FORWARD_UDP="51820"
-
-ENABLE_HTTP="yes"
-ENABLE_HTTPS="yes"
 ENABLE_WIREGUARD="yes"
 WIREGUARD_INTERFACE="wg0"
 WIREGUARD_SUBNET="10.44.0.0/24"
-WIREGUARD_PORT="51820"
-
-# Administrative exposure policy
-# Keep PUBLIC_SSH at "no" unless you intentionally want SSH reachable from the
-# Internet. A VPN-only administration model is strongly recommended.
-PUBLIC_SSH="no"
-PUBLIC_SSH_PORT="22"
-ADMIN_VPN_ONLY="yes"
+WEB_VPN_ONLY="yes"
