@@ -17,19 +17,24 @@ This repository is intended to hold reusable code, templates, documentation, and
 
 ## Step 0, External Prerequisites
 
-Before starting any phase, complete the install prerequisite documentation under `docs/install/`.
+Before starting the phase-driven build, complete the external prerequisite documents under `docs/install/`.
 
-Required first document:
+Required first documents:
 
 - `docs/install/02-vultr-account-and-api-setup.md`
+- `docs/install/03-brevo-account-and-relay-setup.md`
+- `docs/install/04-virustotal-api-setup.md`
+- `docs/install/05-local-provider-secret-file-layout.md`
 
-This project requires external DNS and API preparation before Phase 00 and before Phase 09. In practice, that means:
+These documents cover:
 
-- creating a Vultr account
-- adding the target domain to Vultr DNS
-- updating the registrar to use Vultr nameservers
-- generating a Vultr API key
-- securely storing the API key outside the repository
+- authoritative DNS setup in Vultr
+- secure creation and storage of the Vultr API key
+- Brevo account creation and relay credential handling
+- VirusTotal API setup and quota-aware usage
+- the preferred local secret file layout under `/root/.config/`
+
+No live provider secret should ever be committed to this repository.
 
 ## Supported Deployment Topologies
 
@@ -101,7 +106,7 @@ Generated runtime configuration should derive from these values rather than from
 
 The preferred operator experience is:
 
-1. Complete the external prerequisite documents under `docs/install/`
+1. Complete the external prerequisite documents under `docs/install/`.
 2. Start with a clean OpenBSD 7.8 host.
 3. Use the guided installer or bootstrap workflow to generate host-local install assets.
 4. Provide local configuration for hostname, domain topology, networking, and optional integrations.

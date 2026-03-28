@@ -8,12 +8,7 @@ This document defines the required setup for:
 - API access
 - secure handling of credentials
 
-This is a prerequisite for:
-
-- Phase 00, foundation
-- Phase 09, DNS and identity publishing
-
----
+This is a prerequisite for DNS-related workflows in the public baseline.
 
 ## 1. Create a Vultr Account
 
@@ -29,28 +24,18 @@ Vultr is used as the authoritative DNS provider for this project.
 2. Verify your email address
 3. Complete billing setup if required
 
----
-
 ## 2. Configure Domain DNS
 
-1. Navigate to: **Products → DNS**
+1. Navigate to **Products → DNS**
 2. Add your domain
-3. Note the nameservers provided by Vultr, typically similar to:
-
-```text
-ns1.vultr.com
-ns2.vultr.com
-```
-
-4. Update your domain registrar to use the Vultr nameservers
+3. Note the Vultr nameservers provided
+4. Update your registrar to use the Vultr nameservers
 
 ### Verify
 
 ```sh
 dig NS example.com
 ```
-
----
 
 ## 3. Generate API Key
 
@@ -60,13 +45,11 @@ API overview:
 
 Steps:
 
-1. Account → API
+1. Go to **Account → API**
 2. Enable API access
 3. Generate an API key
 
----
-
-## 4. Secure Storage (Mandatory)
+## 4. Secure Storage
 
 The API key is a secret.
 
@@ -83,8 +66,6 @@ Recommended options:
 - Bitwarden
 - another secure password store that integrates well with your workstation
 
----
-
 ## 5. Secure Usage Pattern
 
 ### Option A, environment variable
@@ -98,58 +79,47 @@ export VULTR_API_KEY="REDACTED"
 Example file:
 
 ```text
-/root/.secrets/vultr.conf
+/root/.config/vultr/api.env
 ```
 
 Contents:
 
 ```sh
 VULTR_API_KEY="REDACTED"
+VULTR_API_URL="https://api.vultr.com/v2"
+MAIL_NOTIFY="ops@example.com"
+MAIL_FROM="ops@example.com"
+GITHUB_PAGES_DOMAINS="example.com example.org"
+ALLOWED_IPV4_CIDRS=""
+DEFAULT_TTL="300"
+VULTR_DOMAINS="example.com example.net example.org"
+VULTR_HOSTS_example.com="@ mail obsd1 www"
+VULTR_HOSTS_example.net="@ mail obsd1 www"
+VULTR_HOSTS_example.org="mail obsd1"
+VULTR_TTL_DEFAULT=300
 ```
 
 Permissions:
 
 ```sh
-chmod 600 /root/.secrets/vultr.conf
+chmod 600 /root/.config/vultr/api.env
 ```
-
-Then load it only in the local operator environment:
-
-```sh
-. /root/.secrets/vultr.conf
-```
-
----
 
 ## 6. Where this is used
 
 Primary usage in this project:
 
-- Phase 09, DNS and identity publishing
+- DNS and identity publishing
+- optional dynamic DNS or validation tooling
 
-Expected usage pattern:
-
-- the public repo generates DNS record guidance
-- the operator applies those records in Vultr DNS
-- any later API-driven automation must load `VULTR_API_KEY` securely at runtime
-- no tracked config file in this repository should contain the live key
-
-Potential future usage:
-
-- DNS automation
-- record validation scripts
-- dynamic DNS update tooling
-
----
+All live API usage should reference secure runtime values or protected local files, not tracked repository content.
 
 ## 7. Security Notes
 
-- treat the API key as equivalent to privileged DNS control
+- treat the API key as privileged DNS control
 - rotate it periodically
 - revoke it immediately if exposed
 - review where it is stored before each major DNS change
-
----
 
 ## Verification Checklist
 
@@ -159,4 +129,3 @@ Potential future usage:
 - [ ] API key generated
 - [ ] API key securely stored
 - [ ] API key not present in repository
-- [ ] chosen storage approach works on the operator workstation
