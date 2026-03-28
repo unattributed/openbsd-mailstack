@@ -1,37 +1,28 @@
 # config/domains.conf.example
 #
-# Copy this file to config/domains.conf and edit it with the mail domains you
-# plan to host on this system.
+# Copy this file to config/domains.conf and edit it, or let later phase scripts
+# prompt for missing values during execution.
 #
-# This file exists to make multi-domain hosting explicit and easy to understand.
-# The project is designed so one OpenBSD mail host can serve one or more
-# domains, as long as DNS, TLS, DKIM, mailbox routing, and account definitions
-# are configured correctly in later phases.
-#
-# Key ideas:
-# - PRIMARY_DOMAIN is the main administrative and reference domain
-# - DOMAINS is the full list of domains the server will host
-# - domains should be separated by spaces
-# - every domain listed here must later receive its own DNS records
-# - every hosted domain will later need DKIM, SPF, DMARC, MX, and mailbox policy
-#
-# Single-domain example:
-#   PRIMARY_DOMAIN="example.com"
-#   DOMAINS="example.com"
+# This file controls hosted mail domains and initial mailbox planning.
 #
 # Multi-domain example:
 #   PRIMARY_DOMAIN="example.com"
 #   DOMAINS="example.com example.net example.org"
 #
-# In the multi-domain example above:
-# - example.com is the primary domain
-# - example.net and example.org are additional hosted domains
-# - all three domains will later need to be added to PostfixAdmin and the mail
-#   routing tables
+# In this example:
+# - example.com is the primary administrative domain
+# - example.net and example.org are additional hosted mail domains
+# - later phases can generate SQL, DKIM, DNS, and mailbox scaffolding for all
+#   domains listed in DOMAINS
 #
-# Advanced note:
-# Later phases can use this list to generate or validate SQL domain records,
-# DKIM selectors, DNS output, and hosted mailbox policy.
+# INITIAL_MAILBOXES is optional. It provides example mailbox addresses that can
+# be referenced by later helper tooling or documentation. Separate entries with
+# spaces and keep each mailbox within a hosted domain.
+#
+# DOMAIN_ADMIN_EMAIL is optional. It can be used as a default contact for
+# PostfixAdmin setup and future operational notices.
 
 PRIMARY_DOMAIN="example.com"
 DOMAINS="example.com example.net example.org"
+INITIAL_MAILBOXES="postmaster@example.com abuse@example.com admin@example.net"
+DOMAIN_ADMIN_EMAIL="ops@example.com"

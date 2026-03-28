@@ -1,10 +1,4 @@
 #!/bin/ksh
-#
-# scripts/lib/common.ksh
-#
-# Shared helpers for openbsd-mailstack public phase scripts.
-#
-
 set -u
 
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/sbin"
@@ -43,17 +37,6 @@ command_exists() {
 require_command() {
   _cmd="$1"
   command_exists "${_cmd}" || die "required command not found: ${_cmd}"
-}
-
-ensure_openbsd() {
-  _os="$(uname -s 2>/dev/null || true)"
-  [ "${_os}" = "OpenBSD" ] || die "this project supports OpenBSD only, detected: ${_os:-unknown}"
-}
-
-ensure_openbsd_version() {
-  _required="$1"
-  _current="$(uname -r 2>/dev/null || true)"
-  [ "${_current}" = "${_required}" ] || die "supported OpenBSD version is ${_required}, detected ${_current:-unknown}"
 }
 
 load_config_file() {
@@ -111,52 +94,6 @@ prompt_value() {
   export "${_var_name}"
 }
 
-confirm_yes_no() {
-  _var_name="$1"
-  _prompt_text="$2"
-  _default_value="${3:-yes}"
-
-  eval "_current_value=\${${_var_name}:-}"
-  if [ -n "${_current_value}" ]; then
-    return 0
-  fi
-
-  if is_noninteractive; then
-    eval "${_var_name}=\${_default_value}"
-    export "${_var_name}"
-    return 0
-  fi
-
-  case "${_default_value}" in
-    yes) printf "%s [Y/n]: " "${_prompt_text}" >&2 ;;
-    no)  printf "%s [y/N]: " "${_prompt_text}" >&2 ;;
-    *)   printf "%s [yes/no]: " "${_prompt_text}" >&2 ;;
-  esac
-
-  IFS= read -r _input_value || die "failed reading input for ${_var_name}"
-  _input_value="$(print -- "${_input_value}" | tr '[:upper:]' '[:lower:]')"
-  _input_value="$(trim_whitespace "${_input_value}")"
-
-  if [ -z "${_input_value}" ]; then
-    _input_value="${_default_value}"
-  fi
-
-  case "${_input_value}" in
-    y|yes|true|1) eval "${_var_name}=yes" ;;
-    n|no|false|0) eval "${_var_name}=no" ;;
-    *) die "invalid boolean value for ${_var_name}: ${_input_value}" ;;
-  esac
-
-  export "${_var_name}"
-}
-
-validate_hostname() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$' || return 1
-  print -- "${_value}" | grep -q '\.' || return 1
-  return 0
-}
-
 validate_domain() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$' || return 1
@@ -164,77 +101,37 @@ validate_domain() {
   return 0
 }
 
-validate_ipv4() {
-  _value="$1"
-  print -- "${_value}" | awk -F. '
-    NF != 4 { exit 1 }
-    {
-      for (i = 1; i <= 4; i++) {
-        if ($i !~ /^[0-9]+$/) exit 1
-        if ($i < 0 || $i > 255) exit 1
-      }
-    }
-    END { exit 0 }
-  '
-}
-
 validate_email() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
 }
 
-require_valid_hostname() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required hostname setting ${_var_name} is missing"
-  validate_hostname "${_value}" || die "invalid hostname for ${_var_name}: ${_value}"
-}
-
-require_valid_domain() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required domain setting ${_var_name} is missing"
-  validate_domain "${_value}" || die "invalid domain for ${_var_name}: ${_value}"
-}
-
-require_valid_ipv4() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required IPv4 setting ${_var_name} is missing"
-  validate_ipv4 "${_value}" || die "invalid IPv4 address for ${_var_name}: ${_value}"
-}
-
-require_valid_email() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required email setting ${_var_name} is missing"
-  validate_email "${_value}" || die "invalid email address for ${_var_name}: ${_value}"
-}
-
-validate_identifier() {
+validate_sql_identifier() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[A-Za-z_][A-Za-z0-9_]*$'
 }
 
-require_valid_identifier() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required identifier setting ${_var_name} is missing"
-  validate_identifier "${_value}" || die "invalid identifier for ${_var_name}: ${_value}"
+validate_password_strength_min() {
+  _value="$1"
+  [ "${#_value}" -ge 16 ]
 }
 
-validate_password_value() {
+validate_space_separated_domains() {
   _value="$1"
   [ -n "${_value}" ] || return 1
-  [ "${#_value}" -ge 12 ] || return 1
+  for _domain in ${_value}; do
+    validate_domain "${_domain}" || return 1
+  done
   return 0
 }
 
-require_valid_password_value() {
-  _var_name="$1"
-  eval "_value=\${${_var_name}:-}"
-  [ -n "${_value}" ] || die "required password setting ${_var_name} is missing"
-  validate_password_value "${_value}" || die "password for ${_var_name} must be at least 12 characters long"
+validate_space_separated_emails() {
+  _value="$1"
+  [ -n "${_value}" ] || return 0
+  for _email in ${_value}; do
+    validate_email "${_email}" || return 1
+  done
+  return 0
 }
 
 write_kv_config() {
@@ -259,14 +156,4 @@ print_phase_header() {
   print -- "${_phase_id} ${_phase_name}"
   print -- "============================================================"
   print
-}
-
-detect_mariadb_service_name() {
-  for _svc in mysqld mariadb; do
-    if rcctl get "${_svc}" status >/dev/null 2>&1; then
-      print -- "${_svc}"
-      return 0
-    fi
-  done
-  return 1
 }
