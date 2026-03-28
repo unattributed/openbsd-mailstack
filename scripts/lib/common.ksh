@@ -118,6 +118,21 @@ validate_absolute_path() {
   print -- "${_value}" | grep -Eq '^/'
 }
 
+validate_host_port() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[A-Za-z0-9._-]+:[0-9]+$'
+}
+
+validate_numeric_port() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[0-9]+$'
+}
+
+validate_yes_no() {
+  _value="$1"
+  [ "${_value}" = "yes" ] || [ "${_value}" = "no" ]
+}
+
 write_kv_config() {
   _file="$1"
   shift

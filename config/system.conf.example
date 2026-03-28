@@ -8,6 +8,7 @@
 # Public project baseline:
 # - one server hostname used for TLS and service identity
 # - one or more hosted mail domains
+# - mail filtering aligned to the same mail host identity
 #
 # Example:
 #   MAIL_HOSTNAME="mail.example.com"
@@ -19,7 +20,7 @@
 # - mail.example.com is the single certificate hostname
 # - example.com is the primary administrative domain
 # - example.net and example.org are additional hosted mail domains
-# - Postfix, Dovecot, nginx, and ACME all align on MAIL_HOSTNAME
+# - Postfix, Dovecot, nginx, ACME, and filtering guidance align on MAIL_HOSTNAME
 
 OPENBSD_VERSION="7.8"
 MAIL_HOSTNAME="mail.example.com"
@@ -33,3 +34,10 @@ TLS_ACME_PROVIDER="acme-client"
 TLS_CERT_FQDN="mail.example.com"
 TLS_CERT_PATH_FULLCHAIN="/etc/ssl/mail.example.com.fullchain.pem"
 TLS_CERT_PATH_KEY="/etc/ssl/private/mail.example.com.key"
+
+RSPAMD_CONTROLLER_BIND="127.0.0.1:11334"
+RSPAMD_MILTER_BIND="127.0.0.1:11332"
+RSPAMD_NORMAL_BIND="127.0.0.1:11333"
+RSPAMD_REDIS_HOST="127.0.0.1"
+RSPAMD_REDIS_PORT="6379"
+RSPAMD_CLAMAV_ENABLED="yes"
