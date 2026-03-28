@@ -4,20 +4,22 @@
 # prompt for missing values during execution.
 #
 # This file defines system-wide settings for the mail host.
-# For multi-domain setups, keep the mail host identity here, and define the
-# full domain list in config/domains.conf.
+#
+# Public project baseline:
+# - one server hostname used for TLS and service identity
+# - one or more hosted mail domains
 #
 # Example:
 #   MAIL_HOSTNAME="mail.example.com"
 #   PRIMARY_DOMAIN="example.com"
-#
-#   In config/domains.conf you might then define:
+#   In config/domains.conf:
 #   DOMAINS="example.com example.net example.org"
 #
-# In that example:
-# - mail.example.com is the server hostname
-# - example.com is the primary domain
+# In that model:
+# - mail.example.com is the single certificate hostname
+# - example.com is the primary administrative domain
 # - example.net and example.org are additional hosted mail domains
+# - Postfix, Dovecot, nginx, and ACME all align on MAIL_HOSTNAME
 
 OPENBSD_VERSION="7.8"
 MAIL_HOSTNAME="mail.example.com"
@@ -25,3 +27,9 @@ PRIMARY_DOMAIN="example.com"
 ADMIN_EMAIL="ops@example.com"
 PUBLIC_IPV4="203.0.113.10"
 TIMEZONE="UTC"
+
+TLS_CERT_MODE="single_hostname"
+TLS_ACME_PROVIDER="acme-client"
+TLS_CERT_FQDN="mail.example.com"
+TLS_CERT_PATH_FULLCHAIN="/etc/ssl/mail.example.com.fullchain.pem"
+TLS_CERT_PATH_KEY="/etc/ssl/private/mail.example.com.key"

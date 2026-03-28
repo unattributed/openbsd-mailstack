@@ -94,6 +94,13 @@ prompt_value() {
   export "${_var_name}"
 }
 
+validate_hostname() {
+  _value="$1"
+  print -- "${_value}" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$' || return 1
+  print -- "${_value}" | grep -q '\.' || return 1
+  return 0
+}
+
 validate_domain() {
   _value="$1"
   print -- "${_value}" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$' || return 1
@@ -106,47 +113,9 @@ validate_email() {
   print -- "${_value}" | grep -Eq '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
 }
 
-validate_sql_identifier() {
+validate_absolute_path() {
   _value="$1"
-  print -- "${_value}" | grep -Eq '^[A-Za-z_][A-Za-z0-9_]*$'
-}
-
-validate_password_strength_min() {
-  _value="$1"
-  [ "${#_value}" -ge 16 ]
-}
-
-validate_transport_name() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^[A-Za-z0-9_-]+$'
-}
-
-validate_mail_location() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^maildir:.+'
-}
-
-validate_numeric_id() {
-  _value="$1"
-  print -- "${_value}" | grep -Eq '^[0-9]+$'
-}
-
-validate_space_separated_domains() {
-  _value="$1"
-  [ -n "${_value}" ] || return 1
-  for _domain in ${_value}; do
-    validate_domain "${_domain}" || return 1
-  done
-  return 0
-}
-
-validate_space_separated_emails() {
-  _value="$1"
-  [ -n "${_value}" ] || return 0
-  for _email in ${_value}; do
-    validate_email "${_email}" || return 1
-  done
-  return 0
+  print -- "${_value}" | grep -Eq '^/'
 }
 
 write_kv_config() {
