@@ -57,3 +57,8 @@ It does not:
 - require external monitoring daemons or a Prometheus or Grafana stack
 
 It is meant to be a simple, auditable, OpenBSD-friendly visibility layer that a new operator can adopt first.
+
+
+## Rich monitor site
+
+When the host provides the expected runtime signals, the monitor site now includes the broader drill-down pages from the OpenBSD-native ops monitor implementation. Review `host.html`, `network.html`, `pf.html`, `mail.html`, `ids.html`, and `agent.html` as part of deeper investigations.

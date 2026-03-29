@@ -80,3 +80,8 @@ On a real host, also verify:
 - `newsyslog -n`
 - the rendered monitoring pages under the chosen control-plane path
 - that the data directory remains unserved directly
+
+
+## Higher-fidelity site output
+
+Phase 14 now drives the richer OpenBSD-native static monitor implementation through the same public wrapper scripts. See `docs/install/22-openbsd-native-ops-monitoring-site.md`.

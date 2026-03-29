@@ -34,7 +34,7 @@ On a host, the monitoring layer can produce:
 
 - `latest.kv` and `latest.json` snapshots
 - a log summary text artifact
-- static HTML pages for overview, services, logs, and changes
+- static HTML pages for overview, host, network, PF, mail, Rspamd, Dovecot, Postfix, web, DNS, IDS, VPN, storage, backups, agent, and changes
 - HTML report output suitable for email delivery
 - JSON status artifacts from the cron reporting wrapper
 
@@ -62,3 +62,8 @@ It does not publish:
 ## Next step
 
 After this phase, the public repo has a practical diagnostics and visibility baseline. Future work can safely extend it with more advanced hardening, IDS, DNS, or SBOM reporting where those can be generalized.
+
+
+## Native ops parity
+
+The public repo now includes a higher-fidelity OpenBSD-native monitor implementation under the standard public monitoring entrypoints. See `docs/install/22-openbsd-native-ops-monitoring-site.md`.

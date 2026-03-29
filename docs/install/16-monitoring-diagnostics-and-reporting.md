@@ -129,3 +129,8 @@ On a real host, also verify:
 - `newsyslog -n`
 - the monitoring URL over the intended control-plane access path
 - that the monitoring data directory is not directly exposed
+
+
+## Native ops monitor path
+
+The default monitoring scripts now render the richer OpenBSD-native monitor page set. See `docs/install/22-openbsd-native-ops-monitoring-site.md` for the full page list and compatibility paths.

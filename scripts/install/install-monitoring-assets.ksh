@@ -20,8 +20,10 @@ monitoring_load_config
 [ "${MODE}" = "--dry-run" ] || [ "$(id -u)" -eq 0 ] || die "this action must run as root"
 
 LIBEXEC_DIR="/usr/local/libexec/openbsd-mailstack/monitoring"
+COMPAT_LIBEXEC_DIR="/usr/local/libexec/obsd-monitor"
 SBIN_DIR="/usr/local/sbin"
 EXAMPLE_DIR="/usr/local/share/examples/openbsd-mailstack-monitoring"
+COMPAT_EXAMPLE_DIR="/usr/local/share/examples/obsd-monitor"
 TEMPLATE_SRC="${PROJECT_ROOT}/services/nginx/etc/nginx/templates/ops_monitor.locations.tmpl.template"
 NEWSYSLOG_TEMPLATE_SRC="${PROJECT_ROOT}/services/system/etc/newsyslog/phase14-managed-block.conf.template"
 CRON_TEMPLATE_SRC="${PROJECT_ROOT}/services/monitoring/cron/root.cron.fragment.template"
@@ -63,6 +65,22 @@ render_cron_template() {
     "${CRON_TEMPLATE_SRC}"
 }
 
+
+install_compat_wrapper() {
+  _name="$1"
+  _target="$2"
+  if [ "${MODE}" = "--dry-run" ]; then
+    print -- "+ write compat wrapper ${COMPAT_LIBEXEC_DIR}/${_name} -> ${_target}"
+  else
+    cat > "${COMPAT_LIBEXEC_DIR}/${_name}" <<EOF
+#!/bin/sh
+set -eu
+exec ${_target} "\$@"
+EOF
+    chmod 0555 "${COMPAT_LIBEXEC_DIR}/${_name}"
+  fi
+}
+
 install_wrapper() {
   _name="$1"
   _target="$2"
@@ -79,13 +97,20 @@ EOF
 }
 
 run install -d -m 0755 "${LIBEXEC_DIR}"
+run install -d -m 0755 "${COMPAT_LIBEXEC_DIR}"
 run install -d -m 0755 "${SBIN_DIR}"
 run install -d -m 0755 "${EXAMPLE_DIR}"
+run install -d -m 0755 "${COMPAT_EXAMPLE_DIR}"
 
 for _script in ${RUNTIME_SCRIPTS}; do
   run install -m 0555 "${PROJECT_ROOT}/scripts/ops/${_script}" "${LIBEXEC_DIR}/${_script}"
   install_wrapper "openbsd-mailstack-${_script%.ksh}" "${LIBEXEC_DIR}/${_script}"
 done
+
+install_compat_wrapper obsd_monitor_collect.ksh "${LIBEXEC_DIR}/monitoring-collect.ksh"
+install_compat_wrapper obsd_monitor_render.ksh "${LIBEXEC_DIR}/monitoring-render.ksh"
+install_compat_wrapper obsd_monitor_run.ksh "${LIBEXEC_DIR}/monitoring-run.ksh"
+install_compat_wrapper obsd_monitor_verify.ksh "${LIBEXEC_DIR}/verify-monitoring-assets.ksh"
 
 for _script in alert-mail.ksh cron-html-report.ksh detect-services.ksh verify-mailstack.ksh; do
   run install -m 0555 "${PROJECT_ROOT}/maint/${_script}" "${SBIN_DIR}/openbsd-mailstack-${_script%.ksh}"
@@ -100,6 +125,10 @@ else
   chmod 0644 "${EXAMPLE_DIR}/${MONITORING_NGINX_TEMPLATE_NAME}"
   render_newsyslog_template > "${EXAMPLE_DIR}/phase14-managed-block.conf"
   chmod 0644 "${EXAMPLE_DIR}/phase14-managed-block.conf"
+  render_cron_template > "${EXAMPLE_DIR}/root.cron.fragment"
+  chmod 0644 "${EXAMPLE_DIR}/root.cron.fragment"
+  render_cron_template > "${COMPAT_EXAMPLE_DIR}/root.cron.fragment"
+  chmod 0644 "${COMPAT_EXAMPLE_DIR}/root.cron.fragment"
   if [ "${MONITORING_INSTALL_CRON_SNIPPET}" = "yes" ]; then
     ensure_directory "$(dirname -- "${MONITORING_CRON_SNIPPET_PATH}")"
     render_cron_template > "${MONITORING_CRON_SNIPPET_PATH}"
