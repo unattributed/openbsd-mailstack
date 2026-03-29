@@ -20,7 +20,7 @@ This document maps the public phase documents and scripts to the current public-
 | Phase 11, backup and disaster recovery | materially usable | backup helpers, restore helpers, DR docs |
 | Phase 12, advanced backup security and integrity | materially usable | archive protection, verification, and backup hygiene |
 | Phase 13, off-host replication and restore testing | materially usable | off-host replication helpers, QEMU restore drill path |
-| Phase 14, monitoring and reporting baseline | materially usable | monitoring collectors, reporting helpers, newsyslog and nginx ops assets |
+| Phase 14, monitoring and reporting baseline | materially usable | monitoring collectors, reporting helpers, nginx ops assets, newsyslog assets, and the richer static `/_ops/monitor/` site model |
 | Phase 15, security hardening and authentication model | materially usable | `doas`, SSH hardening, and authentication policy helpers |
 | Phase 16, secrets handling and key material management | materially usable | host-local runtime secret layout, repo hygiene, and verification helpers |
 | Phase 17, advanced optional integrations and gap closures | materially usable | Suricata, Brevo, SOGo, SBOM, and late optional layers |
@@ -46,3 +46,4 @@ The remaining gaps are intentional boundaries, not missing core migration work:
 - [Documentation map](../README.md)
 - [Install guide](../install/README.md)
 - [Public repo readiness check](../install/19-public-repo-readiness-check.md)
+- [OpenBSD native ops monitoring site](../install/22-openbsd-native-ops-monitoring-site.md)

@@ -8,7 +8,7 @@ The public repository now provides a materially usable public-safe baseline for:
 - core mail runtime rendering and staged example output
 - install order, QEMU validation, and first production deployment guidance
 - backup, disaster recovery, restore drills, DR site assets, and DR host bootstrap
-- monitoring, diagnostics, reporting, and visibility helpers
+- monitoring, diagnostics, reporting, visibility helpers, and the richer static `/_ops/monitor/` site path
 - maintenance, upgrade, regression, and rollback helpers
 - PF, WireGuard, DNS, and Vultr DDNS baseline assets
 - optional Suricata, Brevo, SOGo, and SBOM layers
@@ -24,7 +24,7 @@ A new operator can now:
 3. render the core runtime and later optional layers
 4. validate the build path in QEMU
 5. apply and verify the phased deployment path on a real OpenBSD host
-6. use backup, DR, monitoring, and maintenance workflows from the public repo
+6. use backup, DR, monitoring, the richer `/_ops/monitor/` path, and maintenance workflows from the public repo
 7. use the public-only validation pass to confirm the repo is internally coherent
 
 ## What still depends on the operator

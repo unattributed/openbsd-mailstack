@@ -32,6 +32,7 @@ This index is the main public install path for `openbsd-mailstack`.
 7. [Public repo readiness check](19-public-repo-readiness-check.md)
 8. [Public-only validation pass](20-public-only-validation-pass.md)
 9. [Security hardening and runtime secrets](21-security-hardening-and-runtime-secrets.md)
+10. [OpenBSD native ops monitoring site](22-openbsd-native-ops-monitoring-site.md)
 
 ## Recommended first-run path
 
@@ -42,8 +43,9 @@ If you are new to the repository:
 3. use the QEMU-first path
 4. render the core runtime tree and inspect `services/generated/rootfs/`
 5. run the phase sequence through the baseline you want to test
-6. run post-install checks and the public-only validation pass
-7. only then move to a real OpenBSD host
+6. build the monitoring layer you want, including the richer static `/_ops/monitor/` site when needed
+7. run post-install checks and the public-only validation pass
+8. only then move to a real OpenBSD host
 
 ## Related documents outside this directory
 

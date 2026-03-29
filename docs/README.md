@@ -29,6 +29,7 @@ This file is the documentation index for `openbsd-mailstack`.
 - [Public repo readiness check](install/19-public-repo-readiness-check.md)
 - [Public-only validation pass](install/20-public-only-validation-pass.md)
 - [Security hardening and runtime secrets](install/21-security-hardening-and-runtime-secrets.md)
+- [OpenBSD native ops monitoring site](install/22-openbsd-native-ops-monitoring-site.md)
 
 ## Provider onboarding and operator inputs
 
@@ -39,6 +40,13 @@ This file is the documentation index for `openbsd-mailstack`.
 - [Brevo account and relay setup](install/03-brevo-account-and-relay-setup.md)
 - [VirusTotal API setup](install/04-virustotal-api-setup.md)
 - [Configuration examples](../config/examples/README.md)
+
+## Monitoring and operations visibility
+
+- [Monitoring baseline](15-monitoring-and-reporting-baseline.md)
+- [Monitoring, diagnostics, and reporting](install/16-monitoring-diagnostics-and-reporting.md)
+- [OpenBSD native ops monitoring site](install/22-openbsd-native-ops-monitoring-site.md)
+- [Monitoring, diagnostics, and reporting](operations/05-monitoring-diagnostics-and-reporting.md)
 
 ## Operator workflows
 
