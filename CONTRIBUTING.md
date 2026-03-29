@@ -18,13 +18,6 @@ Good contribution areas include:
 
 ## Before You Start
 
-Please review these repository standards before contributing:
-
-- `CODE_OF_CONDUCT.md`
-- `CONTRIBUTING.md`
-- `SECURITY.md`
-- `.github/pull_request_template.md`
-
 Please check that your change:
 
 - fits the public scope of this repository
@@ -151,3 +144,13 @@ That is especially helpful for changes around:
 - optional third-party providers
 - secrets handling
 - supported deployment topology
+
+
+## Issues and validation reports
+
+Use the repository issue templates when reporting problems or validation results:
+- **Bug report** for reproducible script, template, or runtime issues
+- **Documentation gap** for stale or missing guidance
+- **Operator validation report** for public-only readiness checks, QEMU runs, deployment tests, or restore drills
+
+Never include secrets, private keys, API tokens, mailbox contents, or sensitive host data in an issue. Use the security policy for anything that could materially weaken a live deployment.

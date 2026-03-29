@@ -135,9 +135,10 @@ Useful commands after the repository is populated with local inputs:
 
 ## Repository companions
 
-- `CODE_OF_CONDUCT.md` for project participation expectations
-- `CONTRIBUTING.md` for contribution expectations
 - `SECURITY.md` for reporting security issues
-- `LICENSE` for repository licensing terms
-- `.github/ISSUE_TEMPLATE/` for public issue intake
-- `.github/pull_request_template.md` for pull request structure
+- `CONTRIBUTING.md` for contribution expectations
+
+
+## Community issue intake
+
+Use the repository issue templates for bugs, documentation gaps, and operator validation reports. Do not post secrets, private keys, tokens, or sensitive host details in public issues. Use the repository security policy for sensitive disclosures.

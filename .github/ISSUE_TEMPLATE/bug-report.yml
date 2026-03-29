@@ -1,6 +1,5 @@
 name: Bug report
-summary: Report a reproducible defect in public automation, docs, templates, or verification logic.
-description: Use this for problems in the public repository surface.
+description: Report a reproducible problem in documentation, scripts, templates, or generated outputs.
 title: "bug: "
 labels:
   - bug
@@ -8,48 +7,48 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for filing a bug report.
-
-        Do not include live secrets, private host evidence, recovery archives, or production-only data.
-        For security-sensitive issues, use the private path described in `SECURITY.md`.
+        Please provide enough detail for another operator to reproduce the issue safely.
   - type: dropdown
     id: area
     attributes:
       label: Affected area
       options:
-        - docs and onboarding
-        - install and render tooling
-        - phase apply and verify
-        - qemu lab and autonomous install
-        - monitoring and operations
-        - backup and disaster recovery
-        - network, pf, wireguard, dns, or ddns
-        - advanced optional integrations
+        - documentation
+        - install path
+        - phase apply or verify script
+        - service template
+        - generated output
+        - monitoring or operations
+        - backup or disaster recovery
+        - network or exposure control
+        - security hardening or secrets
+        - other
+    validations:
+      required: true
+  - type: input
+    id: repo_commit
+    attributes:
+      label: Repository commit
+      description: Commit hash where you saw the issue.
+      placeholder: e.g. 6614d43
     validations:
       required: true
   - type: textarea
     id: summary
     attributes:
       label: Summary
-      description: Describe the problem clearly and concisely.
-      placeholder: What broke, or what did you expect instead?
+      description: Concisely describe the problem.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
       label: Reproduction steps
-      description: Provide exact steps, commands, and input conditions.
+      description: Exact commands, file paths, or actions that reproduce the issue.
       placeholder: |
-        1. Create these local input files...
-        2. Run this command...
-        3. Observe this failure...
-    validations:
-      required: true
-  - type: textarea
-    id: actual
-    attributes:
-      label: Actual behavior
+        1. cd /home/foo/Workspace/openbsd-mailstack
+        2. ksh ./scripts/verify/verify-public-repo-readiness.ksh
+        3. Observe ...
     validations:
       required: true
   - type: textarea
@@ -59,13 +58,22 @@ body:
     validations:
       required: true
   - type: textarea
-    id: environment
+    id: actual
     attributes:
-      label: Environment
-      description: OpenBSD version, workstation OS, shell, or other context.
-      placeholder: OpenBSD 7.8 host, Parrot OS workstation, ksh, etc.
+      label: Actual behavior
+    validations:
+      required: true
   - type: textarea
-    id: artifacts
+    id: logs
     attributes:
-      label: Logs or artifacts
-      description: Paste sanitized output only. Remove secrets and private details first.
+      label: Relevant logs or output
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched for existing issues first.
+          required: true
+        - label: I removed secrets, private keys, tokens, and sensitive host data from the report.
+          required: true
