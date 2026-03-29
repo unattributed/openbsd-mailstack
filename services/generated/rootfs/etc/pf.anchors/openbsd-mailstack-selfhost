@@ -1,0 +1,6 @@
+# Generated mailstack PF anchor
+pass in on egress inet proto tcp from any to (egress) port 25 keep state
+pass in on egress inet proto tcp from any to (egress) port { 80 443 } keep state
+pass in on egress inet proto udp from any to (egress) port 51820 keep state
+pass in on wg0 inet from 10.44.0.0/24 to any keep state
+block in quick on egress inet proto tcp from any to (egress) port { 465 587 993 }

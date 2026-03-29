@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+# Template reference. The rendered and runnable helper is generated under
+# services/generated/rootfs/usr/local/bin/vultr_ddns_sync.py.

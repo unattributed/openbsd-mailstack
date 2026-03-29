@@ -1,0 +1,13 @@
+# Public-safe PF baseline for openbsd-mailstack
+wan_if = "__WAN_INTERFACE__"
+lan_if = "__LAN_INTERFACE__"
+wg_if = "__WIREGUARD_INTERFACE__"
+table <admin_vpn> persist { __WIREGUARD_SUBNET__ }
+
+set skip on lo
+block return all
+pass out quick inet from any to any keep state
+antispoof quick for { lo __LAN_INTERFACE__ __WIREGUARD_INTERFACE__ }
+
+anchor "openbsd-mailstack-selfhost"
+load anchor "openbsd-mailstack-selfhost" from "/etc/pf.anchors/openbsd-mailstack-selfhost"

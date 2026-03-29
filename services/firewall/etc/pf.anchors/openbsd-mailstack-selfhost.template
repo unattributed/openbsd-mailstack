@@ -1,0 +1,6 @@
+# Public-safe mailstack PF anchor
+pass in on __WAN_INTERFACE__ inet proto tcp from any to (__WAN_INTERFACE__) port 25 keep state
+pass in on __WAN_INTERFACE__ inet proto tcp from any to (__WAN_INTERFACE__) port { 80 443 } keep state
+pass in on __WAN_INTERFACE__ inet proto udp from any to (__WAN_INTERFACE__) port __WIREGUARD_PORT__ keep state
+pass in on __WIREGUARD_INTERFACE__ inet from __WIREGUARD_SUBNET__ to any keep state
+block in quick on __WAN_INTERFACE__ inet proto tcp from any to (__WAN_INTERFACE__) port { 465 587 993 }

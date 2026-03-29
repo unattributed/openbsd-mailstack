@@ -1,0 +1,12 @@
+# config/ddns.conf.example
+#
+# Public-safe dynamic DNS settings for the current public baseline.
+
+DDNS_ENABLED="yes"
+DDNS_PROVIDER="vultr"
+DDNS_TARGET_IPV4="203.0.113.10"
+DDNS_TTL="300"
+DDNS_DOMAINS="example.com example.net"
+DDNS_HOST_LABELS="mail"
+DDNS_DRY_RUN_DEFAULT="yes"
+DDNS_API_URL="https://api.vultr.com/v2"

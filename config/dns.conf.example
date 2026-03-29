@@ -1,0 +1,17 @@
+# config/dns.conf.example
+#
+# Public-safe DNS and split-DNS settings. Real provider tokens belong in an
+# ignored provider file, not here.
+
+DNS_PROVIDER="vultr"
+UNBOUND_ENABLED="yes"
+SPLIT_DNS_ENABLED="yes"
+UNBOUND_CONTROL_ENABLED="no"
+UNBOUND_LISTEN_ADDRESSES="127.0.0.1 192.168.1.44 10.44.0.1"
+UNBOUND_ACCESS_CONTROL="127.0.0.0/8 allow 192.168.1.0/24 allow 10.44.0.0/24 allow"
+
+MX_PRIORITY="10"
+SPF_POLICY="v=spf1 mx a:mail.example.com -all"
+DMARC_POLICY="v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com"
+DKIM_SELECTOR="mail"
+MTA_STS_MODE="testing"

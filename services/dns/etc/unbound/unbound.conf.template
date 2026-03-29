@@ -1,0 +1,14 @@
+# Public-safe Unbound baseline
+server:
+  username: "_unbound"
+  directory: "/var/unbound"
+  chroot: "/var/unbound"
+  interface: 127.0.0.1
+  interface: __LAN_IPV4__
+  interface: __WIREGUARD_SERVER_IPV4__
+  access-control: 127.0.0.0/8 allow
+  access-control: __LAN_NETWORK__ allow
+  access-control: __WIREGUARD_SUBNET__ allow
+  qname-minimisation: yes
+  harden-glue: yes
+  include: "/var/unbound/etc/conf.d/*.conf"

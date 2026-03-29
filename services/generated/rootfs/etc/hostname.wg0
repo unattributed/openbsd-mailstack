@@ -1,0 +1,4 @@
+# Generated WireGuard hostname file
+inet 10.44.0.1 24 NONE
+!/usr/local/bin/wg setconf wg0 /etc/wireguard/wg0.conf
+up

@@ -1,0 +1,3 @@
+# Public-safe split-DNS view
+local-zone: "__PRIMARY_DOMAIN__." static
+local-data: "__MAIL_HOSTNAME__. 300 IN A __LAN_IPV4__"

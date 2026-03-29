@@ -2,163 +2,79 @@
 
 ## Purpose
 
-This document explains how to prepare the network side of an `openbsd-mailstack`
-deployment before later phases install public services.
+This document explains how the public `openbsd-mailstack` repo models:
 
-The mail host can support one domain or many domains, but the network design is
-built around the **server**, not around each domain individually.
+- host exposure through PF
+- VPN-first administration through WireGuard
+- split DNS for trusted internal and VPN users
+- optional provider-backed dynamic DNS updates
 
-In the common case, you need:
+The project is built around one OpenBSD mail host that may serve one domain or
+many domains. Network policy is host-based, not domain-based.
 
-- one OpenBSD host
-- one router or firewall that controls inbound Internet traffic
-- one public IPv4 address
-- one LAN IPv4 address for the mail host
-- a defined policy for which services are public and which stay VPN-only
+## Recommended baseline
 
----
+The public-safe baseline is:
 
-## What this document covers
+- explicit router forwarding, not blanket DMZ
+- public SMTP on TCP 25
+- public ACME and HTTPS on TCP 80 and 443 when needed
+- public WireGuard on UDP 51820
+- administrative surfaces kept behind WireGuard
+- SSH kept VPN-only unless the operator explicitly chooses otherwise
 
-This document helps you decide:
+## Router model
 
-- which IP addresses the server should use
-- whether to use a DMZ or simple port forwarding
-- which ports must be reachable from the Internet
-- which administrative services should stay behind WireGuard
-- how this works when hosting multiple mail domains
-
----
-
-## The basic model
-
-A typical layout looks like this:
+Typical flow:
 
 ```text
 Internet
   |
   v
-Router / Firewall
+Router / edge firewall
   |
-  +-- public IP
-  |
-  +-- NAT, port forwarding, or DMZ rules
+  +-- explicit port forwards
   |
   v
-OpenBSD mail host on the LAN
+OpenBSD mail host
+  |
+  +-- PF enforces host policy
+  +-- WireGuard gates trusted admin access
+  +-- Unbound answers local and VPN DNS
 ```
 
-The OpenBSD server usually has a private LAN address such as `192.168.1.44`, and
-your router handles inbound Internet traffic by forwarding required ports to that
-host.
+## DMZ guidance
 
----
+Consumer routers often offer a DMZ host mode. This project does not require it.
+It can be used, but the safer public baseline is still explicit forwarding plus
+a strict PF policy on the host.
 
-## DMZ versus port forwarding
+## Values the operator must know
 
-### Option 1, port forwarding
+Before rendering or applying the network layer, the operator should know:
 
-This is the more controlled option for most users.
-
-You forward only the ports required by the project to the OpenBSD mail host.
-
-Typical public ports are:
-
-- TCP 25, inbound SMTP
-- TCP 80, ACME HTTP validation when needed
-- TCP 443, HTTPS for webmail or published web endpoints
-- UDP 51820, WireGuard
-
-### Option 2, router DMZ
-
-Some consumer routers support a DMZ host mode where unsolicited inbound traffic
-is sent to one internal IP address.
-
-This can work, but it is broader than targeted port forwarding. If you use DMZ
-mode, you should still keep the OpenBSD firewall policy strict and expose only
-what the host is designed to accept.
-
----
-
-## SSH exposure guidance
-
-For this project, a VPN-first administrative model is recommended.
-
-That means:
-
-- keep SSH off the public Internet if possible
-- use WireGuard for admin access
-- publish only the services that must be public
-
-Public SSH is possible, but it increases exposure and should be a conscious
-choice, not a default.
-
----
-
-## How multiple domains affect networking
-
-Multiple domains do **not** usually require separate routers, separate LAN IPs,
-or separate public port forwarding policies.
-
-For a typical deployment:
-
-- one server can host many domains
-- one public IP can receive mail for many domains
-- one router forwarding policy can support all those domains
-- the difference between domains is handled later through DNS and mail routing
-
-Example:
-
-- mail host: `mail.example.com`
-- hosted domains: `example.com`, `example.net`, `example.org`
-
-In that design:
-
-- SMTP still comes to the same host
-- HTTPS still goes to the same host
-- WireGuard still goes to the same host
-- each domain later gets its own DNS records and DKIM configuration
-
----
-
-## Values the user must know
-
-Before running Phase 01, the user should know:
-
-- LAN interface name, for example `em0`
-- WAN interface name, for example `em1`
-- LAN IPv4 address of the mail server
-- LAN prefix length, for example `24`
+- LAN interface and address
 - router LAN address
 - public IPv4 address
-- whether DMZ mode is used
-- whether WireGuard is used
-- whether SSH should be public or VPN-only
-- which domains will be hosted
+- whether public SSH is allowed
+- WireGuard interface, subnet, and listen port
+- whether web and admin access remain VPN-only
 
----
+These values live in:
 
-## Recommended baseline
+- `config/network.conf`
+- `config/dns.conf`
+- `config/ddns.conf`
 
-For most users, the safest starting point is:
+## Public-safe outputs now provided by the repo
 
-- no router DMZ
-- explicit port forwards only
-- public TCP 25, 80, and 443
-- public UDP 51820 for WireGuard
-- SSH kept VPN-only
-- admin interfaces kept VPN-only
+Phase 07 adds reusable templates and staged examples for:
 
----
+- `pf.conf`
+- the mailstack PF anchor
+- `hostname.wg0`
+- Unbound base and split-DNS include files
+- a Vultr DDNS sync helper
 
-## Relation to later phases
-
-This planning document prepares the inputs used by:
-
-- Phase 01, network and external access
-- later TLS and ACME phases
-- later DNS and DKIM phases
-- later webmail and admin exposure decisions
-
-A correct network model early in the project makes the rest of the deployment
-much easier.
+The public repo still does not publish real peer keys, provider tokens, or live
+site addresses.

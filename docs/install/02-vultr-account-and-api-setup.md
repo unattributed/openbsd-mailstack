@@ -2,130 +2,55 @@
 
 ## Purpose
 
-This document defines the required setup for:
+This document defines the required Vultr setup for the public DNS and DDNS
+workflows shipped in `openbsd-mailstack`.
 
-- domain DNS hosting
-- API access
-- secure handling of credentials
+## Account and DNS setup
 
-This is a prerequisite for DNS-related workflows in the public baseline.
+1. create the Vultr account
+2. add each hosted domain to Vultr DNS
+3. delegate the registrar nameservers to the Vultr nameservers
+4. generate an API key for DNS automation
 
-## 1. Create a Vultr Account
+## Secret handling
 
-Sign up using:
+The API key is a secret. Do not place it in tracked repo files.
 
-`https://www.vultr.com/?ref=7976926`
+Preferred ignored files:
 
-Vultr is used as the authoritative DNS provider for this project.
+- `config/local/providers/vultr.env`
+- `~/.config/openbsd-mailstack/providers/vultr.env`
+- `/root/.config/openbsd-mailstack/providers/vultr.env`
 
-### Steps
+Supported legacy path:
 
-1. Create an account
-2. Verify your email address
-3. Complete billing setup if required
+- `/root/.config/vultr/api.env`
 
-## 2. Configure Domain DNS
-
-1. Navigate to **Products → DNS**
-2. Add your domain
-3. Note the Vultr nameservers provided
-4. Update your registrar to use the Vultr nameservers
-
-### Verify
-
-```sh
-dig NS example.com
-```
-
-## 3. Generate API Key
-
-API overview:
-
-`https://www.vultr.com/api/`
-
-Steps:
-
-1. Go to **Account → API**
-2. Enable API access
-3. Generate an API key
-
-## 4. Secure Storage
-
-The API key is a secret.
-
-### Requirements
-
-- never commit it to Git
-- never place it in tracked repository config files
-- never hardcode it into apply or verify scripts
-- store it in a secure secret manager or protected local secret file
-
-Recommended options:
-
-- Proton Pass
-- Bitwarden
-- another secure password store that integrates well with your workstation
-
-## 5. Secure Usage Pattern
-
-### Option A, environment variable
-
-```sh
-export VULTR_API_KEY="REDACTED"
-```
-
-### Option B, protected local secret file
-
-Example file:
-
-```text
-/root/.config/vultr/api.env
-```
-
-Contents:
+Example content:
 
 ```sh
 VULTR_API_KEY="REDACTED"
 VULTR_API_URL="https://api.vultr.com/v2"
-MAIL_NOTIFY="ops@example.com"
-MAIL_FROM="ops@example.com"
-GITHUB_PAGES_DOMAINS="example.com example.org"
-ALLOWED_IPV4_CIDRS=""
-DEFAULT_TTL="300"
-VULTR_DOMAINS="example.com example.net example.org"
-VULTR_HOSTS_example.com="@ mail obsd1 www"
-VULTR_HOSTS_example.net="@ mail obsd1 www"
-VULTR_HOSTS_example.org="mail obsd1"
-VULTR_TTL_DEFAULT=300
 ```
 
-Permissions:
+Set file mode:
 
 ```sh
-chmod 600 /root/.config/vultr/api.env
+chmod 600 /root/.config/openbsd-mailstack/providers/vultr.env
 ```
 
-## 6. Where this is used
+## Related tracked config
 
-Primary usage in this project:
+Keep non-secret Vultr-related inputs in tracked examples and ignored local files:
 
-- DNS and identity publishing
-- optional dynamic DNS or validation tooling
+- `config/dns.conf.example`
+- `config/ddns.conf.example`
+- `config/network.conf.example`
 
-All live API usage should reference secure runtime values or protected local files, not tracked repository content.
+## Used by
 
-## 7. Security Notes
+The public repo uses Vultr values for:
 
-- treat the API key as privileged DNS control
-- rotate it periodically
-- revoke it immediately if exposed
-- review where it is stored before each major DNS change
-
-## Verification Checklist
-
-- [ ] Vultr account created
-- [ ] domain added to Vultr DNS
-- [ ] nameservers updated at registrar
-- [ ] API key generated
-- [ ] API key securely stored
-- [ ] API key not present in repository
+- DNS publishing guidance in Phase 09
+- split-DNS and identity rendering
+- DDNS preview and optional live sync in Phase 07

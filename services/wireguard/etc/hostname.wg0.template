@@ -1,0 +1,4 @@
+# Public-safe WireGuard hostname file template
+inet __WIREGUARD_SERVER_IPV4__ __WIREGUARD_PREFIXLEN__ NONE
+!/usr/local/bin/wg setconf wg0 /etc/wireguard/wg0.conf
+up
