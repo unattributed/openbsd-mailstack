@@ -10,38 +10,25 @@ This directory contains external prerequisites and install-side preparation docu
 2. `03-brevo-account-and-relay-setup.md`
 3. `04-virustotal-api-setup.md`
 4. `05-local-provider-secret-file-layout.md`
+5. `06-qemu-lab-and-vm-testing.md`
+6. `07-openbsd-autonomous-installer.md`
 
-## Optional operator path
+## Optional operator paths
 
-For users who want to develop, test, and rehearse the project without dedicated hardware, use:
+### QEMU lab path
 
-- `06-qemu-lab-and-vm-testing.md`
+Use `06-qemu-lab-and-vm-testing.md` when you want to prototype or validate the project in a disposable VM.
 
-## Why this exists
+### Autonomous installer path
 
-Some parts of the mail stack depend on services and credentials that are external to the OpenBSD host itself. Those external dependencies should be created, delegated, and stored securely before later phases are completed.
+Use `07-openbsd-autonomous-installer.md` when you want to build a custom OpenBSD autoinstall pack that can be adapted to your own:
 
-## Current external prerequisite coverage
-
-### Vultr
-
-The public baseline uses Vultr as the authoritative DNS provider.
-
-### Brevo
-
-The public baseline uses Brevo as a smart-relay and deliverability support layer when direct self-hosted outbound delivery is not sufficient.
-
-### VirusTotal
-
-The public baseline uses VirusTotal as an optional external reputation and attachment analysis layer.
-
-### Local provider secret files
-
-The public baseline prefers protected root-owned local secret files under `/root/.config/` for provider credentials and similar sensitive operator data.
-
-### QEMU lab testing
-
-The public baseline now includes a QEMU lab layer under `maint/qemu/` for repeatable OpenBSD VM install, bootstrap, and phase execution testing.
+- LAN interface
+- LAN network
+- host IP
+- operator username
+- operator home path
+- public SSH key
 
 ## Security rule
 

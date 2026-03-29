@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ -f /etc/rc.firsttime ]; then
+  :
+else
+  : > /etc/rc.firsttime
+fi
+
+grep -Fq "/root/phase00-firstboot.sh" /etc/rc.firsttime 2>/dev/null || \
+  echo "/root/phase00-firstboot.sh real" >> /etc/rc.firsttime
+
+chmod 0644 /etc/rc.firsttime
+exit 0

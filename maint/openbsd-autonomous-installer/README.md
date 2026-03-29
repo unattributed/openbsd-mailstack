@@ -1,0 +1,47 @@
+# OpenBSD Autonomous Installer
+
+## Purpose
+
+This directory provides a public, customizable OpenBSD autonomous installer layer for `openbsd-mailstack`.
+
+It is based on the prototype work from the original private project, but removes the assumption that the operator is always `foo` and that the home path is always `/home/foo`.
+
+## Key improvement
+
+The public layer now lets the operator declare:
+
+- `OPERATOR_USER`
+- `OPERATOR_HOME`
+- `LAN_IF_DEFAULT`
+- `LAN_NET_DEFAULT`
+- `HOST_IP_DEFAULT`
+- `PARROT_PUBKEY`
+
+## Main workflow
+
+1. copy `installer-profile.example.env` to a local profile file
+2. edit the local profile
+3. run `render-installer-pack.ksh`
+4. serve the generated pack over HTTP
+5. use OpenBSD autoinstall with the generated `install.conf`
+
+## Output
+
+Generated files are written to:
+
+- `maint/openbsd-autonomous-installer/build/<profile-name>/`
+
+## Files
+
+- `installer-profile.example.env`
+- `render-installer-pack.ksh`
+- `install.conf.78.lab.template`
+- `install.conf.78.real.template`
+- `disklabel-root-swap.template`
+- `serve-autoinstall.sh`
+- `site78_root/install.site.template`
+- `site78_root/root/phase00-firstboot.sh.template`
+
+## Safety rule
+
+Do not commit local profiles or live secrets.

@@ -1,0 +1,165 @@
+#!/bin/ksh
+set -euo pipefail
+
+MODE="${1:-real}"
+
+LAN_IF_DEFAULT="__LAN_IF_DEFAULT__"
+LAN_NET_DEFAULT="__LAN_NET_DEFAULT__"
+HOST_IP_DEFAULT="__HOST_IP_DEFAULT__"
+
+OPERATOR_USER="__OPERATOR_USER__"
+OPERATOR_HOME="__OPERATOR_HOME__"
+PARROT_PUBKEY="__PARROT_PUBKEY__"
+MAILSTACK_REPO_CLONE_URL="__MAILSTACK_REPO_CLONE_URL__"
+
+detect_host_ip() {
+  ifconfig "$LAN_IF_DEFAULT" 2>/dev/null | awk '/inet /{print $2; exit}'
+}
+
+HOST_IP="$(detect_host_ip)"
+[ -n "$HOST_IP" ] || HOST_IP="$HOST_IP_DEFAULT"
+
+log() {
+  print -- "phase00-firstboot: $*"
+}
+
+die() {
+  print -- "phase00-firstboot: fail: $*" >&2
+  exit 1
+}
+
+require_root() {
+  [ "$(id -u)" -eq 0 ] || die "must run as root"
+}
+
+backup_file() {
+  _src="$1"
+  [ -e "$_src" ] || return 0
+  _ts="$(date +%Y%m%d-%H%M%S)"
+  cp -p "$_src" "${_src}.phase00.${_ts}.bak"
+}
+
+ensure_admin_ssh_key() {
+  log "ensuring ${OPERATOR_HOME}/.ssh/authorized_keys exists with the declared public key"
+  install -d -m 0700 -o "${OPERATOR_USER}" -g wheel "${OPERATOR_HOME}/.ssh"
+  if [ ! -f "${OPERATOR_HOME}/.ssh/authorized_keys" ]; then
+    print -- "$PARROT_PUBKEY" > "${OPERATOR_HOME}/.ssh/authorized_keys"
+  else
+    if ! grep -Fq "$PARROT_PUBKEY" "${OPERATOR_HOME}/.ssh/authorized_keys"; then
+      print -- "$PARROT_PUBKEY" >> "${OPERATOR_HOME}/.ssh/authorized_keys"
+    fi
+  fi
+  chown "${OPERATOR_USER}:wheel" "${OPERATOR_HOME}/.ssh/authorized_keys"
+  chmod 600 "${OPERATOR_HOME}/.ssh/authorized_keys"
+}
+
+harden_sshd() {
+  log "hardening sshd_config"
+  backup_file /etc/ssh/sshd_config
+
+  cat <<EOF > /etc/ssh/sshd_config
+AddressFamily         inet
+ListenAddress         $HOST_IP
+
+PermitRootLogin       no
+StrictModes           yes
+MaxAuthTries          6
+MaxSessions           10
+
+PubkeyAuthentication  yes
+AuthorizedKeysFile    .ssh/authorized_keys
+PasswordAuthentication no
+
+PrintMotd             no
+Subsystem             sftp    /usr/libexec/sftp-server
+EOF
+
+  sshd -t
+  rcctl enable sshd >/dev/null 2>&1 || true
+  rcctl restart sshd
+}
+
+ensure_doas() {
+  log "ensuring doas baseline"
+  _needs_apply=0
+  if [ ! -f /etc/doas.conf ]; then
+    _needs_apply=1
+  elif ! grep -Eq '^permit[[:space:]]+persist[[:space:]]+:wheel$' /etc/doas.conf; then
+    _needs_apply=1
+  elif ! grep -Eq "^permit[[:space:]]+keepenv[[:space:]]+nopass[[:space:]]+${OPERATOR_USER}[[:space:]]+as[[:space:]]+root$" /etc/doas.conf; then
+    _needs_apply=1
+  fi
+
+  if [ "${_needs_apply}" -eq 1 ]; then
+    backup_file /etc/doas.conf
+    cat <<EOF > /etc/doas.conf
+# Managed by phase00-firstboot.sh (project baseline).
+permit persist :wheel
+permit keepenv nopass ${OPERATOR_USER} as root
+EOF
+    chown root:wheel /etc/doas.conf
+    chmod 600 /etc/doas.conf
+  fi
+  doas -C /etc/doas.conf
+}
+
+ensure_pf_minimal_ssh() {
+  log "ensuring pf is enabled with minimal ssh allow"
+  backup_file /etc/pf.conf
+  cat <<EOF > /etc/pf.conf
+lan_if = "$LAN_IF_DEFAULT"
+lan_net = "$LAN_NET_DEFAULT"
+
+set block-policy drop
+set skip on lo0
+block return log all
+
+pass out on \$lan_if inet from (\$lan_if) to any keep state
+pass in on \$lan_if inet proto tcp from \$lan_net to (\$lan_if) port ssh keep state
+EOF
+  pfctl -nf /etc/pf.conf
+  pfctl -f /etc/pf.conf
+  pfctl -e >/dev/null 2>&1 || true
+  rcctl enable pf >/dev/null 2>&1 || true
+}
+
+ensure_installurl() {
+  if [ ! -s /etc/installurl ]; then
+    print -- "https://cdn.openbsd.org/pub/OpenBSD" > /etc/installurl
+  fi
+}
+
+ensure_packages() {
+  log "installing baseline packages"
+  PKG_PATH="$(cat /etc/installurl 2>/dev/null || true)/$(sysctl -n kern.osrelease)/packages/amd64"
+  env PKG_PATH="$PKG_PATH" pkg_add -Iv git git-lfs curl rsync jq gnupg pinentry || true
+}
+
+clone_repo_if_possible() {
+  if [ -d "${OPERATOR_HOME}/openbsd-mailstack/.git" ]; then
+    log "repo already present: ${OPERATOR_HOME}/openbsd-mailstack"
+    return 0
+  fi
+
+  if ! command -v git >/dev/null 2>&1; then
+    log "git not present yet, skipping clone"
+    return 0
+  fi
+
+  log "cloning ${MAILSTACK_REPO_CLONE_URL} into ${OPERATOR_HOME}/openbsd-mailstack"
+  su -l "${OPERATOR_USER}" -c "git clone ${MAILSTACK_REPO_CLONE_URL} ${OPERATOR_HOME}/openbsd-mailstack" || true
+}
+
+main() {
+  require_root
+  ensure_admin_ssh_key
+  harden_sshd
+  ensure_doas
+  ensure_pf_minimal_ssh
+  ensure_installurl
+  ensure_packages
+  clone_repo_if_possible
+  log "phase00-firstboot completed"
+}
+
+main "$@"
