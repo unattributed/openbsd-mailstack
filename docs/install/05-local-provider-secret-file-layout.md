@@ -2,15 +2,32 @@
 
 ## Purpose
 
-This document defines the preferred local file layout for external provider secrets in the public `openbsd-mailstack` baseline.
+This document defines the preferred local file layout for provider credentials in the public `openbsd-mailstack` baseline.
 
-The goal is simple:
+Use it together with:
 
-- keep secrets out of Git
-- keep provider credentials predictable for operators
-- keep file ownership and permissions easy to audit
+- `provider-account-and-credential-onboarding.md`
+- `user-input-file-layout.md`
 
-## Preferred layout
+## Recommended locations
+
+Preferred repo-local ignored paths:
+
+```text
+config/local/providers/vultr.env
+config/local/providers/brevo.env
+config/local/providers/virustotal.env
+```
+
+Preferred protected host-local paths:
+
+```text
+/root/.config/openbsd-mailstack/providers/vultr.env
+/root/.config/openbsd-mailstack/providers/brevo.env
+/root/.config/openbsd-mailstack/providers/virustotal.env
+```
+
+Supported legacy paths:
 
 ```text
 /root/.config/vultr/api.env
@@ -20,15 +37,17 @@ The goal is simple:
 
 ## Required properties
 
+For any file containing live secrets:
+
 - owner: `root`
 - mode: `0600`
 
 Example:
 
 ```sh
-chmod 600 /root/.config/vultr/api.env
-chmod 600 /root/.config/brevo/brevo.env
-chmod 600 /root/.config/virustotal/vt.env
+chmod 600 /root/.config/openbsd-mailstack/providers/vultr.env
+chmod 600 /root/.config/openbsd-mailstack/providers/brevo.env
+chmod 600 /root/.config/openbsd-mailstack/providers/virustotal.env
 ```
 
 ## Example contents
@@ -40,23 +59,19 @@ VULTR_API_KEY="REDACTED"
 VULTR_API_URL="https://api.vultr.com/v2"
 MAIL_NOTIFY="ops@example.com"
 MAIL_FROM="ops@example.com"
-GITHUB_PAGES_DOMAINS="example.com example.org"
-ALLOWED_IPV4_CIDRS=""
 DEFAULT_TTL="300"
-VULTR_DOMAINS="example.com example.net example.org"
-VULTR_HOSTS_example.com="@ mail obsd1 www"
-VULTR_HOSTS_example.net="@ mail obsd1 www"
-VULTR_HOSTS_example.org="mail obsd1"
-VULTR_TTL_DEFAULT=300
+VULTR_DOMAINS="example.com example.net"
+VULTR_HOSTS_example.com="@ mail"
+VULTR_HOSTS_example.net="@ mail"
 ```
 
 ### Brevo
 
 ```sh
-BREVO_SMTP_LOGIN="REDACTED provided by brevo"
+BREVO_SMTP_LOGIN="REDACTED"
 BREVO_SMTP_PASSWORD="REDACTED"
 BREVO_SMTP_HOST="smtp-relay.brevo.com"
-BREVO_SMTP_PORT=587
+BREVO_SMTP_PORT="587"
 BREVO_API_KEY="REDACTED"
 ```
 
@@ -64,19 +79,20 @@ BREVO_API_KEY="REDACTED"
 
 ```sh
 VT_API_KEY="REDACTED"
-VT_SCAN_ENABLED=1
-VT_MINIMUM_ENGINES=3
-VT_LOW_CATEGORY=5
-VT_MEDIUM_CATEGORY=10
-VT_SCORE_CLEAN=-0.5
-VT_SCORE_LOW=2.0
-VT_SCORE_MEDIUM=5.0
-VT_SCORE_HIGH=8.0
-VT_MAX_SIZE_BYTES=20000000
-VT_PUBLIC_MAX_REQUESTS_PER_MINUTE=4
-VT_PUBLIC_MAX_REQUESTS_PER_DAY=500
-VT_PUBLIC_MAX_REQUESTS_PER_MONTH=15500
+VT_SCAN_ENABLED="1"
+VT_MINIMUM_ENGINES="3"
+VT_LOW_CATEGORY="5"
+VT_MEDIUM_CATEGORY="10"
+VT_SCORE_CLEAN="-0.5"
+VT_SCORE_LOW="2.0"
+VT_SCORE_MEDIUM="5.0"
+VT_SCORE_HIGH="8.0"
+VT_MAX_SIZE_BYTES="20000000"
 ```
+
+## Shared loader behavior
+
+The public loader in `scripts/lib/operator-inputs.ksh` reads these files automatically when they exist and are readable. That keeps provider credentials out of tracked files while still letting later phase scripts consume them consistently.
 
 ## Security rule
 

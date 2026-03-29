@@ -1,0 +1,10 @@
+# Repo-local operator inputs
+system.conf
+network.conf
+domains.conf
+secrets.conf
+
+# Local overlays and provider credentials
+local/
+*.local
+*.bak

@@ -36,6 +36,7 @@ Usage:
 
 Optional environment variables:
   OPENBSD_MAILSTACK_NONINTERACTIVE=1   Disable prompts, fail if required values are missing
+  OPENBSD_MAILSTACK_INPUT_ROOT=/path   Override the default config/local input root
   SAVE_CONFIG=yes                      Save prompted values into config/*.conf files
 EOF
 }
@@ -117,17 +118,17 @@ save_configs_if_requested() {
   [ "${SAVE_CONFIG}" = "yes" ] || return 0
 
   log_info "writing ${SYSTEM_CONF}"
-  write_kv_config "${SYSTEM_CONF}"     "OPENBSD_VERSION=\"${OPENBSD_VERSION}\""     "MAIL_HOSTNAME=\"${MAIL_HOSTNAME}\""     "PRIMARY_DOMAIN=\"${PRIMARY_DOMAIN}\""     "ADMIN_EMAIL=\"${ADMIN_EMAIL}\""     "PUBLIC_IPV4=\"${PUBLIC_IPV4}\""     "TIMEZONE=\"${TIMEZONE:-UTC}\""
+  write_named_config "${SYSTEM_CONF}"     "OPENBSD_VERSION" "${OPENBSD_VERSION}"     "MAIL_HOSTNAME" "${MAIL_HOSTNAME}"     "PRIMARY_DOMAIN" "${PRIMARY_DOMAIN}"     "ADMIN_EMAIL" "${ADMIN_EMAIL}"     "PUBLIC_IPV4" "${PUBLIC_IPV4}"     "TIMEZONE" "${TIMEZONE:-UTC}"
 
   log_info "writing ${NETWORK_CONF}"
-  write_kv_config "${NETWORK_CONF}"     "LAN_INTERFACE=\"${LAN_INTERFACE}\""     "WAN_INTERFACE=\"${WAN_INTERFACE}\""     "LAN_IPV4=\"${LAN_IPV4}\""     "LAN_CIDR=\"${LAN_CIDR}\""     "ENABLE_WIREGUARD=\"${ENABLE_WIREGUARD}\""     "WIREGUARD_INTERFACE=\"${WIREGUARD_INTERFACE:-wg0}\""     "WIREGUARD_SUBNET=\"${WIREGUARD_SUBNET:-10.44.0.0/24}\""
+  write_named_config "${NETWORK_CONF}"     "LAN_INTERFACE" "${LAN_INTERFACE}"     "WAN_INTERFACE" "${WAN_INTERFACE}"     "LAN_IPV4" "${LAN_IPV4}"     "LAN_CIDR" "${LAN_CIDR}"     "ENABLE_WIREGUARD" "${ENABLE_WIREGUARD}"     "WIREGUARD_INTERFACE" "${WIREGUARD_INTERFACE:-wg0}"     "WIREGUARD_SUBNET" "${WIREGUARD_SUBNET:-10.44.0.0/24}"
 
   log_info "writing ${DOMAINS_CONF}"
-  write_kv_config "${DOMAINS_CONF}"     "PRIMARY_DOMAIN=\"${PRIMARY_DOMAIN}\""     "DOMAINS=\"${DOMAINS}\""
+  write_named_config "${DOMAINS_CONF}"     "PRIMARY_DOMAIN" "${PRIMARY_DOMAIN}"     "DOMAINS" "${DOMAINS}"
 
   if [ ! -f "${SECRETS_CONF}" ]; then
     log_info "creating placeholder ${SECRETS_CONF}"
-    write_kv_config "${SECRETS_CONF}"       "VULTR_API_KEY=\"\""       "BREVO_API_KEY=\"\""       "VIRUSTOTAL_API_KEY=\"\""       "MYSQL_ROOT_PASSWORD=\"\""       "POSTFIXADMIN_DB_PASSWORD=\"\""       "ROUNDCUBE_DB_PASSWORD=\"\""
+    write_named_config "${SECRETS_CONF}"       "VULTR_API_KEY" ""       "BREVO_API_KEY" ""       "VIRUSTOTAL_API_KEY" ""       "MYSQL_ROOT_PASSWORD" ""       "POSTFIXADMIN_DB_PASSWORD" ""       "ROUNDCUBE_DB_PASSWORD" ""
   fi
 }
 

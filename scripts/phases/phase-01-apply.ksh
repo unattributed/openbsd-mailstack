@@ -32,6 +32,7 @@ Usage:
 
 Optional environment variables:
   OPENBSD_MAILSTACK_NONINTERACTIVE=1   Disable prompts, fail if values are missing
+  OPENBSD_MAILSTACK_INPUT_ROOT=/path   Override the default config/local input root
   SAVE_CONFIG=yes                      Save prompted values into config files
 USAGEEOF
 }
@@ -134,41 +135,21 @@ validate_inputs() {
 }
 
 save_configs_if_requested() {
-  if [ "${SAVE_CONFIG}" != "yes" ]; then
-    if is_noninteractive; then
-      return 0
-    fi
-    confirm_yes_no "SAVE_CONFIG" "Save the collected Phase 01 values into config files for reuse" "yes"
+  [ "${SAVE_CONFIGS}" = "yes" ] || return 0
+
+  mkdir -p "${CONFIG_DIR}"
+  if [ ! -f "${SYSTEM_CONF}" ] && [ -f "${CONFIG_DIR}/system.conf.example" ]; then
+    cp "${CONFIG_DIR}/system.conf.example" "${SYSTEM_CONF}"
+  fi
+  if [ ! -f "${SECRETS_CONF}" ] && [ -f "${CONFIG_DIR}/secrets.conf.example" ]; then
+    cp "${CONFIG_DIR}/secrets.conf.example" "${SECRETS_CONF}"
   fi
 
-  [ "${SAVE_CONFIG}" = "yes" ] || return 0
+  write_named_config "${NETWORK_CONF}"     "LAN_INTERFACE" "${LAN_INTERFACE}"     "WAN_INTERFACE" "${WAN_INTERFACE}"     "LAN_IPV4" "${LAN_IPV4}"     "LAN_CIDR" "${LAN_CIDR}"     "ROUTER_LAN_IPV4" "${ROUTER_LAN_IPV4}"     "PUBLIC_IPV4" "${PUBLIC_IPV4}"     "DMZ_MODE" "${DMZ_MODE}"     "DMZ_TARGET_IPV4" "${DMZ_TARGET_IPV4}"     "PORT_FORWARD_TCP" "${PORT_FORWARD_TCP}"     "PORT_FORWARD_UDP" "${PORT_FORWARD_UDP}"     "ENABLE_HTTP" "${ENABLE_HTTP}"     "ENABLE_HTTPS" "${ENABLE_HTTPS}"     "ENABLE_WIREGUARD" "${ENABLE_WIREGUARD}"     "WIREGUARD_INTERFACE" "${WIREGUARD_INTERFACE}"     "WIREGUARD_SUBNET" "${WIREGUARD_SUBNET}"     "WIREGUARD_PORT" "${WIREGUARD_PORT}"     "PUBLIC_SSH" "${PUBLIC_SSH}"     "PUBLIC_SSH_PORT" "${PUBLIC_SSH_PORT}"     "ADMIN_VPN_ONLY" "${ADMIN_VPN_ONLY}"
 
-  log_info "writing ${NETWORK_CONF}"
-  write_kv_config "${NETWORK_CONF}" \
-    "LAN_INTERFACE=\"${LAN_INTERFACE}\"" \
-    "WAN_INTERFACE=\"${WAN_INTERFACE}\"" \
-    "LAN_IPV4=\"${LAN_IPV4}\"" \
-    "LAN_CIDR=\"${LAN_CIDR}\"" \
-    "ROUTER_LAN_IPV4=\"${ROUTER_LAN_IPV4}\"" \
-    "PUBLIC_IPV4=\"${PUBLIC_IPV4}\"" \
-    "DMZ_MODE=\"${DMZ_MODE}\"" \
-    "DMZ_TARGET_IPV4=\"${DMZ_TARGET_IPV4}\"" \
-    "PORT_FORWARD_TCP=\"${PORT_FORWARD_TCP}\"" \
-    "PORT_FORWARD_UDP=\"${PORT_FORWARD_UDP}\"" \
-    "ENABLE_HTTP=\"${ENABLE_HTTP}\"" \
-    "ENABLE_HTTPS=\"${ENABLE_HTTPS}\"" \
-    "ENABLE_WIREGUARD=\"${ENABLE_WIREGUARD}\"" \
-    "WIREGUARD_INTERFACE=\"${WIREGUARD_INTERFACE}\"" \
-    "WIREGUARD_SUBNET=\"${WIREGUARD_SUBNET}\"" \
-    "WIREGUARD_PORT=\"${WIREGUARD_PORT}\"" \
-    "PUBLIC_SSH=\"${PUBLIC_SSH}\"" \
-    "PUBLIC_SSH_PORT=\"${PUBLIC_SSH_PORT}\"" \
-    "ADMIN_VPN_ONLY=\"${ADMIN_VPN_ONLY}\""
+  write_named_config "${DOMAINS_CONF}"     "PRIMARY_DOMAIN" "${PRIMARY_DOMAIN}"     "DOMAINS" "${DOMAINS}"
 
-  log_info "writing ${DOMAINS_CONF}"
-  write_kv_config "${DOMAINS_CONF}" \
-    "PRIMARY_DOMAIN=\"${PRIMARY_DOMAIN}\"" \
-    "DOMAINS=\"${DOMAINS}\""
+  log "Saved network settings to ${NETWORK_CONF}"
 }
 
 check_commands() {

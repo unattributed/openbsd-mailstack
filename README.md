@@ -1,81 +1,114 @@
 # openbsd-mailstack
 
-`openbsd-mailstack` is a public, operator-focused mail platform for OpenBSD 7.8. It provides a reproducible baseline for building and maintaining a hardened single-host mail system with Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, optional SOGo, and supporting network and operations controls.
+`openbsd-mailstack` is a public, operator-focused mail platform framework for OpenBSD 7.8. It publishes reusable documentation, scripts, templates, and verification tooling for a hardened single-host mail system built around Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, and supporting network and operations controls.
 
-This repository is intended to hold reusable code, templates, documentation, and verification tooling. Site-specific credentials, private recovery data, and encrypted backup artifacts are intentionally kept out of scope.
+This repository is public by design. It is not a mirror of the private `openbsd-self-hosting` repo, and it does not claim full private parity yet.
 
 ## What this project is
 
-This project is a phase-driven framework for building a security-focused OpenBSD mail host.
+This project is a phase-driven public framework for building and maintaining a security-focused OpenBSD mail host.
 
 It is designed for operators who want:
 
 - a documented install path
-- a reproducible mail stack baseline
-- clear separation between public code and private secrets
+- a reproducible baseline
+- clear separation between public code and private data
 - verification and maintenance guidance
 - safe lab testing before real deployment
 
-It is not a one-command production mail server. It is a structured public framework that guides the operator through setup, validation, operations, backup, recovery, and hardening.
+It is not a one-command production mail server. It is a structured public repo that guides the operator through setup, validation, operations, backup, recovery planning, and hardening.
 
-## Highlights
+## What changed in the phase 01 parity foundation
 
-- OpenBSD 7.8 baseline for clean installs and controlled upgrades
-- Hardened single-host mail platform with a minimal WAN exposure model
-- Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, and optional SOGo
-- PF default deny and WireGuard-gated control-plane access
-- Guided installer and phase-based automation for reproducible builds
-- Verification, monitoring, maintenance, and backup orchestration
-- Optional DNS, DDNS, smart relay, and reputation-provider integrations
-- Recovery payload staging and integration hooks for private DR backends
-- QEMU lab layer for disposable VM testing
-- Customizable OpenBSD autonomous installer layer
+This phase adds the public truth layer for reconciliation work and the operator input model that later phases depend on.
+
+New core references:
+
+- `docs/project-status.md`
+- `docs/phases/phase-crosswalk.md`
+- `docs/public-private-boundary.md`
+- `docs/install/provider-account-and-credential-onboarding.md`
+- `docs/install/user-input-file-layout.md`
+
+New operator-input foundation:
+
+- ignored repo-local input files under `config/`
+- ignored overlay paths under `config/local/`
+- repo-safe provider examples under `config/examples/providers/`
+- shared loader logic in `scripts/lib/operator-inputs.ksh`
+- expanded shared validation and config-writing helpers in `scripts/lib/common.ksh`
 
 ## Start here
 
 Read these in order:
 
-1. `docs/install/README.md`
-2. `docs/architecture/01-project-architecture-and-flow.md`
-3. `docs/install/08-quick-start-and-usage-paths.md`
+1. `docs/project-status.md`
+2. `docs/phases/phase-crosswalk.md`
+3. `docs/install/README.md`
+4. `docs/architecture/01-project-architecture-and-flow.md`
+5. `docs/install/08-quick-start-and-usage-paths.md`
 
-Those three documents explain:
+Those documents explain:
 
-- what the project is
-- how the pieces fit together
-- which path you should follow first
+- what is already public
+- what is still missing or intentionally private
+- how private phases map to the public phase model
+- where to place operator-provided data safely
 
-## Step 0, external prerequisites
+## Current public completeness
 
-Before starting the phase-driven build, complete the external prerequisite documents under `docs/install/`.
+The public repo currently contains:
 
-Required first documents:
+- install and architecture documentation
+- phase docs and apply and verify scripts through Phase 16
+- QEMU lab and autonomous installer tooling
+- config examples and public-safe generated fragments
+- repository policy files such as `CONTRIBUTING.md` and `SECURITY.md`
 
-- `docs/install/02-vultr-account-and-api-setup.md`
-- `docs/install/03-brevo-account-and-relay-setup.md`
-- `docs/install/04-virustotal-api-setup.md`
-- `docs/install/05-local-provider-secret-file-layout.md`
+The public repo does **not** yet provide full private parity.
 
-These documents cover:
+Important current limits:
 
-- authoritative DNS setup in Vultr
-- secure creation and storage of the Vultr API key
-- Brevo account creation and relay credential handling
-- VirusTotal API setup and quota-aware usage
-- the preferred local secret file layout under `/root/.config/`
+- several private service configuration trees have not been published yet in sanitized form
+- the public `services/` tree is still mostly placeholder scaffolding
+- later public phases exist, but some are concise baseline documents rather than parity-level migrations
+- private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope
 
-No live provider secret should ever be committed to this repository.
+See `docs/project-status.md` for the comparison details.
+
+## Operator input model
+
+The public repo now supports a consistent operator-input discovery model.
+
+Tracked examples:
+
+- `config/system.conf.example`
+- `config/network.conf.example`
+- `config/domains.conf.example`
+- `config/secrets.conf.example`
+- `config/examples/providers/*.env.example`
+
+Ignored local inputs:
+
+- `config/system.conf`
+- `config/network.conf`
+- `config/domains.conf`
+- `config/secrets.conf`
+- `config/local/`
+- protected host-local files under `/root/.config/openbsd-mailstack/`
+
+The shared loader in `scripts/lib/operator-inputs.ksh` reads values from those locations in a deterministic order. Later apply and verify scripts source the same shared logic through `scripts/lib/common.ksh`.
+
+See `docs/install/user-input-file-layout.md` for the full search order and file tree.
 
 ## Supported deployment topologies
 
 `openbsd-mailstack` supports both of these public deployment models:
 
-- Single-domain mail host  
-  Example: `mail.example.com` serving `example.com`
-- Multi-domain mail host  
-  Example: `mail.example.com` serving `example.com`, `example.net`, and `example.org`
+- Single-domain mail host
+- Multi-domain mail host
 
-All tracked examples in this repository use reserved domains only. Real domains, customer identities, and provider credentials must be supplied through local configuration during installation.
+All tracked examples use reserved domains only. Real domains, customer identities, provider credentials, and host-specific values must be supplied through local operator input files.
 
 ## Main usage paths
 
@@ -84,7 +117,7 @@ All tracked examples in this repository use reserved domains only. Real domains,
 Use this when you want to understand the system and apply phases deliberately.
 
 - complete install prerequisites
-- review architecture docs
+- review architecture and status docs
 - run phases in order
 - verify each phase before continuing
 
@@ -92,7 +125,7 @@ Use this when you want to understand the system and apply phases deliberately.
 
 Use this when you want to prototype without dedicated hardware.
 
-- complete install prerequisites that matter to your test scope
+- complete the prerequisite docs that matter to your test scope
 - review `docs/install/06-qemu-lab-and-vm-testing.md`
 - build a disposable OpenBSD VM
 - run selected phases inside the VM
@@ -120,8 +153,6 @@ Use this when you want to generate a reusable OpenBSD autoinstall pack.
 
 ## Repository boundary
 
-This repository is public by design.
-
 Included here:
 
 - reusable automation
@@ -129,76 +160,39 @@ Included here:
 - example configuration
 - verification and maintenance tooling
 - installer and bootstrap assets
-- DR interface and recovery payload generation logic
+- public-safe helper scripts and generated fragments
 
 Not included here:
 
 - real secrets, API tokens, PATs, or private keys
-- real domains or customer-specific mail topology
-- encrypted snapshots or restore archives
-- private recovery repositories
+- real domains, hostnames, IPs, or webhook endpoints tied to active infrastructure
+- encrypted snapshots, restore archives, or database dumps
+- live runtime evidence from private deployments
 - operator workstation state or generated install output
 
-## Configuration model
-
-The public configuration model treats domain topology as local operator input rather than a tracked constant.
-
-Typical core settings:
-
-```env
-MAIL_HOST_FQDN=mail.example.com
-MAIL_TOPOLOGY=single
-PRIMARY_MAIL_DOMAIN=example.com
-HOSTED_MAIL_DOMAINS="example.com"
-```
-
-Multi-domain example:
-
-```env
-MAIL_HOST_FQDN=mail.example.com
-MAIL_TOPOLOGY=multi
-PRIMARY_MAIL_DOMAIN=example.com
-HOSTED_MAIL_DOMAINS="example.com example.net example.org"
-```
-
-Generated runtime configuration should derive from these values rather than from hardcoded tracked domains.
-
-## Current public phase coverage
-
-The public repo now includes documentation and apply and verify scripts through:
-
-- Phase 00, foundation
-- Phase 01, network and external access
-- Phase 02, MariaDB baseline
-- Phase 03, PostfixAdmin and SQL wiring
-- Phase 04, Postfix core and SQL integration
-- Phase 05, Dovecot auth and mailbox delivery
-- Phase 06, TLS and certificate automation
-- Phase 07, filtering and anti-abuse
-- Phase 08, webmail and administrative access
-- Phase 09, DNS and identity publishing
-- Phase 10, operations and resilience
-- Phase 11, backup and disaster recovery baseline
-- Phase 12, advanced backup security and integrity
-- Phase 13, off-host replication and restore testing
-- Phase 14, monitoring and reporting baseline
-- Phase 15, security hardening and authentication model
-- Phase 16, secrets handling and key material management
+See `docs/public-private-boundary.md` for the detailed boundary table.
 
 ## Installation model
 
-The preferred operator experience is:
+The preferred operator flow is:
 
-1. complete the external prerequisite documents under `docs/install/`
-2. review the quick-start usage paths
+1. complete the install prerequisites under `docs/install/`
+2. copy or create local operator input files
 3. choose a path: direct host, QEMU lab, or autonomous installer
-4. provide local configuration for hostname, domain topology, networking, and optional integrations
-5. apply the phase-driven build and verification flow
-6. enable optional provider integrations only after the core mail path passes verification
+4. run phases in order
+5. verify each phase before moving forward
+6. publish or expose optional integrations only after the core mail path passes verification
 
-## Next major documentation gap
+## What remains to migrate
 
-The public repo now covers phase content through Phase 16. The next major work item is to reconcile and publish the remaining private-repo phases and operational doctrine from the original `openbsd-self-hosting` project, especially the original later-phase material beyond the early public baseline.
+The next migration waves should focus on sanitized public publication of:
+
+- service configuration templates for the mail plane and web plane
+- generic PF, monitoring, backup, and diagnostics tooling
+- selected later-phase operational doctrine once host-specific policy is removed
+- optional SOGo and advanced operations material where public-safe parity is practical
+
+The crosswalk in `docs/phases/phase-crosswalk.md` is the planning baseline for that work.
 
 ## Project policies
 
