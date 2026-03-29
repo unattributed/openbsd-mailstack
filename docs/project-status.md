@@ -61,3 +61,8 @@ The final audit cleaned up or added:
 ## Recommended next step
 
 Use `docs/install/19-public-repo-readiness-check.md` and `scripts/verify/verify-public-repo-readiness.ksh` before treating the repo as your authoritative public operator baseline.
+
+
+## Post-audit correction pass
+
+A final public-only correction pass removed the remaining Roundcube hostname leak and cleaned malformed staged generated files. Use `docs/install/20-public-only-validation-pass.md` together with `maint/final-public-validation-pass.ksh` when you want the final public-safe readiness check.

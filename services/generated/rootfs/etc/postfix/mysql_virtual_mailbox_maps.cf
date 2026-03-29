@@ -1,5 +1,5 @@
--r -- user = postfixadmin
--r -- password = example-secret-value-123456
--r -- hosts = 127.0.0.1
--r -- dbname = postfixadmin
--r -- query = SELECT maildir FROM mailbox WHERE username='%s' AND active='1'
+user = postfixadmin
+password = example-secret-value-123456
+hosts = 127.0.0.1
+dbname = postfixadmin
+query = SELECT maildir FROM mailbox WHERE username='%s' AND active='1'

@@ -8,13 +8,13 @@ $config = [];
 $config['db_dsnw'] = 'mysql://__ROUNDCUBE_DB_USER__:__ROUNDCUBE_DB_PASSWORD__@127.0.0.1/__ROUNDCUBE_DB_NAME__';
 
 /**
- * IMAP: Dovecot on mail.blackbagsecurity.com, implicit TLS on port 993.
+ * IMAP: Dovecot on the configured public mail hostname, implicit TLS on port 993.
  * Roundcube uses ssl:// for IMAPS (993).
  */
 $config['imap_host'] = 'ssl://__MAIL_HOSTNAME__:993';
 
 /**
- * SMTP: Postfix submission on mail.blackbagsecurity.com with STARTTLS on port 587.
+ * SMTP: Postfix submission on the configured public mail hostname with STARTTLS on port 587.
  * %u and %p expand to the Roundcube login username/password.
  */
 $config['smtp_host']      = 'tls://__MAIL_HOSTNAME__:587';
@@ -73,8 +73,7 @@ $config['include_host_config'] = false;
 
 /**
  * SSL options: verify the Dovecot and Postfix certificates.
- * Hostname verification will now succeed because we use
- * mail.blackbagsecurity.com and we made it resolve to 127.0.0.1 locally.
+ * Hostname verification will now succeed when the configured mail hostname resolves to the local service endpoint, whether through public DNS, split DNS, or a host-local resolver override.
  */
 $config['imap_conn_options'] = [
     'ssl' => [

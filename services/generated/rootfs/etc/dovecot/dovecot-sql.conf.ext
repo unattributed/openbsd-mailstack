@@ -1,4 +1,4 @@
--r -- driver = mysql
--r -- connect = host=127.0.0.1 dbname=postfixadmin user=postfixadmin password=example-secret-value-123456
--r -- default_pass_scheme = BLF-CRYPT
--r -- password_query = SELECT username as user, password FROM mailbox WHERE username = '%u' AND active = '1'
+driver = mysql
+connect = host=127.0.0.1 dbname=postfixadmin user=postfixadmin password=example-secret-value-123456
+default_pass_scheme = BLF-CRYPT
+password_query = SELECT username as user, password FROM mailbox WHERE username = '%u' AND active = '1'

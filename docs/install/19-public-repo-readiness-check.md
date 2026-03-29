@@ -47,3 +47,12 @@ The public repo is coherent, but it still does not include:
 - deeper automation for phases 15 and 16 beyond the published docs and baseline helpers
 
 Those are deliberate boundaries, not accidental omissions.
+
+
+## Follow-up correction pass
+
+After the initial readiness audit, a final public-only correction pass removed the remaining Roundcube hostname leak and cleaned malformed staged generated files. The follow-up validation command is:
+
+```sh
+./maint/final-public-validation-pass.ksh
+```

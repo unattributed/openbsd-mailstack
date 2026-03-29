@@ -1,1 +1,1 @@
--r -- [smtp-relay.brevo.com]:587 example-login:example-password-123456
+[smtp-relay.brevo.com]:587 example-login:example-password-123456

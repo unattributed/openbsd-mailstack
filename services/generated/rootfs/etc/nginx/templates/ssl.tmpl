@@ -1,17 +1,17 @@
--r -- ssl_protocols TLSv1.2 TLSv1.3;
--r -- ssl_ciphers EECDH+CHACHA20:EECDH+AESGCM:EDH+AESGCM:AES256+EECDH;
--r -- ssl_prefer_server_ciphers on;
--r -- 
--r -- # Generate once if it does not exist:
--r -- #   openssl dhparam -out /etc/ssl/dh2048_param.pem 2048
--r -- ssl_dhparam /etc/ssl/dh2048_param.pem;
--r -- 
--r -- ssl_session_cache   shared:SSL:10m;
--r -- ssl_session_timeout 1d;
--r -- ssl_session_tickets off;
--r -- 
--r -- ssl_certificate     /etc/ssl/mail.example.com.fullchain.pem;
--r -- ssl_certificate_key /etc/ssl/private/mail.example.com.key;
--r -- 
--r -- # HSTS for all SSL vhosts that include this
--r -- add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers EECDH+CHACHA20:EECDH+AESGCM:EDH+AESGCM:AES256+EECDH;
+ssl_prefer_server_ciphers on;
+
+# Generate once if it does not exist:
+#   openssl dhparam -out /etc/ssl/dh2048_param.pem 2048
+ssl_dhparam /etc/ssl/dh2048_param.pem;
+
+ssl_session_cache   shared:SSL:10m;
+ssl_session_timeout 1d;
+ssl_session_tickets off;
+
+ssl_certificate     /etc/ssl/mail.example.com.fullchain.pem;
+ssl_certificate_key /etc/ssl/private/mail.example.com.key;
+
+# HSTS for all SSL vhosts that include this
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;

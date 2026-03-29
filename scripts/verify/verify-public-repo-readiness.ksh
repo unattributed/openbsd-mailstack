@@ -60,6 +60,23 @@ else
   fail "found ${_cache_count} accidental Python cache artifacts"
 fi
 
+
+
+_private_hostname="mail.blackbagsecurity.com"
+_private_ref_count="$(grep -RIn --exclude-dir='.git' --exclude='design-authority-check.ksh' --exclude='verify-public-repo-readiness.ksh' --exclude='20-public-only-validation-pass.md' -- "${_private_hostname}" "${PROJECT_ROOT}" | wc -l | tr -d ' ')"
+if [ "${_private_ref_count}" = "0" ]; then
+  pass "no live private hostnames remain in tracked public content"
+else
+  fail "found ${_private_ref_count} live private hostname reference(s) in tracked public content"
+fi
+
+_bad_prefix_count="$(grep -RIl '^-[r-] -- ' "${PROJECT_ROOT}/services/generated/rootfs" 2>/dev/null | wc -l | tr -d ' ')"
+if [ "${_bad_prefix_count}" = "0" ]; then
+  pass "staged generated rootfs files do not carry accidental shell print prefixes"
+else
+  fail "found ${_bad_prefix_count} staged generated rootfs file(s) with accidental shell print prefixes"
+fi
+
 if command -v python3 >/dev/null 2>&1; then
   if PROJECT_ROOT="${PROJECT_ROOT}" python3 - <<'PY'
 import os

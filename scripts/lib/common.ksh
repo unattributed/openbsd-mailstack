@@ -337,7 +337,7 @@ render_template_file() {
       _value="${_pair#*=}"
       _rendered="${_rendered//__${_key}__/${_value}}"
     done
-    print -r -- "${_rendered}" >> "${_dst}" || die "failed writing ${_dst}"
+    printf '%s\n' "${_rendered}" >> "${_dst}" || die "failed writing ${_dst}"
   done < "${_src}"
 }
 
