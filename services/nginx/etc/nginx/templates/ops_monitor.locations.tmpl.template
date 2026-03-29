@@ -1,0 +1,24 @@
+# Static openbsd-mailstack operator monitoring site
+# Real filesystem root is expected under /var/www, while nginx serves from the chroot view.
+# Usage inside your HTTPS server block:
+#   include /etc/nginx/templates/openbsd-mailstack-ops-monitor.locations.tmpl;
+
+location = __MONITORING_URL_PATH__ {
+    return 301 __MONITORING_URL_PATH__;
+}
+
+location __MONITORING_URL_PATH__ {
+    alias __MONITORING_ALIAS_ROOT__;
+    index index.html;
+    autoindex off;
+
+    include __MONITORING_ALLOW_TEMPLATE__;
+
+    add_header Cache-Control "no-store, no-cache, must-revalidate, max-age=0";
+    add_header Pragma "no-cache";
+}
+
+location __MONITORING_URL_PATH__data/ {
+    deny all;
+    return 403;
+}

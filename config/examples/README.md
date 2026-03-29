@@ -12,6 +12,7 @@ Use these files together with:
 - `config/backup-schedule.conf.example`
 - `config/dr-site.conf.example`
 - `config/dr-host.conf.example`
+- `config/monitoring.conf.example`
 
 Recommended approach:
 
@@ -25,3 +26,4 @@ Provider examples in this directory match the supported loader search paths docu
 - `docs/install/user-input-file-layout.md`
 - `docs/install/13-dr-site-provisioning.md`
 - `docs/install/15-dr-host-bootstrap.md`
+- `docs/install/16-monitoring-diagnostics-and-reporting.md`

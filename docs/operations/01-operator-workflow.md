@@ -27,6 +27,7 @@ The basic operator cycle is:
 4. run the public phase sequence
 5. run the post-install checks
 6. continue to daily and weekly operator reviews
+7. add the monitoring and diagnostics baseline when the host is stable
 
 ### For later changes
 
@@ -60,6 +61,7 @@ Use these together:
 - `docs/install/12-post-install-checks.md`
 - `docs/operations/02-daily-operator-workflow.md`
 - `docs/operations/03-weekly-operator-workflow.md`
+- `docs/operations/05-monitoring-diagnostics-and-reporting.md`
 
 ## Current roadmap note
 

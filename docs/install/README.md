@@ -22,6 +22,7 @@ This directory contains external prerequisites and install-side preparation docu
 14. `13-dr-site-provisioning.md`
 15. `14-backup-and-restore-drill-sequence.md`
 16. `15-dr-host-bootstrap.md`
+17. `16-monitoring-diagnostics-and-reporting.md`
 
 ## What changed in Phase 01
 
@@ -53,6 +54,15 @@ This install set now also includes:
 - a staged restore drill sequence
 - DR site provisioning guidance for an internal recovery portal
 
+## What changed in Phase 05
+
+This install set now also includes:
+
+- a shared monitoring operator input file
+- public-safe monitoring site rendering
+- log summary, health report, and cron-report helpers
+- install guidance for nginx, newsyslog, and cron wiring
+
 ## Optional operator paths
 
 ### QEMU lab path
@@ -77,6 +87,10 @@ Use `09-install-order-and-phase-sequence.md`, `11-first-production-deployment-se
 ### Backup and DR path
 
 Use `13-dr-site-provisioning.md`, `14-backup-and-restore-drill-sequence.md`, and `15-dr-host-bootstrap.md` after the core runtime is in place and you are ready to validate resilience.
+
+### Monitoring and diagnostics path
+
+Use `16-monitoring-diagnostics-and-reporting.md` after the runtime and backup layers are in place and you want a daily operator visibility baseline.
 
 ## Security rule
 

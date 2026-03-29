@@ -18,6 +18,7 @@ Comparison was performed against the archive contents, not against a live checko
 | Service configuration trees | Present in multiple private directories | Present publicly in sanitized form | Public service parity is improved, but not complete. |
 | Install and ops path | Mature private install and maintenance doctrine | Publicly usable after phases 01 to 03 | Public path is now coherent through the first mail baseline. |
 | Backup and DR path | Mature and host-specific | Publicly usable after phase 04 baseline | Public repo now has public-safe backup, restore, QEMU drill, and DR site provisioning assets. |
+| Monitoring and diagnostics path | Mature and host-specific | Publicly usable after phase 05 baseline | Public repo now has public-safe monitoring inputs, static monitoring pages, log summaries, health reports, and install helpers. |
 
 ## What is already public and usable
 
@@ -34,6 +35,7 @@ The public repo already has a solid framework layer:
 - a public phase runner and post-install verification path under `scripts/install/` and `scripts/verify/`
 - daily and weekly operator review scripts under `scripts/ops/`
 - public-safe backup, restore, replication, and DR site provisioning helpers
+- public-safe monitoring, diagnostics, log rotation, and reporting helpers
 
 That means the public repo is already more than a placeholder. It now has a coherent public framework, an operator input model, a reusable runtime layer, a workable install and validation path, and a materially usable baseline for backup and DR.
 
@@ -47,7 +49,7 @@ The private repo still contains large functional areas that have not yet been pu
 - site-specific operational doctrine tied to a live deployment
 - advanced monitoring site content, control-plane automation, and private off-host DR repositories
 
-The public repo now supports backup, restore, restore drills, and DR site provisioning, but it still does not claim full private parity for live infrastructure evidence or private recovery payload handling.
+The public repo now supports backup, restore, restore drills, DR site provisioning, and a practical monitoring baseline, but it still does not claim full private parity for live infrastructure evidence, private dashboards, or private recovery payload handling.
 
 ## Public phase maturity, honest view
 
@@ -73,7 +75,7 @@ The earlier public phases provide more concrete structure for:
 
 ### Later public phases are still baseline-level
 
-Several later public phases remain concise baselines rather than full private parity assets. This is especially true where the private repo contains host-specific policy, live monitoring, advanced control-plane behavior, or private recovery repositories.
+Several later public phases remain concise baselines rather than full private parity assets. This is especially true where the private repo contains host-specific policy, deeper live monitoring, advanced control-plane behavior, or private recovery repositories.
 
 ## What Phase 04 adds
 
@@ -87,6 +89,18 @@ Phase 04 adds a public-safe backup and recovery layer that a new operator can ac
 - a QEMU restore drill runner
 - DR site provisioning assets, docs, and installer logic
 - stronger phase 11 through 13 documentation and helper wiring
+
+## What Phase 05 adds
+
+Phase 05 adds a public-safe monitoring and diagnostics layer that a new operator can actually use:
+
+- `config/monitoring.conf.example`
+- loader support for monitoring operator inputs
+- reusable monitoring, diagnostics, and reporting libraries
+- monitoring collection, rendering, and reporting helpers
+- generic cron-report and alert-mail wrappers
+- nginx, newsyslog, and cron templates for the monitoring baseline
+- stronger phase 14 documentation and helper wiring
 
 ## Functional status matrix
 
@@ -103,6 +117,7 @@ Phase 04 adds a public-safe backup and recovery layer that a new operator can ac
 | Daily and weekly ops path | Mature and host-specific | Partial | Public-safe baseline added |
 | Backup and restore path | Mature and host-specific | Placeholder only | Public-safe baseline added |
 | DR portal and restore drill path | Private and host-specific | Not public | Public-safe baseline added |
+| Monitoring and reporting path | Mature and host-specific | Checklist-only baseline | Public-safe baseline added |
 | DR artifacts and live runtime evidence | Private only | Not public | Remain private by design |
 
 ## What can now be done entirely from the public repo
@@ -118,13 +133,14 @@ A new operator can now do the following without relying on private-only files:
 7. run post-install checks and the daily and weekly operator review scripts
 8. install public-safe backup helpers, create backup sets, verify them, and rehearse restore drills
 9. provision a repo-managed DR site for internal recovery guidance
+10. install and use a public-safe monitoring, diagnostics, and reporting baseline
 
 ## Immediate next migration candidates
 
 The most useful next public parity work items are:
 
 1. publish sanitized PF and networking templates after host-specific bindings are removed
-2. publish public-safe diagnostics and maintenance tooling from `mail-diagnostics/`, `monitoring/`, and `sbom/`
+2. extend the published diagnostics and maintenance tooling from `mail-diagnostics/`, `monitoring/`, and `sbom/` where it can be generalized safely
 3. selectively migrate later-phase doctrine where it can be detached from the live private host
 4. publish more of the monitoring and reporting stack in a similarly public-safe form
 
@@ -145,3 +161,11 @@ The public repo now includes a unified backup runner, archive protection helper,
 backup scheduling helper, and a DR host bootstrap script. Private-only snapshot
 content, site-specific encrypted payloads, and host evidence are still out of
 scope for publication.
+
+## Phase 05 status
+
+The public repo now includes a real public-safe monitoring baseline, including
+operator inputs, a static monitoring site generator, health reports, cron-safe
+reporting wrappers, nginx and newsyslog templates, and phase 14 apply and verify
+wiring. Private dashboards, private telemetry feeds, and site-specific control
+plane behavior remain outside the public scope.

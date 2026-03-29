@@ -7,6 +7,7 @@ backup.conf
 backup-schedule.conf
 dr-site.conf
 dr-host.conf
+monitoring.conf
 
 # Local overlays and provider credentials
 local/

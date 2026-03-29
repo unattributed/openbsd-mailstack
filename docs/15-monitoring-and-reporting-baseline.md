@@ -2,68 +2,63 @@
 
 ## Purpose
 
-This phase extends the public operations model with a monitoring and reporting
-baseline suitable for the OpenBSD mail stack.
+Phase 14 now provides a real public-safe operational visibility baseline for `openbsd-mailstack`.
 
-This phase focuses on:
+It is built around:
 
-- service status reporting
-- operational summary generation
-- lightweight health review
-- operator-readable reports
-- non-destructive monitoring guidance
+- static monitoring pages generated from local snapshots
+- text and HTML diagnostics reports
+- log summary generation
+- optional cron scheduling
+- optional nginx and newsyslog integration
+- small auditable shell scripts instead of a heavyweight monitoring stack
 
-## Why this matters
+## What is included
 
-A resilient mail platform needs more than backups and restore drills. Operators
-also need a simple way to answer:
+The public repo now includes:
 
-- which services are expected to be up
-- whether core ports are listening
-- whether logs show obvious failures
-- whether backup and restore guidance has been generated
-- whether the system appears operationally healthy
+- a monitoring operator input model in `config/monitoring.conf.example`
+- monitoring and diagnostics helper libraries under `scripts/lib/`
+- collection, rendering, reporting, and wrapper scripts under `scripts/ops/`
+- install helpers under `scripts/install/`
+- verification helpers under `scripts/verify/`
+- generic maintenance wrappers under `maint/`
+- an nginx monitoring location template under `services/nginx/`
+- a monitoring newsyslog managed block under `services/system/`
+- an example cron fragment under `services/monitoring/`
+- rendered example assets under `services/generated/rootfs/`
 
-This phase prepares the public project for that style of review without forcing
-complex monitoring infrastructure.
+## Baseline outputs
 
-## Public monitoring baseline
+On a host, the monitoring layer can produce:
 
-Recommended pattern:
+- `latest.kv` and `latest.json` snapshots
+- a log summary text artifact
+- static HTML pages for overview, services, logs, and changes
+- HTML report output suitable for email delivery
+- JSON status artifacts from the cron reporting wrapper
 
-- local-first checks
-- report generation as text artifacts
-- operator-triggered review
-- conservative alerting model
-- no self-healing automation by default
+## Design goals
 
-## Suggested checks
+The public monitoring baseline is designed to be:
 
-Examples of useful monitoring targets:
+- conservative
+- OpenBSD-friendly
+- easy to audit
+- non-destructive by default
+- useful without any private repo state
 
-- `rcctl ls on`
-- `rcctl check smtpd`
-- `rcctl check dovecot`
-- `rcctl check nginx`
-- `rcctl check rspamd`
-- `rcctl check redis`
-- selected port listening checks
-- recent log review targets
-- recent backup artifact presence
+## What it does not claim
 
-## Reporting model
+This phase does not claim full parity with the private monitoring estate.
 
-This phase generates:
+It does not publish:
 
-- monitoring checklist guidance
-- service review example
-- daily report example
-- monitoring summary artifact
-
-The goal is to make it easy for operators to understand what to inspect and how
-to summarize state.
+- private operational evidence bundles
+- live production dashboards from the private repo
+- private control-plane automation
+- host-specific ticket or governance logic
 
 ## Next step
 
-After this phase, the project is ready for optional public polish around
-hardening reviews, compliance checks, or CI-style validation workflows.
+After this phase, the public repo has a practical diagnostics and visibility baseline. Future work can safely extend it with more advanced hardening, IDS, DNS, or SBOM reporting where those can be generalized.

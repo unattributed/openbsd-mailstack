@@ -20,7 +20,7 @@ The private source of truth for this comparison is the uploaded `openbsd-self-ho
 | Phase 07, PostfixAdmin web and Roundcube | web plane exposure and webmail | `phase-08-webmail-and-admin-access` | Partial. Public VPN-only web model exists, but service parity is incomplete. |
 | Phase 08, DNS, SPF, DKIM, DMARC, MX | domain publishing and identity records | `phase-09-dns-and-identity-publishing` | Partial. Public generated record examples exist. |
 | Phase 09, Suricata integration | IDS integration and security telemetry | No direct parity phase yet, partly adjacent to `phase-15-security-hardening-and-authentication-model` | Not yet public at parity. |
-| Phase 10, monitoring, logging, pfstat, backup | operational monitoring and reporting | `phase-10-operations-and-resilience`, `phase-14-monitoring-and-reporting-baseline` | Partial. Public operations scaffolding exists, but deeper monitoring assets are not yet reconciled. |
+| Phase 10, monitoring, logging, pfstat, backup | operational monitoring and reporting | `phase-10-operations-and-resilience`, `phase-14-monitoring-and-reporting-baseline` | Improved in Phase 05. Public-safe monitoring inputs, static monitoring pages, log summaries, reports, and install helpers now exist, but private dashboards and control-plane depth still remain out of scope. |
 | Phase 11, disaster recovery integration | DR staging and recovery integration | `phase-11-backup-and-disaster-recovery`, `phase-12-advanced-backup-security-and-integrity`, `phase-13-off-host-replication-and-restore-testing` | Partial. Public docs exist, private implementation details remain out of scope. |
 | Phase 12, maintenance, upgrades, regression, hardening | maintenance doctrine and upgrade hygiene | `phase-10-operations-and-resilience`, `phase-15-security-hardening-and-authentication-model`, selected `maint/` tooling | Partial. Public doctrine is baseline-level. |
 | Phase 13, SOGo calendar and CalDAV | groupware layer | Mentioned in `README.md` only | Not yet public as a reconciled phase. |
@@ -33,7 +33,7 @@ The private source of truth for this comparison is the uploaded `openbsd-self-ho
 |---|---|---|---|
 | `postfix/`, `dovecot/`, `nginx/`, `rspamd/`, `redis/` | `services/` plus phase docs | sanitize and publish later | Good next-wave candidates. |
 | `firewall/`, `wg/`, `dns/`, `ddns/` | `services/`, `scripts/`, `docs/` | sanitize and publish later | Must remove live bindings, domains, and IPs. |
-| `mail-diagnostics/`, `monitoring/`, `backup-ops/`, `sbom/` | `scripts/` and `docs/operations/` | sanitize and publish later | Valuable public ops tooling once generalized. |
+| `mail-diagnostics/`, `monitoring/`, `backup-ops/`, `sbom/` | `scripts/`, `services/`, `maint/`, and `docs/operations/` | sanitize and publish incrementally | Backup and monitoring baselines are now public-safe; deeper private telemetry and SBOM material still remain to migrate. |
 | `evidence/` | none | private only | Live host evidence should not be published. |
 | `mail-phases/` refit and upgrade trees | `docs/phases/`, `scripts/phases/`, `maint/` | selective migration | Public phases should stay coherent even if numbering differs. |
 | `suricata/` | `services/` plus security docs | sanitize and publish later | Needs generic rules and host-neutral references. |

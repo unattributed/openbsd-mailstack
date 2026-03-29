@@ -1,0 +1,6 @@
+# Local logging overrides for rspamd
+# Default level is info, which is usually sufficient for daily operations.
+# Raise this only for short-lived investigations.
+level = "info";
+log_usec = true;
+color = false;

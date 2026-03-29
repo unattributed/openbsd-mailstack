@@ -1,0 +1,40 @@
+# Monitoring, diagnostics, logging, and reporting operator example
+# Copy to an ignored path such as config/local/monitoring.conf
+# or /root/.config/openbsd-mailstack/monitoring.conf and edit.
+
+MONITORING_ENABLED=yes
+MONITORING_SERVER_NAME=mail.example.com
+MONITORING_URL_PATH=/_ops/monitor/
+MONITORING_OUTPUT_ROOT=/var/www/monitor
+MONITORING_SITE_ROOT=/var/www/monitor/site
+MONITORING_DATA_ROOT=/var/www/monitor/data
+MONITORING_NGINX_ALIAS_ROOT=/monitor/site/
+MONITORING_NGINX_TEMPLATE_NAME=openbsd-mailstack-ops-monitor.locations.tmpl
+MONITORING_NGINX_SERVER_CONF=/etc/nginx/sites-available/main-ssl.conf
+MONITORING_ALLOW_TEMPLATE=/etc/nginx/templates/control-plane-allow.tmpl
+MONITORING_PATCH_NGINX=no
+
+MONITORING_PATCH_NEWSYSLOG=no
+MONITORING_NEWSYSLOG_CONF=/etc/newsyslog.conf
+MONITORING_NEWSYSLOG_MARKER_BEGIN=# begin openbsd-mailstack monitoring managed block
+MONITORING_NEWSYSLOG_MARKER_END=# end openbsd-mailstack monitoring managed block
+
+MONITORING_INSTALL_CRON_SNIPPET=yes
+MONITORING_PATCH_ROOT_CRONTAB=no
+MONITORING_CRON_INTERVAL_MINUTES=5
+MONITORING_CRON_SNIPPET_PATH=/root/.config/openbsd-mailstack/root-cron.monitoring
+MONITORING_REPORT_HOUR=6
+MONITORING_REPORT_MINUTE=15
+MONITORING_REPORT_EMAIL=ops@example.com
+MONITORING_RUN_LOG=/var/log/openbsd-mailstack-monitor.log
+MONITORING_REPORT_LOG=/var/log/openbsd-mailstack-cron-report.log
+
+MONITORING_RCCTL_SERVICES="postfix dovecot nginx rspamd redis clamd freshclam"
+MONITORING_TCP_PORTS="25 465 587 993 443 80"
+MONITORING_LOG_FILES="/var/log/maillog /var/log/messages /var/log/nginx/error.log /var/log/rspamd/rspamd.log /var/log/clamav/clamd.log /var/log/clamav/freshclam.log"
+MONITORING_SUMMARY_LOG_LINES=20
+MONITORING_HTML_TITLE="OpenBSD Mailstack Monitoring"
+MONITORING_REQUIRE_RUNTIME_OUTPUT=no
+MONITORING_ENABLE_MAIL_QUEUE=yes
+MONITORING_ENABLE_RSPAMD_BAYES=yes
+MONITORING_ENABLE_SITE=yes

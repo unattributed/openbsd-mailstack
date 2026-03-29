@@ -119,4 +119,4 @@ For newer users:
 
 ## Next step
 
-After Phase 10 succeeds, the next logical work is public refinement of backup, DR, and advanced monitoring paths as separate optional tracks.
+After Phase 10 succeeds, the public repo now has a backup and DR layer plus a practical monitoring baseline. The next logical work is to extend those layers selectively where private material can be generalized safely.

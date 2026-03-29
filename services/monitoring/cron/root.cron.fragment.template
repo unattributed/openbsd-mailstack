@@ -1,0 +1,5 @@
+# openbsd-mailstack monitoring and reporting cron fragment
+# Append intentionally, or let install-monitoring-assets.ksh write the snippet file.
+
+*/__MONITORING_CRON_INTERVAL__ * * * * /usr/local/sbin/openbsd-mailstack-monitoring-run >> __MONITORING_RUN_LOG__ 2>&1
+__MONITORING_REPORT_MINUTE__ __MONITORING_REPORT_HOUR__ * * * MAIL_TO=__MONITORING_REPORT_EMAIL__ MAIL_SUBJECT_PREFIX="[openbsd-mailstack monitoring]" /usr/local/sbin/openbsd-mailstack-cron-html-report --label monitor-daily -- /usr/local/sbin/openbsd-mailstack-mail-health-report --stdout >> __MONITORING_REPORT_LOG__ 2>&1

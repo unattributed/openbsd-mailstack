@@ -1,0 +1,6 @@
+# openbsd-mailstack monitoring managed block
+# Rendered or installed by Phase 05 tooling.
+# The block is intentionally small and operator-reviewable.
+
+__MONITORING_RUN_LOG__                root:wheel  644  14  2000  *  Z
+__MONITORING_REPORT_LOG__             root:wheel  644  14  2000  *  Z
