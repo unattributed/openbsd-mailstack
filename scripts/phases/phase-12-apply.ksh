@@ -11,6 +11,7 @@ BACKUP_DIR="${PROJECT_ROOT}/services/backup"
 SUMMARY_FILE="${BACKUP_DIR}/phase-12-summary.txt"
 INTEGRITY_FILE="${BACKUP_DIR}/integrity-workflow.generated"
 RESTORE_MODES_FILE="${BACKUP_DIR}/restore-modes.generated"
+PROTECT_FILE="${BACKUP_DIR}/archive-protection.generated"
 
 load_project_config
 prompt_value "BACKUP_ENABLE_SIGNIFY" "Enable signify signing, yes or no" "${BACKUP_ENABLE_SIGNIFY:-no}"
@@ -30,9 +31,8 @@ cat > "${INTEGRITY_FILE}" <<EOF
 Integrity workflow
 1. run backup helpers to produce .tgz, manifest.txt, and .sha256 files
 2. verify with: doas ksh scripts/ops/verify-backup-set.ksh --run-dir <run-dir>
-3. if BACKUP_ENABLE_SIGNIFY=yes, sign the archive with ${BACKUP_SIGNIFY_SECRET_KEY}
-4. if BACKUP_ENABLE_GPG=yes, encrypt a copy for ${BACKUP_GPG_RECIPIENT:-operator-supplied-recipient}
-5. never restore before the manifest and hash are verified
+3. use scripts/ops/protect-backup-set.ksh to sign or encrypt the archive set
+4. never restore before the manifest and hash are verified
 EOF
 cat > "${RESTORE_MODES_FILE}" <<EOF
 Restore modes
@@ -42,6 +42,12 @@ Live file restoration requires:
 - RESTORE_ALLOW_OVERWRITE=yes
 - explicit use of scripts/ops/restore-mailstack.ksh --apply-files
 Database import is a separate explicit action with --apply-database.
+EOF
+cat > "${PROTECT_FILE}" <<EOF
+Archive protection
+Signify enabled: ${BACKUP_ENABLE_SIGNIFY}
+GPG enabled: ${BACKUP_ENABLE_GPG}
+Protect command: doas ksh scripts/ops/protect-backup-set.ksh --run --run-dir <run-dir>
 EOF
 cat > "${SUMMARY_FILE}" <<EOF
 Phase 12 advanced backup security and integrity summary

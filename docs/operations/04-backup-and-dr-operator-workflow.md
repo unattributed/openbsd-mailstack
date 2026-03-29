@@ -17,3 +17,10 @@
 - perform a staged restore drill on the host
 - perform a QEMU restore rehearsal before major platform changes
 - document the result and any gaps discovered during the drill
+
+## Daily Backup and DR Command Set
+
+- `doas ksh scripts/ops/backup-all.ksh --run`
+- `doas ksh scripts/ops/protect-backup-set.ksh --run --run-dir <run-dir>`
+- `doas ksh scripts/ops/run-restore-drill.ksh --archive <archive> --sha256 <sha-file>`
+- `doas ksh scripts/install/provision-dr-site-host.ksh --dry-run`

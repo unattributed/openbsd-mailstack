@@ -1,0 +1,15 @@
+# OpenBSD Mailstack, DR host bootstrap operator example
+# Copy to an ignored path such as config/local/dr-host.conf
+# or /root/.config/openbsd-mailstack/dr-host.conf and edit.
+
+DR_HOST_ENABLED=yes
+DR_HOST_BASE_ROOT=/srv/openbsd-mailstack-dr
+DR_HOST_RESTORE_ROOT=/var/restore/openbsd-mailstack
+DR_HOST_BACKUP_ROOT=/var/backups/openbsd-mailstack
+DR_HOST_RUNTIME_ROOT=/var/lib/openbsd-mailstack-dr
+DR_HOST_LOG_ROOT=/var/log/openbsd-mailstack-dr
+
+# Whether the bootstrap should also install the DR portal assets.
+DR_HOST_INSTALL_PORTAL=yes
+DR_HOST_PATCH_NGINX=no
+DR_HOST_BOOTSTRAP_REPORT=yes

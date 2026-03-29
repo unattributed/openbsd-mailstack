@@ -30,3 +30,9 @@ Verify:
 ```sh
 ./scripts/phases/phase-12-verify.ksh
 ```
+
+## Refinement
+
+Phase 12 now has a concrete helper for archive protection:
+
+- `scripts/ops/protect-backup-set.ksh`

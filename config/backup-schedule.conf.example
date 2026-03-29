@@ -1,0 +1,25 @@
+# OpenBSD Mailstack, backup schedule operator example
+# Copy to an ignored path such as config/local/backup-schedule.conf
+# or /root/.config/openbsd-mailstack/backup-schedule.conf and edit.
+
+# Enable scheduled backups and optional automatic replication.
+BACKUP_CRON_ENABLED=yes
+BACKUP_CRON_PATCH_ROOT_CRONTAB=no
+
+# UTC schedule for the unified backup runner.
+BACKUP_CRON_CONFIG_MINUTE=10
+BACKUP_CRON_CONFIG_HOUR=2
+BACKUP_CRON_MARIADB_MINUTE=25
+BACKUP_CRON_MARIADB_HOUR=2
+BACKUP_CRON_MAILSTACK_MINUTE=40
+BACKUP_CRON_MAILSTACK_HOUR=2
+BACKUP_CRON_ALL_MINUTE=55
+BACKUP_CRON_ALL_HOUR=2
+
+# Optional archive protection and off-host replication after the unified run.
+BACKUP_PROTECT_AFTER_RUN=yes
+BACKUP_REPLICATE_AFTER_BACKUP=no
+
+# Root crontab destinations and log targets.
+BACKUP_CRON_SNIPPET_PATH=/root/.config/openbsd-mailstack/root-cron.backup
+BACKUP_CRON_LOG_DIR=/var/log/openbsd-mailstack

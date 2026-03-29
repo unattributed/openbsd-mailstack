@@ -35,3 +35,9 @@ Verify:
 ```sh
 ./scripts/phases/phase-11-verify.ksh
 ```
+
+## Refinement
+
+Phase 11 now includes a public-safe standby host bootstrap path through
+`scripts/install/provision-dr-site-host.ksh`, in addition to the DR portal asset
+installer.

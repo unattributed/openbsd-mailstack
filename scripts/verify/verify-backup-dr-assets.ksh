@@ -11,7 +11,7 @@ FAIL=0
 pass() { print -- "PASS $*"; }
 fail() { print -- "FAIL $*"; FAIL=$((FAIL + 1)); }
 
-for _file in   "${PROJECT_ROOT}/config/backup.conf.example"   "${PROJECT_ROOT}/config/dr-site.conf.example"   "${PROJECT_ROOT}/scripts/lib/backup-dr.ksh"   "${PROJECT_ROOT}/scripts/install/install-backup-dr-assets.ksh"   "${PROJECT_ROOT}/scripts/install/install-dr-site-assets.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-config.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mariadb.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mailstack.ksh"   "${PROJECT_ROOT}/scripts/ops/restore-mailstack.ksh"   "${PROJECT_ROOT}/scripts/ops/run-restore-drill.ksh"   "${PROJECT_ROOT}/scripts/ops/replicate-backup-offhost.ksh"; do
+for _file in   "${PROJECT_ROOT}/config/backup.conf.example"   "${PROJECT_ROOT}/config/backup-schedule.conf.example"   "${PROJECT_ROOT}/config/dr-site.conf.example"   "${PROJECT_ROOT}/config/dr-host.conf.example"   "${PROJECT_ROOT}/scripts/lib/backup-dr.ksh"   "${PROJECT_ROOT}/scripts/install/install-backup-dr-assets.ksh"   "${PROJECT_ROOT}/scripts/install/install-dr-site-assets.ksh"   "${PROJECT_ROOT}/scripts/install/install-backup-schedule-assets.ksh"   "${PROJECT_ROOT}/scripts/install/provision-dr-site-host.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-config.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mariadb.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mailstack.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-all.ksh"   "${PROJECT_ROOT}/scripts/ops/protect-backup-set.ksh"   "${PROJECT_ROOT}/scripts/ops/restore-mailstack.ksh"   "${PROJECT_ROOT}/scripts/ops/run-restore-drill.ksh"   "${PROJECT_ROOT}/scripts/ops/replicate-backup-offhost.ksh"; do
   [ -f "${_file}" ] && pass "found ${_file}" || fail "missing ${_file}"
 done
 

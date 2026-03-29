@@ -4,7 +4,9 @@ network.conf
 domains.conf
 secrets.conf
 backup.conf
+backup-schedule.conf
 dr-site.conf
+dr-host.conf
 
 # Local overlays and provider credentials
 local/

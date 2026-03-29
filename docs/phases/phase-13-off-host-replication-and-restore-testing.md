@@ -28,3 +28,8 @@ Verify:
 ```sh
 ./scripts/phases/phase-13-verify.ksh
 ```
+
+## Refinement
+
+Phase 13 can now be exercised from the unified backup runner and the DR host
+bootstrap workflow, not only from individual backup scripts.

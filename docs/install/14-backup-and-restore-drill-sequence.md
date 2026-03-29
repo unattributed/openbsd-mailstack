@@ -52,3 +52,15 @@ QEMU rehearsal:
 ```sh
 ksh maint/qemu/lab-dr-restore-runner.ksh   --archive /path/to/mailstack-backup.tgz   --sha256 /path/to/mailstack-backup.sha256
 ```
+
+## Unified Backup Run
+
+A single public-safe runner now exists for the common path:
+
+```sh
+doas ksh scripts/ops/backup-all.ksh --dry-run
+doas ksh scripts/ops/backup-all.ksh --run
+```
+
+That runner can optionally protect archives and replicate the mailstack backup
+when those features are enabled in operator inputs.

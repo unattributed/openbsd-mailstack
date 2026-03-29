@@ -21,6 +21,7 @@ This directory contains external prerequisites and install-side preparation docu
 13. `12-post-install-checks.md`
 14. `13-dr-site-provisioning.md`
 15. `14-backup-and-restore-drill-sequence.md`
+16. `15-dr-host-bootstrap.md`
 
 ## What changed in Phase 01
 
@@ -75,8 +76,9 @@ Use `09-install-order-and-phase-sequence.md`, `11-first-production-deployment-se
 
 ### Backup and DR path
 
-Use `13-dr-site-provisioning.md` and `14-backup-and-restore-drill-sequence.md` after the core runtime is in place and you are ready to validate resilience.
+Use `13-dr-site-provisioning.md`, `14-backup-and-restore-drill-sequence.md`, and `15-dr-host-bootstrap.md` after the core runtime is in place and you are ready to validate resilience.
 
 ## Security rule
 
 External provider credentials must never be committed to Git. Real values belong in ignored repo-local files, protected host-local files, a secure password manager, or another secure operator-controlled secret store.
+

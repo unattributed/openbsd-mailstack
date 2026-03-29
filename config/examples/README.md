@@ -9,16 +9,19 @@ Use these files together with:
 - `config/domains.conf.example`
 - `config/secrets.conf.example`
 - `config/backup.conf.example`
+- `config/backup-schedule.conf.example`
 - `config/dr-site.conf.example`
+- `config/dr-host.conf.example`
 
 Recommended approach:
 
 1. keep tracked examples unchanged
-2. create real local values in ignored paths such as `config/system.conf`, `config/backup.conf`, or `config/local/`
-3. store provider credentials and off-host targets in ignored files, not in tracked examples
+2. create real local values in ignored paths such as `config/system.conf`, `config/backup.conf`, `config/local/backup-schedule.conf`, or `config/local/dr-host.conf`
+3. store provider credentials, encryption recipients, and off-host targets in ignored files, not in tracked examples
 
 Provider examples in this directory match the supported loader search paths documented in:
 
 - `docs/install/provider-account-and-credential-onboarding.md`
 - `docs/install/user-input-file-layout.md`
 - `docs/install/13-dr-site-provisioning.md`
+- `docs/install/15-dr-host-bootstrap.md`

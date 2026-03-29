@@ -56,3 +56,9 @@ doas ksh scripts/install/install-dr-site-assets.ksh --apply
 ksh scripts/verify/verify-dr-site-plan.ksh
 curl -k -I https://127.0.0.1/dr/
 ```
+
+## DR Host Bootstrap
+
+The DR portal is only one part of the standby site. To bootstrap the standby host
+layout itself, use `docs/install/15-dr-host-bootstrap.md` and
+`scripts/install/provision-dr-site-host.ksh`.

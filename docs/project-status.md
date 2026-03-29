@@ -138,3 +138,10 @@ This phase does **not** claim:
 - parity for all late private control-plane behavior
 
 That work remains for later phases.
+
+## Phase 04 refinement status
+
+The public repo now includes a unified backup runner, archive protection helper,
+backup scheduling helper, and a DR host bootstrap script. Private-only snapshot
+content, site-specific encrypted payloads, and host evidence are still out of
+scope for publication.
