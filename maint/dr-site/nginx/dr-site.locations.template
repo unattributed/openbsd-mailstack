@@ -1,0 +1,14 @@
+location = __DR_SITE_URL_PATH_BASE__ {
+    return 301 __DR_SITE_URL_PATH__;
+}
+
+location __DR_SITE_URL_PATH__ {
+    alias __DR_SITE_CHROOT_ALIAS__/;
+    index index.html;
+    autoindex off;
+
+    include __DR_SITE_ALLOW_TEMPLATE__;
+
+    add_header Cache-Control "no-store, no-cache, must-revalidate, max-age=0";
+    add_header Pragma "no-cache";
+}

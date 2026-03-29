@@ -2,64 +2,50 @@
 
 ## Purpose
 
-This phase extends the backup baseline with:
+This phase extends the baseline backup workflows with integrity and restore safety controls.
 
-- encryption guidance
-- integrity verification
-- backup manifests
-- restore verification workflow
+## Public-safe integrity layer
 
-This remains non-destructive and operator-controlled.
+Every backup helper writes:
 
-## Security model
+- a compressed archive
+- a `manifest.txt`
+- a `.sha256` file
+- a short `summary.txt`
 
-- backups may contain secrets, encrypt them
-- verify integrity before restore
-- never trust a backup blindly
+That means an operator can validate archive integrity before any restore attempt.
 
-## Encryption (recommended)
+## Verification
 
-Use OpenBSD base tools:
-
-- tar
-- gzip
-- signify (preferred on OpenBSD)
-- or GPG if already in use
-
-Example (signify):
+Use the included helper:
 
 ```sh
-tar -czf backup.tgz /etc /var/vmail
-signify -S -s /root/.signify/backup.sec -m backup.tgz
+doas ksh scripts/ops/verify-backup-set.ksh --run-dir /var/backups/openbsd-mailstack/mailstack/latest
 ```
 
-## Integrity verification
+## Optional signing and encryption
 
-```sh
-signify -V -p /root/.signify/backup.pub -m backup.tgz
-```
+The public repo supports operator-supplied signing and encryption settings through `config/backup.conf`.
 
-## Manifest model
+Supported public-safe patterns:
 
-Generate a manifest for backup contents:
+- `BACKUP_ENABLE_SIGNIFY=yes` with `BACKUP_SIGNIFY_SECRET_KEY`
+- `BACKUP_ENABLE_GPG=yes` with `BACKUP_GPG_RECIPIENT`
 
-```sh
-tar -tzf backup.tgz > backup.manifest
-sha256 backup.tgz > backup.sha256
-```
+Those settings are not committed. They belong in ignored files such as `config/backup.conf` or `/root/.config/openbsd-mailstack/backup.conf`.
 
-## Restore safety
+## Restore safety defaults
 
-Before restore:
+The restore path is designed to be cautious.
 
-- verify signature
-- verify checksum
-- inspect manifest
+Default behavior:
 
-## Recommended flow
+- verify the archive first
+- extract into a staging directory
+- stop before changing live files
 
-1. create backup
-2. sign backup
-3. generate checksum
-4. store off-host
-5. verify periodically
+Live overwrite only happens when the operator chooses it explicitly.
+
+## Why the split matters
+
+The private repo has host-specific DR detail that cannot be published safely. The public repo therefore focuses on a reliable, operator-driven baseline that can be adapted to different hosts without leaking private paths or credentials.

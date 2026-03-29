@@ -2,28 +2,31 @@
 
 ## Purpose
 
-Extend Phase 11 with:
-
-- encryption
-- integrity checks
-- manifest generation
+Extend the Phase 11 baseline with integrity and controlled restore behavior.
 
 ## Inputs
 
-- MAIL_HOSTNAME
-- OPS_RETENTION_DAYS
+- `BACKUP_ENABLE_SIGNIFY`
+- `BACKUP_SIGNIFY_SECRET_KEY`
+- `BACKUP_ENABLE_GPG`
+- `BACKUP_GPG_RECIPIENT`
+- `BACKUP_MANIFEST_MODE`
+- `RESTORE_ALLOW_OVERWRITE`
 
 ## Outputs
 
-- encrypted backup example
-- checksum example
-- manifest example
-- verification workflow
+- generated integrity workflow summary
+- generated restore mode summary
+- verification helper usage guidance
 
 ## Run
 
+```sh
 doas ./scripts/phases/phase-12-apply.ksh
+```
 
 Verify:
 
+```sh
 ./scripts/phases/phase-12-verify.ksh
+```

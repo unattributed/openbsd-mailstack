@@ -1,14 +1,13 @@
 #!/bin/ksh
-set -e
+set -eu
+( set -o pipefail ) 2>/dev/null && set -o pipefail
 
-PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-BACKUP_DIR="${PROJECT_ROOT}/services/backup"
+PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)"
+FAIL=0
+pass() { print -- "PASS $*"; }
+fail() { print -- "FAIL $*"; FAIL=$((FAIL + 1)); }
 
-for f in backup-encryption.example.generated backup-manifest.example.generated backup-verify.example.generated integrity-summary.txt
-do
-  if [ -f "${BACKUP_DIR}/$f" ]; then
-    echo "PASS $f exists"
-  else
-    echo "WARN $f missing"
-  fi
+for _file in   "${PROJECT_ROOT}/services/backup/phase-12-summary.txt"   "${PROJECT_ROOT}/services/backup/integrity-workflow.generated"   "${PROJECT_ROOT}/services/backup/restore-modes.generated"   "${PROJECT_ROOT}/scripts/ops/verify-backup-set.ksh"   "${PROJECT_ROOT}/scripts/ops/restore-mailstack.ksh"; do
+  [ -f "${_file}" ] && pass "found ${_file}" || fail "missing ${_file}"
 done
+[ "${FAIL}" -eq 0 ]

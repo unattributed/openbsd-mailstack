@@ -1,0 +1,24 @@
+# DR site provisioning inputs for openbsd-mailstack
+# Copy to one of the ignored loader paths such as:
+# - config/dr-site.conf
+# - config/local/dr-site.conf
+# - ~/.config/openbsd-mailstack/dr-site.conf
+# - /root/.config/openbsd-mailstack/dr-site.conf
+
+DR_SITE_ENABLED="yes"
+DR_SITE_DOC_TITLE="openbsd-mailstack disaster recovery"
+DR_SITE_SERVER_NAME="dr.example.com"
+DR_SITE_OPERATOR_EMAIL="ops@example.com"
+DR_SITE_RECOVERY_CHANNEL="WireGuard or dedicated management network"
+DR_SITE_RESTORE_HOSTNAME="mail-dr.example.com"
+
+# Filesystem and nginx layout.
+DR_SITE_URL_PATH="/dr/"
+DR_SITE_PUBLISH_ROOT="/var/www/htdocs/dr"
+DR_SITE_CHROOT_ALIAS="/htdocs/dr"
+DR_SITE_TEMPLATE_ROOT="/etc/nginx/templates"
+DR_SITE_LOCATION_TEMPLATE="openbsd-mailstack-dr-site.locations.tmpl"
+DR_SITE_ALLOW_TEMPLATE="/etc/nginx/templates/control-plane-allow.tmpl"
+DR_SITE_NGINX_SERVER_CONF="/etc/nginx/sites-available/main-ssl.conf"
+DR_SITE_PATCH_SERVER_CONF="no"
+DR_SITE_BACKUP_ROOT="/var/backups/openbsd-mailstack/dr-site"

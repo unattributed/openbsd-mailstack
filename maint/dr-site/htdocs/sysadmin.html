@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sysadmin workflow</title>
+  <link rel="stylesheet" href="assets/dr.css">
+  <script defer src="assets/dr.js"></script>
+</head>
+<body data-page="sysadmin">
+  <div class="shell">
+    <header class="hero">
+      <span class="eyebrow">__DR_SITE_DOC_TITLE__</span>
+      <h1>Sysadmin workflow</h1>
+      <p>Host: <strong>__DR_SITE_SERVER_NAME__</strong>, restore target: <strong>__DR_SITE_RESTORE_HOSTNAME__</strong></p>
+      <nav><a data-page="overview" href="index.html">Overview</a><a data-page="sysadmin" href="sysadmin.html">Sysadmin</a><a data-page="runbook" href="runbook.html">Runbook</a><a data-page="stakeholders" href="stakeholders.html">Stakeholders</a></nav>
+    </header>
+    
+<section class="card">
+  <h2>Preparation</h2>
+  <ul>
+    <li>Populate ignored backup and DR input files.</li>
+    <li>Install the backup and DR helpers onto the target host.</li>
+    <li>Validate nginx and control-plane allow rules before publishing the site.</li>
+  </ul>
+</section>
+<section class="card">
+  <h2>Routine flow</h2>
+  <pre>doas ksh scripts/ops/backup-config.ksh --run
+
+doas ksh scripts/ops/backup-mariadb.ksh --run
+
+doas ksh scripts/ops/backup-mailstack.ksh --run
+
+doas ksh scripts/ops/verify-backup-set.ksh --run-dir /var/backups/openbsd-mailstack/mailstack/latest</pre>
+</section>
+
+  </div>
+</body>
+</html>

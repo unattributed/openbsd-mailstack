@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Restore runbook</title>
+  <link rel="stylesheet" href="assets/dr.css">
+  <script defer src="assets/dr.js"></script>
+</head>
+<body data-page="runbook">
+  <div class="shell">
+    <header class="hero">
+      <span class="eyebrow">__DR_SITE_DOC_TITLE__</span>
+      <h1>Restore runbook</h1>
+      <p>Host: <strong>__DR_SITE_SERVER_NAME__</strong>, restore target: <strong>__DR_SITE_RESTORE_HOSTNAME__</strong></p>
+      <nav><a data-page="overview" href="index.html">Overview</a><a data-page="sysadmin" href="sysadmin.html">Sysadmin</a><a data-page="runbook" href="runbook.html">Runbook</a><a data-page="stakeholders" href="stakeholders.html">Stakeholders</a></nav>
+    </header>
+    
+<section class="card">
+  <h2>Non-destructive default</h2>
+  <p>The public restore path defaults to staged extraction only.</p>
+  <pre>doas ksh scripts/ops/restore-mailstack.ksh   --archive /path/to/mailstack-backup.tgz   --sha256 /path/to/mailstack-backup.sha256</pre>
+</section>
+<section class="card">
+  <h2>Direct restoration, only when explicitly chosen</h2>
+  <pre>doas env RESTORE_ALLOW_OVERWRITE=yes   ksh scripts/ops/restore-mailstack.ksh   --archive /path/to/mailstack-backup.tgz   --sha256 /path/to/mailstack-backup.sha256   --apply-files   --apply-database</pre>
+</section>
+
+  </div>
+</body>
+</html>

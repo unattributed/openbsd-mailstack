@@ -1,14 +1,19 @@
 #!/bin/ksh
-set -e
+set -eu
+( set -o pipefail ) 2>/dev/null && set -o pipefail
 
-PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-OPS_DIR="${PROJECT_ROOT}/services/backup"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
+PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
+COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
+. "${COMMON_LIB}"
 
-for f in backup-scope.example.generated backup-script.example.generated restore-runbook.example.generated dr-summary.txt
-do
-  if [ -f "${OPS_DIR}/$f" ]; then
-    echo "PASS $f exists"
-  else
-    echo "WARN $f missing"
-  fi
+FAIL=0
+pass() { print -- "PASS $*"; }
+fail() { print -- "FAIL $*"; FAIL=$((FAIL + 1)); }
+
+load_project_config
+[ -f "${PROJECT_ROOT}/services/backup/phase-11-summary.txt" ] && pass "phase 11 summary exists" || fail "phase 11 summary missing"
+for _file in   "${PROJECT_ROOT}/scripts/install/install-backup-dr-assets.ksh"   "${PROJECT_ROOT}/scripts/install/install-dr-site-assets.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-config.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mariadb.ksh"   "${PROJECT_ROOT}/scripts/ops/backup-mailstack.ksh"   "${PROJECT_ROOT}/scripts/ops/restore-mailstack.ksh"; do
+  [ -f "${_file}" ] && pass "found ${_file}" || fail "missing ${_file}"
 done
+[ "${FAIL}" -eq 0 ]

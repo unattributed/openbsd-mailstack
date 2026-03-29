@@ -3,6 +3,8 @@ system.conf
 network.conf
 domains.conf
 secrets.conf
+backup.conf
+dr-site.conf
 
 # Local overlays and provider credentials
 local/

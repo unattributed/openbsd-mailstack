@@ -1,0 +1,37 @@
+# Backup and restore operator inputs for openbsd-mailstack
+# Copy to one of the ignored loader paths such as:
+# - config/backup.conf
+# - config/local/backup.conf
+# - ~/.config/openbsd-mailstack/backup.conf
+# - /root/.config/openbsd-mailstack/backup.conf
+
+BACKUP_ROOT="/var/backups/openbsd-mailstack"
+BACKUP_RETENTION_DAYS="30"
+
+# Space separated absolute paths captured by the backup helpers.
+BACKUP_CONFIG_PATHS="/etc /etc/ssl /etc/ssl/private /var/www /var/db/acme"
+BACKUP_MAIL_PATHS="/var/vmail"
+BACKUP_RUNTIME_PATHS="/var/spool/postfix /var/db/redis /var/db/clamav /var/log"
+
+# MariaDB backup inputs.
+BACKUP_DATABASES="mysql postfixadmin roundcube"
+BACKUP_DB_CREDENTIAL_FILE="/root/.my.cnf"
+BACKUP_DB_DUMP_COMMAND=""
+
+# Integrity and encryption options.
+BACKUP_MANIFEST_MODE="sha256"
+BACKUP_ENABLE_SIGNIFY="no"
+BACKUP_SIGNIFY_SECRET_KEY="/root/.signify/openbsd-mailstack-backup.sec"
+BACKUP_ENABLE_GPG="no"
+BACKUP_GPG_RECIPIENT=""
+
+# Off-host replication inputs.
+BACKUP_OFFSITE_MODE="ssh"
+BACKUP_OFFSITE_TARGET="backup@example.net:/srv/openbsd-mailstack"
+BACKUP_OFFSITE_SSH_KEY="/root/.ssh/id_ed25519"
+BACKUP_OFFSITE_REMOTE_DIR="/srv/openbsd-mailstack"
+
+# Restore defaults.
+RESTORE_STAGING_DIR="/var/restore/openbsd-mailstack"
+RESTORE_DEFAULT_MODE="staged"
+RESTORE_ALLOW_OVERWRITE="no"

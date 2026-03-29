@@ -2,29 +2,29 @@
 
 ## Purpose
 
-Extend the backup and DR baseline with:
-
-- off-host replication guidance
-- restore drill workflow
-- verification after restore
+Extend the Phase 11 and 12 baseline with off-host copy planning, restore drills, and QEMU rehearsal.
 
 ## Inputs
 
-- MAIL_HOSTNAME
-- ALERT_EMAIL
-- OPS_RETENTION_DAYS
+- `BACKUP_OFFSITE_MODE`
+- `BACKUP_OFFSITE_TARGET`
+- `DR_SITE_SERVER_NAME`
 
 ## Outputs
 
-- off-host replication example
-- restore drill checklist
-- post-restore validation checklist
-- phase summary
+- generated off-host replication summary
+- generated restore drill summary
+- generated post-restore validation checklist
+- QEMU restore drill runner under `maint/qemu/`
 
 ## Run
 
+```sh
 doas ./scripts/phases/phase-13-apply.ksh
+```
 
 Verify:
 
+```sh
 ./scripts/phases/phase-13-verify.ksh
+```

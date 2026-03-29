@@ -2,86 +2,50 @@
 
 ## Purpose
 
-This phase extends the public backup model with:
+This phase turns the public backup baseline into a repeatable restore confidence path.
 
-- off-host replication guidance
-- backup transport safety notes
-- restore test workflow
-- verification checkpoints after restore drills
+It adds:
 
-This remains operator-controlled and non-destructive by default.
+- off-host replication helpers
+- a staged restore drill helper
+- a QEMU restore drill runner
+- DR site provisioning guidance for a standby or DR-oriented control plane
 
-## Why this matters
+## Off-host replication
 
-A backup is not enough if it only exists on the same host, and a restore plan is
-not enough if it has never been tested.
+Use the replication helper against a specific backup run:
 
-This phase prepares the public project for:
+```sh
+doas ksh scripts/ops/replicate-backup-offhost.ksh   --dry-run   --run-dir /var/backups/openbsd-mailstack/mailstack/latest
+```
 
-- off-host copy planning
-- transfer verification
-- repeatable restore drills
-- confidence testing before incidents occur
+Then switch to `--apply` once the remote target, SSH key, and path are confirmed.
 
-## Public baseline
+## Restore drills
 
-Recommended pattern:
+A public restore drill should use staged extraction first:
 
-- local backup creation first
-- integrity verification second
-- encrypted or signed artifact copy off-host
-- regular restore drill on a non-production target
+```sh
+doas ksh scripts/ops/run-restore-drill.ksh   --archive /var/backups/openbsd-mailstack/mailstack/latest/mailstack-<timestamp>.tgz   --sha256 /var/backups/openbsd-mailstack/mailstack/latest/mailstack-<timestamp>.sha256
+```
 
-## Off-host replication model
+## QEMU-first restore rehearsal
 
-Use a conservative model such as:
+Use the host-side QEMU runner once the VM lab is already bootstrapped and reachable:
 
-- `scp`
-- `rsync` over SSH
-- removable encrypted media
-- object storage, only if separately documented and verified
+```sh
+ksh maint/qemu/lab-dr-restore-runner.ksh   --archive /path/to/mailstack-backup.tgz   --sha256 /path/to/mailstack-backup.sha256
+```
 
-The public repo baseline prefers:
+That keeps restore testing inside the public repo and avoids assuming private-only recovery repositories.
 
-- SSH-based transfer
-- operator-triggered replication
-- checksum or signature verification after copy
+## DR site as part of the DR path
 
-## Restore testing model
+The DR site is a separate but related surface. It gives operators a stable internal portal for:
 
-Recommended order:
+- recovery scope
+- staged restore commands
+- contact points
+- the restore sequence
 
-1. prepare clean test host or VM
-2. verify backup signature and checksum
-3. inspect manifest
-4. restore config
-5. restore TLS material
-6. restore database
-7. restore mail storage
-8. start services
-9. perform functional validation
-
-## Functional validation examples
-
-After a restore drill:
-
-- verify `rcctl check` for relevant services
-- verify IMAP login
-- verify SMTP submission
-- verify local mail delivery
-- verify webmail access from the trusted path
-- verify representative DNS assumptions used by the stack
-
-## Outputs in this phase
-
-This phase generates example artifacts for:
-
-- off-host replication workflow
-- restore drill checklist
-- post-restore verification checklist
-- replication and restore summary
-
-## Next step
-
-After this phase, the project is ready for deeper monitoring, reporting, and
-optional public polish work.
+That content is rendered from `maint/dr-site/` and provisioned by `scripts/install/install-dr-site-assets.ksh`.

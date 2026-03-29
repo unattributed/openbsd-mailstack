@@ -14,9 +14,10 @@ Comparison was performed against the archive contents, not against a live checko
 | Measure | Private repo | Public repo | Notes |
 |---|---:|---:|---|
 | Total files | 753 | 129 before this phase patch | Private repo is substantially broader and contains runtime-specific material. |
-| Top-level phase assets | 163 under `mail-phases/` | 51 under `docs/phases/` and `scripts/phases/` before this phase patch | Public phase structure exists, but parity is mixed. |
+| Top-level phase assets | 163 under `mail-phases/` | 51 under `docs/phases/` and `scripts/phases/` before reconciliation patches | Public phase structure exists, but parity is mixed. |
 | Service configuration trees | Present in multiple private directories | Present publicly in sanitized form | Public service parity is improved, but not complete. |
 | Install and ops path | Mature private install and maintenance doctrine | Publicly usable after phases 01 to 03 | Public path is now coherent through the first mail baseline. |
+| Backup and DR path | Mature and host-specific | Publicly usable after phase 04 baseline | Public repo now has public-safe backup, restore, QEMU drill, and DR site provisioning assets. |
 
 ## What is already public and usable
 
@@ -32,20 +33,21 @@ The public repo already has a solid framework layer:
 - staged rendered runtime output under `services/generated/rootfs/`
 - a public phase runner and post-install verification path under `scripts/install/` and `scripts/verify/`
 - daily and weekly operator review scripts under `scripts/ops/`
+- public-safe backup, restore, replication, and DR site provisioning helpers
 
-That means the public repo is already more than a placeholder. It now has a coherent public framework, an operator input model, a reusable runtime layer, and a workable install and validation path.
+That means the public repo is already more than a placeholder. It now has a coherent public framework, an operator input model, a reusable runtime layer, a workable install and validation path, and a materially usable baseline for backup and DR.
 
 ## What is not yet at private parity
 
 The private repo still contains large functional areas that have not yet been published in sanitized form, including:
 
-- deeper maintenance and diagnostics areas such as `mail-diagnostics/`, `backup-ops/`, `monitoring/`, `ddns/`, `wg/`, and `sbom/`
+- deeper maintenance and diagnostics areas such as `mail-diagnostics/`, `monitoring/`, `ddns/`, `wg/`, and `sbom/`
 - runtime evidence and host-state artifacts under `evidence/`
 - private phase trees and refit and upgrade variants under `mail-phases/`
 - site-specific operational doctrine tied to a live deployment
-- advanced monitoring site content, control-plane automation, and DR payloads
+- advanced monitoring site content, control-plane automation, and private off-host DR repositories
 
-The public repo now supports the first install and operations path, but it does not yet claim the full private maintenance and resilience stack.
+The public repo now supports backup, restore, restore drills, and DR site provisioning, but it still does not claim full private parity for live infrastructure evidence or private recovery payload handling.
 
 ## Public phase maturity, honest view
 
@@ -67,54 +69,28 @@ The earlier public phases provide more concrete structure for:
 - DNS identity publishing
 - operations scaffolding
 - QEMU-first validation and first production deployment guidance
+- backup, restore, and restore drill scaffolding
 
 ### Later public phases are still baseline-level
 
-The later public phases are useful planning scaffolds, but several remain concise public baselines rather than reconciled parity assets from the private repo.
+Several later public phases remain concise baselines rather than full private parity assets. This is especially true where the private repo contains host-specific policy, live monitoring, advanced control-plane behavior, or private recovery repositories.
 
-This is especially true where the private repo contains:
+## What Phase 04 adds
 
-- host-specific operational policy
-- disaster recovery implementation details
-- monitoring and enforcement controls
-- upgrade-path doctrine
-- advanced control-plane behavior
+Phase 04 adds a public-safe backup and recovery layer that a new operator can actually use:
 
-## What Phase 01 adds
-
-This patch closes an important public-foundation gap without pretending to finish parity.
-
-It adds:
-
-- the status truth layer in this document
-- a private-to-public crosswalk in `docs/phases/phase-crosswalk.md`
-- an explicit private boundary document in `docs/public-private-boundary.md`
-- a documented operator-input model
-- ignored local config paths under `config/`
-- repo-safe provider examples under `config/examples/providers/`
-- a shared loader in `scripts/lib/operator-inputs.ksh`
-- expanded shared validation and config-writing helpers in `scripts/lib/common.ksh`
-
-## What Phase 02 adds
-
-Phase 02 adds public-safe core runtime templates and shared rendering and installation helpers for MariaDB, PostfixAdmin, Postfix, Dovecot, nginx, Roundcube, Rspamd, Redis, ClamAV, and FreshClam. This improves the public repo from mostly generated example fragments to a reusable staged rootfs model under `services/generated/rootfs/`, driven by operator input files and helper scripts.
-
-## What Phase 03 adds
-
-Phase 03 makes the public repo materially easier for a new operator to use.
-
-It adds:
-
-- a documented install order and phase execution model
-- a QEMU-first validation path that fits the public repo
-- a first production deployment sequence based only on public-safe assets
-- post-install validation guidance and a reusable post-install check script
-- daily and weekly operator workflow docs and helper scripts
-- clearer statements about what the public repo can now do end-to-end and what remains optional or advanced
+- `config/backup.conf.example` and `config/dr-site.conf.example`
+- loader support for backup and DR site operator inputs
+- reusable backup helpers for config, MariaDB, and broader mailstack state
+- a staged, non-destructive restore path by default
+- an off-host replication helper
+- a QEMU restore drill runner
+- DR site provisioning assets, docs, and installer logic
+- stronger phase 11 through 13 documentation and helper wiring
 
 ## Functional status matrix
 
-| Area | Private repo | Public repo before reconciliation | Public repo after phases 01 to 03 |
+| Area | Private repo | Public repo before reconciliation | Public repo after phases 01 to 04 |
 |---|---|---|---|
 | Truth layer for completeness | Implicit in private tree structure | Missing | Added |
 | Phase crosswalk | Private phase trees only | Missing | Added |
@@ -125,6 +101,8 @@ It adds:
 | Core service config parity | Mature private trees | Placeholder heavy | Public-safe baseline present |
 | Install and validation path | Mature and host-specific | Partial | Coherent through first public baseline |
 | Daily and weekly ops path | Mature and host-specific | Partial | Public-safe baseline added |
+| Backup and restore path | Mature and host-specific | Placeholder only | Public-safe baseline added |
+| DR portal and restore drill path | Private and host-specific | Not public | Public-safe baseline added |
 | DR artifacts and live runtime evidence | Private only | Not public | Remain private by design |
 
 ## What can now be done entirely from the public repo
@@ -135,25 +113,26 @@ A new operator can now do the following without relying on private-only files:
 2. populate operator input files using tracked examples and ignored local paths
 3. render the sanitized runtime tree under `services/generated/rootfs/`
 4. test the phase path in QEMU using the existing public lab tooling
-5. run the public phase sequence, normally through Phase 10 for the first baseline
+5. run the public phase sequence through the backup and DR layers
 6. install staged configs onto a target OpenBSD host
-7. run post-install checks and reuse the daily and weekly operator review scripts
+7. run post-install checks and the daily and weekly operator review scripts
+8. install public-safe backup helpers, create backup sets, verify them, and rehearse restore drills
+9. provision a repo-managed DR site for internal recovery guidance
 
 ## Immediate next migration candidates
 
 The most useful next public parity work items are:
 
 1. publish sanitized PF and networking templates after host-specific bindings are removed
-2. publish public-safe diagnostics and maintenance tooling from `mail-diagnostics/`, `backup-ops/`, `monitoring/`, and `sbom/`
+2. publish public-safe diagnostics and maintenance tooling from `mail-diagnostics/`, `monitoring/`, and `sbom/`
 3. selectively migrate later-phase doctrine where it can be detached from the live private host
-4. publish more of the backup and DR workflow once secrets and infrastructure-specific assumptions are removed
+4. publish more of the monitoring and reporting stack in a similarly public-safe form
 
 ## Non-goals of this phase
 
 This phase does **not** claim:
 
-- full service config parity
-- publication of private DR payloads
+- publication of private off-host repositories or production snapshot payloads
 - publication of live infrastructure evidence
 - publication of real domains, credentials, or operator-specific policy
 - parity for all late private control-plane behavior

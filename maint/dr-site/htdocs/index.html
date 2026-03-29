@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disaster recovery portal overview</title>
+  <link rel="stylesheet" href="assets/dr.css">
+  <script defer src="assets/dr.js"></script>
+</head>
+<body data-page="overview">
+  <div class="shell">
+    <header class="hero">
+      <span class="eyebrow">__DR_SITE_DOC_TITLE__</span>
+      <h1>Disaster recovery portal overview</h1>
+      <p>Host: <strong>__DR_SITE_SERVER_NAME__</strong>, restore target: <strong>__DR_SITE_RESTORE_HOSTNAME__</strong></p>
+      <nav><a data-page="overview" href="index.html">Overview</a><a data-page="sysadmin" href="sysadmin.html">Sysadmin</a><a data-page="runbook" href="runbook.html">Runbook</a><a data-page="stakeholders" href="stakeholders.html">Stakeholders</a></nav>
+    </header>
+    
+<section class="grid">
+  <article class="card">
+    <h2>What this protects</h2>
+    <ul>
+      <li>Mail configuration and service wiring</li>
+      <li>Mailbox storage and web assets</li>
+      <li>MariaDB dumps and restore metadata</li>
+      <li>Operator runbooks and DR site content</li>
+    </ul>
+  </article>
+  <article class="card">
+    <h2>Access model</h2>
+    <p>This site is intended for a trusted control plane, typically __DR_SITE_RECOVERY_CHANNEL__.</p>
+    <p>Operator contact: <a href="mailto:__DR_SITE_OPERATOR_EMAIL__">__DR_SITE_OPERATOR_EMAIL__</a></p>
+  </article>
+</section>
+<section class="card">
+  <h2>Baseline commands</h2>
+  <pre>doas ksh scripts/install/install-backup-dr-assets.ksh --apply
+
+doas ksh scripts/install/install-dr-site-assets.ksh --dry-run
+
+doas ksh scripts/ops/backup-mailstack.ksh --run</pre>
+</section>
+
+  </div>
+</body>
+</html>

@@ -24,6 +24,7 @@ It exists so operators can:
 - `lab-ssh-guard.ksh`
 - `lab-vm-ssh.ksh`
 - `vm-phase-report-runner.ksh`
+- `lab-dr-restore-runner.ksh`
 
 ## Workflow summary
 
@@ -34,6 +35,7 @@ It exists so operators can:
 5. copy the repo into the VM
 6. run phases inside the VM
 7. collect and review reports
+8. run a staged restore rehearsal with `lab-dr-restore-runner.ksh`
 
 ## Notes
 

@@ -19,6 +19,8 @@ This directory contains external prerequisites and install-side preparation docu
 11. `10-qemu-first-validation-path.md`
 12. `11-first-production-deployment-sequence.md`
 13. `12-post-install-checks.md`
+14. `13-dr-site-provisioning.md`
+15. `14-backup-and-restore-drill-sequence.md`
 
 ## What changed in Phase 01
 
@@ -41,6 +43,15 @@ This install set now also includes:
 - a first production deployment sequence
 - a post-install validation path based on reusable scripts
 
+## What changed in Phase 04
+
+This install set now also includes:
+
+- backup and restore operator input files
+- public-safe backup and restore helpers
+- a staged restore drill sequence
+- DR site provisioning guidance for an internal recovery portal
+
 ## Optional operator paths
 
 ### QEMU lab path
@@ -61,6 +72,10 @@ Use `07-openbsd-autonomous-installer.md` when you want to build a custom OpenBSD
 ### Direct host path
 
 Use `09-install-order-and-phase-sequence.md`, `11-first-production-deployment-sequence.md`, and `12-post-install-checks.md` when you want to move from staged config rendering to a real OpenBSD host.
+
+### Backup and DR path
+
+Use `13-dr-site-provisioning.md` and `14-backup-and-restore-drill-sequence.md` after the core runtime is in place and you are ready to validate resilience.
 
 ## Security rule
 
