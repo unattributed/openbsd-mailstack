@@ -8,11 +8,11 @@ This document helps a new operator decide how to begin using `openbsd-mailstack`
 
 Complete:
 
-- `docs/install/02-vultr-account-and-api-setup.md`
-- `docs/install/03-brevo-account-and-relay-setup.md`
-- `docs/install/04-virustotal-api-setup.md`
-- `docs/install/05-local-provider-secret-file-layout.md`
-- `docs/install/09-install-order-and-phase-sequence.md`
+- [Vultr account and API setup](02-vultr-account-and-api-setup.md)
+- [Brevo account and relay setup](03-brevo-account-and-relay-setup.md)
+- [VirusTotal API setup](04-virustotal-api-setup.md)
+- [Local provider secret file layout](05-local-provider-secret-file-layout.md)
+- [Install order and phase sequence](09-install-order-and-phase-sequence.md)
 
 After that, choose one of the paths below.
 
@@ -22,10 +22,10 @@ Choose this if you already have OpenBSD hardware or a target host prepared.
 
 ### Recommended sequence
 
-1. review `docs/architecture/01-project-architecture-and-flow.md`
+1. review [Architecture and flow](../architecture/01-project-architecture-and-flow.md)
 2. review the config examples under `config/`
 3. render the core runtime with `./scripts/install/render-core-runtime-configs.ksh`
-4. review `docs/install/11-first-production-deployment-sequence.md`
+4. review [First production deployment sequence](11-first-production-deployment-sequence.md)
 5. run phases in order, typically through Phase 10 for the first public baseline
 6. run `./scripts/verify/run-post-install-checks.ksh`
 
@@ -41,8 +41,8 @@ Choose this if you want to learn and test without dedicated hardware.
 
 ### Recommended sequence
 
-1. review `docs/install/06-qemu-lab-and-vm-testing.md`
-2. review `docs/install/10-qemu-first-validation-path.md`
+1. review [QEMU lab and VM testing](06-qemu-lab-and-vm-testing.md)
+2. review [QEMU-first validation path](10-qemu-first-validation-path.md)
 3. configure the lab under `maint/qemu/`
 4. fetch OpenBSD media
 5. build the lab VM
@@ -61,7 +61,7 @@ Choose this if you want a reusable OpenBSD autoinstall pack.
 
 ### Recommended sequence
 
-1. review `docs/install/07-openbsd-autonomous-installer.md`
+1. review [OpenBSD autonomous installer](07-openbsd-autonomous-installer.md)
 2. run the guided profile builder
 3. render the installer pack
 4. serve it locally over HTTP
@@ -99,10 +99,12 @@ Do not:
 
 ## Related documents
 
-- `README.md`
-- `docs/architecture/01-project-architecture-and-flow.md`
-- `docs/install/06-qemu-lab-and-vm-testing.md`
-- `docs/install/07-openbsd-autonomous-installer.md`
-- `docs/install/09-install-order-and-phase-sequence.md`
-- `docs/install/11-first-production-deployment-sequence.md`
-- `docs/install/12-post-install-checks.md`
+- [Top-level README](../../README.md)
+- [Documentation map](../README.md)
+- [Architecture and flow](../architecture/01-project-architecture-and-flow.md)
+- [QEMU lab and VM testing](06-qemu-lab-and-vm-testing.md)
+- [OpenBSD autonomous installer](07-openbsd-autonomous-installer.md)
+- [Install order and phase sequence](09-install-order-and-phase-sequence.md)
+- [First production deployment sequence](11-first-production-deployment-sequence.md)
+- [Post-install checks](12-post-install-checks.md)
+- [Security hardening and runtime secrets](21-security-hardening-and-runtime-secrets.md)

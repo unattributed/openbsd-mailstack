@@ -2,55 +2,57 @@
 
 ## Current public completeness
 
-The public repo now contains a materially usable baseline for:
+The public repository now provides a materially usable public-safe baseline for:
 
-- phase 01 parity foundation and operator input handling
-- core mail runtime templates and staged rendered assets
-- install, QEMU validation, and operator workflow guidance
-- backup, restore, DR portal, and DR host provisioning guidance
-- monitoring, diagnostics, and reporting helpers
+- phase foundation and operator input handling
+- core mail runtime rendering and staged example output
+- install order, QEMU validation, and first production deployment guidance
+- backup, disaster recovery, restore drills, DR site assets, and DR host bootstrap
+- monitoring, diagnostics, reporting, and visibility helpers
 - maintenance, upgrade, regression, and rollback helpers
-- network exposure, PF, WireGuard, DNS, and Vultr DDNS baseline assets
-- advanced optional Suricata, Brevo, SOGo, and SBOM assets
-- phase 15 security hardening and authentication helpers
-- phase 16 runtime secret layout and repo hygiene helpers
+- PF, WireGuard, DNS, and Vultr DDNS baseline assets
+- optional Suricata, Brevo, SOGo, and SBOM layers
+- security hardening and authentication helpers for `doas` and SSH
+- host-local runtime secret layout and repo hygiene helpers
 
-## What was closed in this gap-closure pass
+## What a new operator can do from the public repo alone
 
-The public repo previously had two remaining core gaps that were real, not vague:
+A new operator can now:
 
-- Phase 15 was more documentation-led than automation-led
-- Phase 16 was more documentation-led than automation-led
+1. discover prerequisites and provider onboarding
+2. populate local operator input files with their own values
+3. render the core runtime and later optional layers
+4. validate the build path in QEMU
+5. apply and verify the phased deployment path on a real OpenBSD host
+6. use backup, DR, monitoring, and maintenance workflows from the public repo
+7. use the public-only validation pass to confirm the repo is internally coherent
 
-That is now reduced substantially.
-
-The public repo now includes public-safe tooling for:
-
-- broad baseline `doas` policy rendering and drift checks
-- optional command-scoped `doas` transition with backup and rollback
-- SSH hardening planning, apply, verify, and rollback
-- SSH watchdog health checks
-- host-local runtime secret directory layout planning
-- host-local runtime secret stub rendering into safe staging locations
-- repo secret hygiene checks that also guard against private hostname regression
-
-## What remains intentionally unresolved
-
-The remaining gaps are now specific boundaries rather than missing core migration work:
-
-- live production evidence, restore archives, and site-specific control-plane doctrine remain intentionally private
-- provider-specific integrations beyond the published public-safe set are not generalized here
-- operators must still supply their own identities, secrets, private keys, and exposure policy locally
-
-## Practical outcome
-
-A new operator can now discover, render, review, validate, and maintain a public-safe mail stack baseline from the public repo alone.
+## What still depends on the operator
 
 The operator still needs to provide:
 
-- domains and network values
+- domain and hostname values
+- network, exposure, and peer values
 - provider accounts and API credentials
 - host-local runtime secret files
-- exposure policy and final hardening choices
+- final hardening choices and deployment policy
 
-That is part of the public design, not an unclosed migration defect.
+That is the intended public operating model.
+
+## Intentional boundaries
+
+The remaining boundaries are specific and deliberate:
+
+- live production evidence, restore archives, and site-specific control-plane doctrine remain private
+- provider-specific integrations beyond the published public-safe set are not generalized here
+- real secrets, private keys, recovery payloads, and live production data remain out of Git by design
+
+## Documentation and validation anchors
+
+The best summary documents are:
+
+- [README](../README.md)
+- [Documentation map](README.md)
+- [Phase crosswalk](phases/phase-crosswalk.md)
+- [Public repo readiness check](install/19-public-repo-readiness-check.md)
+- [Public-only validation pass](install/20-public-only-validation-pass.md)

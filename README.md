@@ -1,64 +1,90 @@
 # openbsd-mailstack
 
-`openbsd-mailstack` is a public, operator-focused mail platform framework for OpenBSD 7.8. It publishes reusable documentation, scripts, templates, and verification tooling for a hardened single-host mail system built around Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, and supporting network and operations controls.
+`openbsd-mailstack` is a public, operator-focused framework for building and maintaining a hardened OpenBSD 7.8 mail platform.
 
-This repository is public by design. It is not a mirror of the private `openbsd-self-hosting` repo, but it now provides a materially complete public-safe baseline for building the same class of server with operator-supplied data.
+It publishes reusable documentation, configuration examples, phase scripts, maintenance helpers, and staged rendered assets for a single-host mail system built around:
 
-## What this project is
+- Postfix
+- Dovecot
+- Rspamd
+- Roundcube
+- PostfixAdmin
+- MariaDB
+- Redis
+- ClamAV and FreshClam
+- PF, WireGuard, DNS, and DDNS
 
-This project is a phase-driven public framework for building and maintaining a security-focused OpenBSD mail host.
+It also includes public-safe operational layers for QEMU validation, autonomous install preparation, backup and recovery, monitoring, maintenance, security hardening, runtime secret handling, and optional Suricata, Brevo, SOGo, and SBOM workflows.
 
-It is designed for operators who want:
+## What this repository is, and is not
 
-- a documented install path
-- a reproducible baseline
-- clear separation between public code and private data
-- verification and maintenance guidance
-- safe lab testing before real deployment
+This repository is public by design.
 
-It is not a one-command production mail server. It is a structured public repo that guides the operator through setup, validation, operations, backup, recovery planning, hardening, and host-local secret handling.
+It is not a literal mirror of the private `openbsd-self-hosting` repository, and it does not publish live production secrets, evidence, restore archives, or site-specific control-plane doctrine.
+
+It is a materially complete public-safe baseline for building the same class of OpenBSD mail server with operator-supplied:
+
+- domains and hostnames
+- network and exposure values
+- provider accounts and API credentials
+- host-local runtime secrets and private keys
+- final hardening and exposure choices
 
 ## Start here
 
 Read these in order:
 
-1. `docs/project-status.md`
-2. `docs/phases/phase-crosswalk.md`
-3. `docs/install/README.md`
-4. `docs/architecture/01-project-architecture-and-flow.md`
-5. `docs/install/08-quick-start-and-usage-paths.md`
-6. `docs/install/09-install-order-and-phase-sequence.md`
-7. `docs/install/21-security-hardening-and-runtime-secrets.md`
+1. [Project status](docs/project-status.md)
+2. [Phase crosswalk](docs/phases/phase-crosswalk.md)
+3. [Documentation map](docs/README.md)
+4. [Install guide](docs/install/README.md)
+5. [Architecture and flow](docs/architecture/01-project-architecture-and-flow.md)
+6. [Quick start and usage paths](docs/install/08-quick-start-and-usage-paths.md)
+7. [Install order and phase sequence](docs/install/09-install-order-and-phase-sequence.md)
+8. [Public repo readiness check](docs/install/19-public-repo-readiness-check.md)
+9. [Public-only validation pass](docs/install/20-public-only-validation-pass.md)
+10. [Security hardening and runtime secrets](docs/install/21-security-hardening-and-runtime-secrets.md)
 
-## Current public completeness
+## Documentation map
 
-The public repo currently contains:
+Use these sections as the main navigation layer:
 
-- install and architecture documentation
-- phase docs and apply and verify scripts through Phase 16
+- [Install docs](docs/install/README.md)
+- [Phase docs](docs/phases/phase-crosswalk.md)
+- [Operator docs](docs/operations/01-operator-workflow.md)
+- [Architecture docs](docs/architecture/01-project-architecture-and-flow.md)
+- [Configuration wiring](docs/configuration/core-runtime-and-config-wiring.md)
+- [Project status and boundaries](docs/project-status.md)
+
+## Current public scope
+
+The public repository now contains:
+
+- phase documentation and apply and verify scripts through Phase 17
+- a core runtime rendering path for mail, web, filtering, and SQL services
 - QEMU lab and autonomous installer tooling
-- config examples and public-safe generated fragments
-- daily and weekly operator workflow scripts
-- backup, DR, monitoring, maintenance, and network exposure helpers
-- advanced optional Suricata, Brevo, SOGo, and SBOM assets
-- runnable hardening helpers for `doas` and SSH
-- runnable host-local runtime secret layout helpers
+- tracked config examples and ignored local input paths
+- backup, disaster recovery, monitoring, maintenance, and network exposure helpers
+- public-safe hardening and runtime secret layout helpers
+- optional Suricata, Brevo, SOGo, and SBOM layers
+- staged rendered examples under `services/generated/rootfs/`
 
-## What remains intentionally private or operator-supplied
+## Practical operator outcome
 
-The remaining boundaries are specific:
+With operator-provided data and external account setup, a new operator can use the public repository to:
 
-- live production evidence, restore archives, and site-specific control-plane doctrine remain private
-- provider-specific integrations beyond the published public-safe set are not generalized here
-- operators must still supply their own identities, secrets, private keys, and exposure policy locally
-
-That is the intended public model.
+1. create local input files and provider credential files
+2. render the core runtime and review staged output
+3. validate the baseline in QEMU
+4. apply and verify the phased deployment path on a real OpenBSD host
+5. run post-install checks, operations checks, maintenance checks, and backup workflows
+6. add optional advanced layers only when the base system is stable
 
 ## Operator input model
 
-The public repo supports a consistent operator-input discovery model.
+Tracked examples live under `config/`.
 
-Tracked examples include:
+The most important examples are:
 
 - `config/system.conf.example`
 - `config/network.conf.example`
@@ -66,13 +92,48 @@ Tracked examples include:
 - `config/secrets.conf.example`
 - `config/security.conf.example`
 - `config/secrets-runtime.conf.example`
+- `config/dns.conf.example`
+- `config/ddns.conf.example`
+- `config/backup.conf.example`
+- `config/monitoring.conf.example`
+- `config/maintenance.conf.example`
 
-Ignored local inputs include:
+Real values belong in ignored local files such as:
 
-- `config/*.conf` for real local values
-- `config/local/`
-- protected host-local files under `/root/.config/openbsd-mailstack/`
+- `config/local/*.conf`
+- `/root/.config/openbsd-mailstack/*.conf`
+- provider-specific ignored env files documented in the install docs
 
-## Practical outcome
+See:
 
-With operator-supplied domains, network values, provider accounts, API keys, and host-local secret files, this repo now provides a public-safe path to build and operate a full OpenBSD mail stack of the same class as the private deployment.
+- [Provider onboarding](docs/install/provider-account-and-credential-onboarding.md)
+- [User input file layout](docs/install/user-input-file-layout.md)
+- [Configuration examples](config/examples/README.md)
+
+## Intentional boundaries
+
+The public repository still intentionally excludes:
+
+- live production evidence and operational telemetry from the private deployment
+- encrypted recovery payloads and private restore archives
+- real API keys, PATs, passwords, private keys, and runtime secret values
+- site-specific control-plane doctrine and private automation overlays
+- provider-specific integrations beyond the published public-safe set
+
+Those are design boundaries, not undocumented defects.
+
+## Validation and maintenance entry points
+
+Useful commands after the repository is populated with local inputs:
+
+```sh
+./scripts/install/render-core-runtime-configs.ksh
+./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10
+./scripts/verify/run-post-install-checks.ksh
+./maint/final-public-validation-pass.ksh
+```
+
+## Repository companions
+
+- `SECURITY.md` for reporting security issues
+- `CONTRIBUTING.md` for contribution expectations

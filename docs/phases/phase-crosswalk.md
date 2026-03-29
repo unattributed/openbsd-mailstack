@@ -1,22 +1,48 @@
 # Phase Crosswalk
 
-## Current public migration map
+This document maps the public phase documents and scripts to the current public-safe implementation state.
 
-| Public phase | Current state | Notes |
+## Public phase map
+
+| Phase | State | Primary public assets |
 |---|---|---|
-| Phase 01, network and external access | materially usable | renders PF, WireGuard, Unbound, and DDNS assets |
-| Phase 09, DNS and identity publishing | materially usable | aligned to shared DNS and DDNS inputs |
-| Phase 11 to 13, backup and DR | materially usable | public-safe backup and DR workflows are present |
-| Phase 14, monitoring | materially usable | baseline reporting and visibility helpers are present |
-| Phase 15, security hardening and authentication | materially usable | now includes runnable `doas` and SSH hardening helpers plus rendered auth artifacts |
-| Phase 16, secrets handling and key material management | materially usable | now includes host-local runtime secret layout tooling, rendered examples, and repo hygiene checks |
+| Phase 00, foundation | materially usable | foundation docs, shared input model, apply and verify scripts |
+| Phase 01, network and external access | materially usable | PF, WireGuard, DNS, DDNS templates and helpers |
+| Phase 02, MariaDB baseline | materially usable | core runtime rendering, MariaDB templates, SQL baseline wiring |
+| Phase 03, PostfixAdmin and SQL wiring | materially usable | PostfixAdmin templates, SQL planning and runtime docs |
+| Phase 04, Postfix core and SQL integration | materially usable | Postfix templates, SQL-backed mail routing assets |
+| Phase 05, Dovecot auth and mailbox delivery | materially usable | Dovecot templates, mailbox delivery and auth wiring |
+| Phase 06, TLS and certificate automation | materially usable | staged TLS-related config wiring and deployment guidance |
+| Phase 07, filtering and anti-abuse | materially usable | Rspamd, ClamAV, anti-abuse, and related filtering helpers |
+| Phase 08, webmail and admin access | materially usable | Roundcube, PostfixAdmin, nginx web-plane assets |
+| Phase 09, DNS and identity publishing | materially usable | DNS publishing guidance and shared DNS input model |
+| Phase 10, operations and resilience | materially usable | install, post-install, operator workflow, and resilience docs |
+| Phase 11, backup and disaster recovery | materially usable | backup helpers, restore helpers, DR docs |
+| Phase 12, advanced backup security and integrity | materially usable | archive protection, verification, and backup hygiene |
+| Phase 13, off-host replication and restore testing | materially usable | off-host replication helpers, QEMU restore drill path |
+| Phase 14, monitoring and reporting baseline | materially usable | monitoring collectors, reporting helpers, newsyslog and nginx ops assets |
+| Phase 15, security hardening and authentication model | materially usable | `doas`, SSH hardening, and authentication policy helpers |
+| Phase 16, secrets handling and key material management | materially usable | host-local runtime secret layout, repo hygiene, and verification helpers |
+| Phase 17, advanced optional integrations and gap closures | materially usable | Suricata, Brevo, SOGo, SBOM, and late optional layers |
+
+## How to use this map
+
+- read the phase narrative in `docs/phases/`
+- review the corresponding service templates and generated examples
+- run the matching apply and verify scripts from `scripts/phases/`
+- use the install and operations docs for the broader workflow around each phase
 
 ## Exact remaining gaps
 
-The public repo no longer treats Phase 15 and 16 as documentation-only placeholders.
-
-The remaining gaps are now intentional boundaries, not unimplemented core phases:
+The remaining gaps are intentional boundaries, not missing core migration work:
 
 - live production evidence, recovery archives, and site-specific control-plane doctrine remain private
 - provider-specific integrations beyond the published public-safe set are not generalized here
 - operators still need to supply their own identities, secrets, private keys, and exposure policy
+
+## Related documents
+
+- [Project status](../project-status.md)
+- [Documentation map](../README.md)
+- [Install guide](../install/README.md)
+- [Public repo readiness check](../install/19-public-repo-readiness-check.md)

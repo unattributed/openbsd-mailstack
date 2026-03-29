@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document provides the public operator workflow for using the project after the install and core runtime phases have been reconciled.
+This document describes the operator workflow for using `openbsd-mailstack` after prerequisites, local inputs, and the initial runtime rendering path are in place.
 
 ## Daily-use mindset
 
@@ -10,12 +10,13 @@ Treat the project as a controlled framework, not as a pile of scripts.
 
 The basic operator cycle is:
 
-1. prepare prerequisites
+1. prepare prerequisites and local inputs
 2. choose a deployment path
 3. apply one phase or one phase range
-4. verify what you changed
-5. record what changed
-6. continue only when the current state is understood
+4. verify what changed
+5. review generated artifacts and host state
+6. record what changed
+7. continue only when the current state is understood
 
 ## Suggested workflow
 
@@ -24,18 +25,18 @@ The basic operator cycle is:
 1. complete install prerequisites
 2. choose QEMU lab or direct host
 3. render the core runtime tree
-4. run the public phase sequence
+4. run the public phase sequence for the baseline you want
 5. run the post-install checks
 6. continue to daily and weekly operator reviews
-7. add the monitoring and diagnostics baseline when the host is stable
+7. add monitoring, backup, DR, maintenance, and hardening layers as the host stabilizes
 
 ### For later changes
 
-1. identify the phase or layer affected
-2. review the phase narrative document
-3. apply the relevant phase or rerender the runtime
-4. run the verify script or the post-install checks
-5. inspect generated artifacts
+1. identify the phase or operational layer affected
+2. review the relevant phase narrative and install or operations docs
+3. rerender the runtime or apply the relevant phase
+4. run the matching verify script or the post-install checks
+5. inspect generated artifacts and runtime state
 6. commit only after the result is understood
 
 ### For autonomous installer work
@@ -57,13 +58,16 @@ The basic operator cycle is:
 
 Use these together:
 
-- `docs/install/09-install-order-and-phase-sequence.md`
-- `docs/install/12-post-install-checks.md`
-- `docs/operations/02-daily-operator-workflow.md`
-- `docs/operations/03-weekly-operator-workflow.md`
-- `docs/operations/05-monitoring-diagnostics-and-reporting.md`
-- `docs/operations/06-maintenance-upgrades-and-regression.md`
+- [Install order and phase sequence](../install/09-install-order-and-phase-sequence.md)
+- [Post-install checks](../install/12-post-install-checks.md)
+- [Daily operator workflow](02-daily-operator-workflow.md)
+- [Weekly operator workflow](03-weekly-operator-workflow.md)
+- [Monitoring, diagnostics, and reporting](05-monitoring-diagnostics-and-reporting.md)
+- [Maintenance, upgrades, and regression](06-maintenance-upgrades-and-regression.md)
+- [Security hardening and secrets operations](08-security-hardening-and-secrets-ops.md)
 
-## Current roadmap note
+## Current public state
 
-The public repo now supports the first install, test, and operations path, but the original private project still contains later-phase material and operations doctrine that should be reconciled and published in future work.
+The public repository now supports a full public-safe operator path for install, validation, operations, backup, recovery planning, maintenance, network exposure control, hardening, and runtime secret layout.
+
+Operators still provide their own local values, accounts, secrets, and exposure policy, which is part of the public design model.
