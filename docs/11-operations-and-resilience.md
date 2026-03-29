@@ -2,8 +2,7 @@
 
 ## Purpose
 
-This document explains how the public `openbsd-mailstack` project prepares the
-operations, monitoring, and resilience baseline for the platform.
+This document explains how the public `openbsd-mailstack` project prepares the operations, monitoring, and resilience baseline for the platform.
 
 Phase 10 standardizes the public operational model around:
 
@@ -13,20 +12,19 @@ Phase 10 standardizes the public operational model around:
 - log summary generation
 - non-destructive operational artifacts
 - optional alert email configuration
+- daily and weekly operator review cadence
 
 ## Why this matters
 
 A mail platform is not complete when services merely exist. Operators also need
-a repeatable way to:
 
-- check whether services are up
-- understand what should be backed up
-- summarize important logs
-- identify likely operational regressions
-- review core readiness without changing production state
+- a repeatable way to check whether services are up
+- a way to understand what should be backed up
+- a way to summarize important logs
+- a way to identify likely operational regressions
+- a way to review core readiness without changing production state
 
-This phase prepares the repo for those needs without forcing a live operational
-automation model too early.
+This phase prepares the repo for those needs without forcing a live operational automation model too early.
 
 ## Public operations baseline
 
@@ -64,8 +62,7 @@ These values can be placed in:
 - `config/system.conf`
 - `config/network.conf`
 
-If they are missing, the apply script can prompt for them unless noninteractive
-mode is enabled.
+If they are missing, the apply script can prompt for them unless noninteractive mode is enabled.
 
 ## What Phase 10 changes
 
@@ -78,8 +75,7 @@ The apply script is intentionally conservative. It prepares the repo workflow by
 - generating backup notes and monitoring summaries
 - writing an operational summary for review
 
-The generated files are helper artifacts. They are intended to guide later live
-deployment and maintenance on OpenBSD 7.8.
+The generated files are helper artifacts. They are intended to guide later live deployment and maintenance on OpenBSD 7.8.
 
 ## Outputs created by Phase 10
 
@@ -91,13 +87,19 @@ The apply script can create these local project files:
 - `services/monitoring/log-summary.example.generated`
 - `services/ops/operations-summary.txt`
 
-## Verification
+## Verification and operator cadence
 
 The verify script checks:
 
 - operational settings are valid
 - required commands exist
 - generated helper files exist when expected
+
+For ongoing public-safe review, use:
+
+- `./scripts/verify/run-post-install-checks.ksh`
+- `./scripts/ops/daily-operator-review.ksh`
+- `./scripts/ops/weekly-operator-review.ksh`
 
 ## Recommended usage
 
@@ -106,14 +108,15 @@ For experienced users:
 - pre-fill the config files
 - run the phase in noninteractive mode
 - review the generated helper files before moving on
+- adopt the daily and weekly review scripts after deployment
 
 For newer users:
 
 - run the script interactively
 - answer the prompts carefully
 - use the generated files as implementation guides, not as blind automation
+- start with QEMU before changing a real host
 
 ## Next step
 
-After Phase 10 succeeds, the next logical work is public refinement of backup,
-DR, and advanced monitoring paths as separate optional tracks.
+After Phase 10 succeeds, the next logical work is public refinement of backup, DR, and advanced monitoring paths as separate optional tracks.

@@ -63,6 +63,34 @@ New operator-input foundation:
 - shared loader logic in `scripts/lib/operator-inputs.ksh`
 - expanded shared validation and config-writing helpers in `scripts/lib/common.ksh`
 
+## What changed in phase 03 install, test, and operations path
+
+This phase connects the public runtime layer into a usable operator path.
+
+New public-safe workflow assets:
+
+- `docs/install/09-install-order-and-phase-sequence.md`
+- `docs/install/10-qemu-first-validation-path.md`
+- `docs/install/11-first-production-deployment-sequence.md`
+- `docs/install/12-post-install-checks.md`
+- `docs/operations/02-daily-operator-workflow.md`
+- `docs/operations/03-weekly-operator-workflow.md`
+- `scripts/install/run-phase-sequence.ksh`
+- `scripts/verify/run-post-install-checks.ksh`
+- `scripts/ops/daily-operator-review.ksh`
+- `scripts/ops/weekly-operator-review.ksh`
+
+The public repo can now guide a new operator through:
+
+- prerequisites and operator input setup
+- staged core runtime rendering
+- QEMU-first validation
+- baseline phase execution through the first production-ready mail path
+- post-install validation
+- daily and weekly review workflows
+
+Later advanced operations areas still remain lighter than private parity.
+
 ## Start here
 
 Read these in order:
@@ -72,6 +100,7 @@ Read these in order:
 3. `docs/install/README.md`
 4. `docs/architecture/01-project-architecture-and-flow.md`
 5. `docs/install/08-quick-start-and-usage-paths.md`
+6. `docs/install/09-install-order-and-phase-sequence.md`
 
 Those documents explain:
 
@@ -79,6 +108,7 @@ Those documents explain:
 - what is still missing or intentionally private
 - how private phases map to the public phase model
 - where to place operator-provided data safely
+- how to move from lab validation to first production deployment
 
 ## Current public completeness
 
@@ -89,14 +119,15 @@ The public repo currently contains:
 - QEMU lab and autonomous installer tooling
 - config examples and public-safe generated fragments
 - repository policy files such as `CONTRIBUTING.md` and `SECURITY.md`
+- a shared phase sequence runner and post-install verification path
+- daily and weekly operator workflow scripts
 
 The public repo does **not** yet provide full private parity.
 
 Important current limits:
 
-- several private service configuration trees are now published in sanitized form for the core mail runtime
-- the public `services/` tree now contains real service templates, but later operational areas are still lighter than private parity
-- later public phases still exist with uneven depth, especially outside the core mail runtime and web plane
+- the public runtime and install path are now coherent through the first mailstack baseline, but later operations areas are still lighter than the private repo
+- later public phases still exist with uneven depth, especially outside the core mail runtime, backup and DR, monitoring, and advanced control-plane behavior
 - private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope
 
 See `docs/project-status.md` for the comparison details.
@@ -203,10 +234,11 @@ The preferred operator flow is:
 
 1. complete the install prerequisites under `docs/install/`
 2. copy or create local operator input files
-3. choose a path: direct host, QEMU lab, or autonomous installer
-4. run phases in order
-5. verify each phase before moving forward
-6. publish or expose optional integrations only after the core mail path passes verification
+3. render and review the core runtime configs
+4. validate in QEMU where practical
+5. run phases in order, usually through Phase 10 for the first public baseline
+6. install staged configs onto the host only after review
+7. run post-install checks and keep a daily and weekly operator review cadence
 
 ## What remains to migrate
 
@@ -218,8 +250,3 @@ The next migration waves should focus on sanitized public publication of:
 - optional SOGo and advanced operations material where public-safe parity is practical
 
 The crosswalk in `docs/phases/phase-crosswalk.md` is the planning baseline for that work.
-
-## Project policies
-
-- Security reporting: see `SECURITY.md`
-- Contribution guidance: see `CONTRIBUTING.md`

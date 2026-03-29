@@ -12,6 +12,7 @@ This phase defines how the project should approach:
 - log summarization
 - operator alert targeting
 - conservative maintenance guidance
+- daily and weekly public-safe operator checks
 
 ## Who this phase is for
 
@@ -30,7 +31,7 @@ You should have:
 - a valid `ALERT_EMAIL`
 - a valid `OPS_BACKUP_MODE`
 - a valid `OPS_RETENTION_DAYS`
-- valid yes/no choices for:
+- valid yes or no choices for:
   - `OPS_ENABLE_ALERTS`
   - `OPS_ENABLE_HEALTHCHECKS`
   - `OPS_ENABLE_LOG_SUMMARY`
@@ -66,6 +67,7 @@ The public repo uses this MVP operational model:
 - generated guidance instead of blind automation
 - operator-controlled alert target
 - backup planning for core mail stack state
+- daily and weekly review cadence with non-destructive scripts
 
 ## Preconditions
 
@@ -117,6 +119,14 @@ Run:
 ./scripts/phases/phase-10-verify.ksh
 ```
 
+Then continue with the wider public-safe checks:
+
+```sh
+./scripts/verify/run-post-install-checks.ksh
+./scripts/ops/daily-operator-review.ksh
+./scripts/ops/weekly-operator-review.ksh
+```
+
 ## What success looks like
 
 A successful result means:
@@ -124,6 +134,7 @@ A successful result means:
 - operational settings are valid
 - helper files were generated
 - the repo now includes a public operations baseline
+- the host can adopt a repeatable daily and weekly review rhythm
 
 ## Troubleshooting
 
@@ -135,7 +146,7 @@ Use a numeric value such as:
 - `14`
 - `30`
 
-### The script says a yes/no toggle is invalid
+### The script says a yes or no toggle is invalid
 
 Use:
 

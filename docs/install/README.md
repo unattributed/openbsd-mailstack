@@ -1,4 +1,4 @@
-# Installation Prerequisites
+# Installation Prerequisites and Public Usage Path
 
 ## Purpose
 
@@ -15,6 +15,10 @@ This directory contains external prerequisites and install-side preparation docu
 7. `06-qemu-lab-and-vm-testing.md`
 8. `07-openbsd-autonomous-installer.md`
 9. `08-quick-start-and-usage-paths.md`
+10. `09-install-order-and-phase-sequence.md`
+11. `10-qemu-first-validation-path.md`
+12. `11-first-production-deployment-sequence.md`
+13. `12-post-install-checks.md`
 
 ## What changed in Phase 01
 
@@ -28,11 +32,20 @@ This install set now distinguishes between:
 
 Use the new onboarding and file-layout docs before running early phases.
 
+## What changed in Phase 03
+
+This install set now also includes:
+
+- a coherent install order for the first public baseline
+- a QEMU-first validation path that uses only public repo assets
+- a first production deployment sequence
+- a post-install validation path based on reusable scripts
+
 ## Optional operator paths
 
 ### QEMU lab path
 
-Use `06-qemu-lab-and-vm-testing.md` when you want to prototype or validate the project in a disposable VM.
+Use `06-qemu-lab-and-vm-testing.md` and `10-qemu-first-validation-path.md` when you want to prototype or validate the project in a disposable VM.
 
 ### Autonomous installer path
 
@@ -44,6 +57,10 @@ Use `07-openbsd-autonomous-installer.md` when you want to build a custom OpenBSD
 - operator username
 - operator home path
 - public SSH key
+
+### Direct host path
+
+Use `09-install-order-and-phase-sequence.md`, `11-first-production-deployment-sequence.md`, and `12-post-install-checks.md` when you want to move from staged config rendering to a real OpenBSD host.
 
 ## Security rule
 

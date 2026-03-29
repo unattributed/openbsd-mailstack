@@ -38,6 +38,7 @@ The baseline flow is:
 5. sync the repo into the VM
 6. run one or more phases inside the VM
 7. review generated reports
+8. run the public post-install checks before promoting anything to hardware
 
 ## Required host-side tools
 
@@ -97,10 +98,26 @@ ksh maint/qemu/fetch-openbsd-amd64-media.ksh --release 7.8
 ksh maint/qemu/lab-openbsd78-build.ksh
 ```
 
-### 4. Run a phase inside the VM
+### 4. Run the first public baseline inside the VM
+
+Inside the VM, from the repo root, use either a narrow or wider path.
+
+Narrow mail runtime baseline:
 
 ```sh
-ksh maint/qemu/lab-phase-runner.ksh --phase-start 0 --phase-end 0
+doas env OPENBSD_MAILSTACK_NONINTERACTIVE=1 ./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 8
+```
+
+Wider public baseline including DNS and operations scaffolding:
+
+```sh
+doas env OPENBSD_MAILSTACK_NONINTERACTIVE=1 ./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10
+```
+
+### 5. Run post-install checks
+
+```sh
+./scripts/verify/run-post-install-checks.ksh
 ```
 
 ## Safety model
@@ -116,4 +133,4 @@ Do not place live provider secrets into the tracked repository while using the l
 
 ## Next step
 
-After the lab VM is working, continue with the phase-driven workflow as you would on a real host, but keep all provider secrets in protected local files only.
+After the lab VM is working, continue with the phase-driven workflow as you would on a real host, but keep all provider secrets in protected local files only. When the VM path is stable, move to `docs/install/11-first-production-deployment-sequence.md`.
