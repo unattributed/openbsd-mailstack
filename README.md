@@ -91,6 +91,24 @@ The public repo can now guide a new operator through:
 
 Later advanced operations areas still remain lighter than private parity.
 
+## What changed in phase 08 advanced gap rollout
+
+This phase publishes the remaining highest-value public-safe advanced assets.
+
+New optional advanced assets:
+
+- `services/suricata/`
+- `services/brevo/`
+- `services/sogo/`
+- `services/sbom/`
+- `scripts/install/render-advanced-gap-configs.ksh`
+- `scripts/install/install-advanced-gap-assets.ksh`
+- `scripts/verify/verify-advanced-gap-assets.ksh`
+- `scripts/phases/phase-17-apply.ksh`
+- `scripts/phases/phase-17-verify.ksh`
+
+The public repo now includes a Suricata IDS baseline, an optional Brevo webhook listener, an optional SOGo baseline, and reusable SBOM tooling, while still keeping live endpoints, live identities, and production evidence out of scope.
+
 ## Start here
 
 Read these in order:
@@ -115,7 +133,7 @@ Those documents explain:
 The public repo currently contains:
 
 - install and architecture documentation
-- phase docs and apply and verify scripts through Phase 16
+- phase docs and apply and verify scripts through Phase 17
 - QEMU lab and autonomous installer tooling
 - config examples and public-safe generated fragments
 - repository policy files such as `CONTRIBUTING.md` and `SECURITY.md`
@@ -128,7 +146,7 @@ Important current limits:
 
 - the public runtime and install path are now coherent through the first mailstack baseline, but later operations areas are still lighter than the private repo
 - later public phases still exist with uneven depth, especially outside the core mail runtime, backup and DR, monitoring, and advanced control-plane behavior
-- private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope
+- private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope, although the public repo now includes a reusable SBOM workflow and optional advanced service baselines
 
 See `docs/project-status.md` for the comparison details.
 
@@ -203,7 +221,7 @@ Use this when you want to generate a reusable OpenBSD autoinstall pack.
 - Mail access and delivery: Dovecot
 - Filtering and scoring: Rspamd, Redis, ClamAV
 - Administration and webmail: PostfixAdmin, Roundcube
-- Groupware: optional SOGo
+- Groupware: optional SOGo, with public-safe template and staging assets
 - Network and access control: PF, WireGuard, Unbound
 - Operations: verification, monitoring, maintenance, backup, and SBOM tooling
 

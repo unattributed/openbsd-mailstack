@@ -20,6 +20,10 @@ config/system.conf.example
 config/network.conf.example
 config/domains.conf.example
 config/secrets.conf.example
+config/suricata.conf.example
+config/brevo-webhook.conf.example
+config/sogo.conf.example
+config/sbom.conf.example
 config/examples/providers/vultr.env.example
 config/examples/providers/brevo.env.example
 config/examples/providers/virustotal.env.example
@@ -34,6 +38,10 @@ config/system.conf
 config/network.conf
 config/domains.conf
 config/secrets.conf
+config/suricata.conf
+config/brevo-webhook.conf
+config/sogo.conf
+config/sbom.conf
 config/local/system.conf
 config/local/network.conf
 config/local/domains.conf
@@ -55,6 +63,10 @@ These files are also supported by the shared loader:
 /root/.config/openbsd-mailstack/network.conf
 /root/.config/openbsd-mailstack/domains.conf
 /root/.config/openbsd-mailstack/secrets.conf
+/root/.config/openbsd-mailstack/suricata.conf
+/root/.config/openbsd-mailstack/brevo-webhook.conf
+/root/.config/openbsd-mailstack/sogo.conf
+/root/.config/openbsd-mailstack/sbom.conf
 /root/.config/openbsd-mailstack/providers/vultr.env
 /root/.config/openbsd-mailstack/providers/brevo.env
 /root/.config/openbsd-mailstack/providers/virustotal.env
@@ -160,6 +172,10 @@ config/system.conf
 config/network.conf
 config/domains.conf
 /root/.config/openbsd-mailstack/secrets.conf
+/root/.config/openbsd-mailstack/suricata.conf
+/root/.config/openbsd-mailstack/brevo-webhook.conf
+/root/.config/openbsd-mailstack/sogo.conf
+/root/.config/openbsd-mailstack/sbom.conf
 /root/.config/openbsd-mailstack/providers/vultr.env
 /root/.config/openbsd-mailstack/providers/brevo.env
 ```

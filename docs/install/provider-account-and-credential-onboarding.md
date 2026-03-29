@@ -28,6 +28,10 @@ behavior for later phases:
 - `config/dns.conf.example`
 - `config/ddns.conf.example`
 - `config/network.conf.example`
+- `config/brevo-webhook.conf.example`
+- `config/suricata.conf.example`
+- `config/sogo.conf.example`
+- `config/sbom.conf.example`
 
 ## Recommended ignored local file targets
 

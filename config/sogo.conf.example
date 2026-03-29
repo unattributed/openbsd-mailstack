@@ -1,0 +1,12 @@
+# config/sogo.conf.example
+# Optional SOGo groupware integration.
+ENABLE_SOGO="no"
+SOGO_MAIL_DOMAIN="example.com"
+SOGO_DB_NAME="sogo"
+SOGO_DB_USER="sogo"
+SOGO_DB_PASS="change-me-sogo-password"
+SOGO_TIMEZONE="UTC"
+SOGO_LANGUAGE="English"
+SOGO_BASE_PATH="/SOGo"
+SOGO_LISTEN_ADDR="127.0.0.1"
+SOGO_LISTEN_PORT="20000"

@@ -1,0 +1,10 @@
+# config/brevo-webhook.conf.example
+# Optional Brevo webhook listener.
+ENABLE_BREVO_WEBHOOK="no"
+BREVO_WEBHOOK_LISTEN_ADDR="127.0.0.1"
+BREVO_WEBHOOK_LISTEN_PORT="9090"
+BREVO_WEBHOOK_URL_PATH="/brevo/webhook"
+BREVO_WEBHOOK_ALERT_EMAIL="ops@example.invalid"
+BREVO_WEBHOOK_STATE_PATH="/var/db/brevo/brevo.json"
+BREVO_WEBHOOK_LOG_PATH="/var/log/brevo-webhook.log"
+BREVO_WEBHOOK_NGINX_TEMPLATE_NAME="openbsd-mailstack-brevo-webhook.locations.tmpl"

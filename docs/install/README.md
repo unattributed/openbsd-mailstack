@@ -111,3 +111,8 @@ Use `17-maintenance-upgrades-regression-and-rollback.md` after the runtime, back
 
 External provider credentials must never be committed to Git. Real values belong in ignored repo-local files, protected host-local files, a secure password manager, or another secure operator-controlled secret store.
 
+
+
+### Later optional advanced layer
+
+- `18-advanced-optional-integrations-and-gap-closures.md`

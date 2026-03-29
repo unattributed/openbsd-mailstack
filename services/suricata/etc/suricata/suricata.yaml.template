@@ -1,0 +1,65 @@
+%YAML 1.1
+---
+vars:
+  address-groups:
+    HOME_NET: "[__SURICATA_HOME_NET_LIST__]"
+    EXTERNAL_NET: "!$HOME_NET"
+
+default-rule-path: __SURICATA_RULE_DIR__
+default-log-dir: __SURICATA_LOG_DIR__
+
+stats:
+  enabled: yes
+  interval: 8
+
+outputs:
+  - fast:
+      enabled: yes
+      filename: fast.log
+      append: yes
+  - eve-log:
+      enabled: yes
+      filetype: regular
+      filename: eve.json
+      community-id: true
+      types:
+        - alert:
+            tagged-packets: yes
+        - anomaly:
+            enabled: yes
+        - http:
+            extended: yes
+        - dns: {}
+        - tls:
+            extended: yes
+            custom: [subject, issuer, serial, sni, version, not_before, not_after, ja3, ja3s]
+        - drop:
+            alerts: yes
+            flows: all
+            verdict: yes
+        - smtp: {}
+        - ssh: {}
+        - flow: {}
+        - stats:
+            totals: yes
+            threads: no
+            deltas: no
+
+logging:
+  default-log-level: notice
+  outputs:
+    - file:
+        enabled: yes
+        level: info
+        filename: suricata.log
+
+pcap:
+  - interface: __SURICATA_INTERFACE__
+    checksum-checks: auto
+    bpf-filter: "__SURICATA_CAPTURE_FILTER__"
+
+rule-files:
+  - suricata.rules
+  - local.rules
+
+threshold-file: /etc/suricata/threshold.config

@@ -36,7 +36,7 @@ These items should usually become public later once host-specific values are rem
 - generalized monitoring and diagnostics scripts
 - backup and maintenance orchestration that does not reveal private storage targets
 - sanitized phase doctrine
-- generic Suricata, Rspamd, Postfix, Dovecot, nginx, and Roundcube integration assets
+- generic Suricata, Rspamd, Postfix, Dovecot, nginx, Roundcube, Brevo webhook, SOGo, and SBOM integration assets
 
 These are not inherently private. They are simply not ready to publish until they are cleaned of live details.
 

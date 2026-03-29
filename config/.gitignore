@@ -10,3 +10,8 @@ ddns.conf
 local/
 *.local
 *.bak
+suricata.conf
+brevo-webhook.conf
+sogo.conf
+sbom.conf
+

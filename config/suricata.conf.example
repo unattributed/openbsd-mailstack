@@ -1,0 +1,13 @@
+# config/suricata.conf.example
+# Public-safe Suricata baseline for advanced optional rollout.
+ENABLE_SURICATA="yes"
+SURICATA_INTERFACE="em0"
+SURICATA_HOME_NETS="127.0.0.0/8 10.44.0.0/24 192.168.1.0/24"
+SURICATA_CAPTURE_FILTER="host 192.0.2.10"
+SURICATA_RULE_DIR="/var/lib/suricata/rules"
+SURICATA_LOG_DIR="/var/log/suricata"
+SURICATA_DASHBOARD_ROOT="/var/www/htdocs/pf"
+SURICATA_EVE2PF_MODE="watch"
+SURICATA_PF_TABLE_WATCH="suricata_watch"
+SURICATA_PF_TABLE_BLOCK="suricata_block"
+SURICATA_PF_TABLE_ALLOW="suricata_allow"

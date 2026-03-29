@@ -1,0 +1,21 @@
+#!/bin/ksh
+
+# brevo_webhook
+# OpenBSD rc.d script to manage the Brevo webhook listener:
+#   interpreter: /usr/local/bin/python3
+#   script     : /usr/local/sbin/brevo_webhook.py
+#   user       : _brevo
+
+daemon="/usr/local/bin/python3"
+daemon_flags="/usr/local/sbin/brevo_webhook.py"
+daemon_user="_brevo"
+
+# run in background under rc.d
+rc_bg=YES
+
+# let rc.subr build a matching pexp so rcctl check works
+# default pexp will be: "/usr/local/bin/python3 /usr/local/sbin/brevo_webhook.py"
+
+. /etc/rc.d/rc.subr
+rc_cmd $1
+

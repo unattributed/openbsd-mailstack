@@ -1,0 +1,16 @@
+# match_regex	component	cpe_template	note
+^postfix-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	postfix	cpe:2.3:a:postfix:postfix:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^dovecot-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	dovecot	cpe:2.3:a:dovecot:dovecot:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^rspamd-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	rspamd	cpe:2.3:a:rspamd:rspamd:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^nginx-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	nginx	cpe:2.3:a:nginx:nginx:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^roundcubemail-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	roundcubemail	cpe:2.3:a:roundcube:webmail:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^sogo-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	sogo	cpe:2.3:a:inverse:sogo:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^mariadb-server-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	mariadb	cpe:2.3:a:mariadb:mariadb:%VERSION%:*:*:*:*:*:*:*	Server package mapped to upstream MariaDB CPE
+^redis-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	redis	cpe:2.3:a:redis:redis:%VERSION%:*:*:*:*:*:*:*	OpenBSD package prefix; strips local patch/flavor suffixes
+^clamav-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	clamav	cpe:2.3:a:clamav:clamav:%VERSION%:*:*:*:*:*:*:*	Shared package covers clamd and freshclam runtime
+^opendkim-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	opendkim	cpe:2.3:a:opendkim:opendkim:%VERSION%:*:*:*:*:*:*:*	OpenDKIM package mapped to official NVD CPE family
+^php-([0-9][0-9.]*)([pv][0-9]+)*$	php	cpe:2.3:a:php:php:%VERSION%:-:*:*:*:*:*:*	Base PHP runtime package; extensions remain package-only
+^net-snmp-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	net-snmp	cpe:2.3:a:net-snmp:net-snmp:%VERSION%:*:*:*:*:*:*:*	OpenBSD package mapped to official NVD CPE family
+^suricata-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	suricata	cpe:2.3:a:oisf:suricata:%VERSION%:*:*:*:*:*:*:*	Validated against a public-safe mapped CPE baseline
+^sshguard-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	sshguard	inventory_only	Inventory only; no confirmed NVD CPE mapping in current catalog checks
+^pfstatd-([0-9][0-9.]*)([pv][0-9]+)*(-.*)?$	pfstatd	inventory_only	Inventory only; no confirmed NVD CPE mapping in current catalog checks

@@ -1,0 +1,10 @@
+# config/sbom.conf.example
+# Public-safe SBOM and host inventory workflow.
+ENABLE_SBOM="yes"
+SBOM_SCANNER_MODE="fallback"
+SBOM_REPORT_EMAIL="ops@example.invalid"
+SBOM_REPORT_ROOT="services/generated/sbom"
+SBOM_CRON_MINUTE="40"
+SBOM_CRON_HOUR="3"
+SBOM_NVD_API_KEY=""
+SBOM_CVE_ENRICH_MITRE="1"

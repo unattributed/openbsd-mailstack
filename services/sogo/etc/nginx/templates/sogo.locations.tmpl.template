@@ -1,0 +1,15 @@
+location __SOGO_BASE_PATH__/ {
+    include __MONITORING_ALLOW_TEMPLATE__;
+    proxy_pass http://__SOGO_LISTEN_ADDR__:__SOGO_LISTEN_PORT__/SOGo/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /SOGo.woa/ {
+    include __MONITORING_ALLOW_TEMPLATE__;
+    proxy_pass http://__SOGO_LISTEN_ADDR__:__SOGO_LISTEN_PORT__/SOGo.woa/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}

@@ -11,6 +11,7 @@ The public repo now contains a materially usable baseline for:
 - monitoring, diagnostics, and reporting helpers
 - maintenance, upgrade, regression, and rollback helpers
 - network exposure, PF, WireGuard, DNS, and Vultr DDNS baseline assets
+- advanced optional Suricata, Brevo webhook, SOGo, and SBOM assets
 
 ## What Phase 07 added
 
@@ -29,3 +30,4 @@ The public repo still does not claim parity for:
 - real production IPs, peer keys, and DNS zones
 - private PF tables and evidence feeds
 - live provider credentials or site-specific operational doctrine
+- live Suricata evidence, private webhook endpoints, SOGo database contents, and production SBOM findings

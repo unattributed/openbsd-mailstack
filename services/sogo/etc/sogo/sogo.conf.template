@@ -1,0 +1,35 @@
+{
+  WOPort = "__SOGO_LISTEN_ADDR__:__SOGO_LISTEN_PORT__";
+  WOPidFile = "/var/run/sogo/sogod.pid";
+  WOLogFile = "/var/log/sogo/sogod.log";
+  WOWorkersCount = 2;
+
+  SOGoTimeZone = "__SOGO_TIMEZONE__";
+  SOGoLanguage = "__SOGO_LANGUAGE__";
+  SOGoMailDomain = "__SOGO_MAIL_DOMAIN__";
+  SOGoMailingMechanism = "smtp";
+  SOGoSMTPServer = "127.0.0.1:587";
+  SOGoSMTPAuthenticationType = "PLAIN";
+  SOGoIMAPServer = "imaps://127.0.0.1:993";
+  SOGoForceExternalLoginWithEmail = YES;
+  SOGoPasswordChangeEnabled = NO;
+
+  SOGoSuperUsernames = ("postmaster@__SOGO_MAIL_DOMAIN__");
+
+  OCSFolderInfoURL = "mysql://__SOGO_DB_USER__:__SOGO_DB_PASS__@127.0.0.1:3306/__SOGO_DB_NAME__/sogo_folder_info";
+  SOGoProfileURL = "mysql://__SOGO_DB_USER__:__SOGO_DB_PASS__@127.0.0.1:3306/__SOGO_DB_NAME__/sogo_user_profile";
+  OCSSessionsFolderURL = "mysql://__SOGO_DB_USER__:__SOGO_DB_PASS__@127.0.0.1:3306/__SOGO_DB_NAME__/sogo_sessions_folder";
+  OCSAdminURL = "mysql://__SOGO_DB_USER__:__SOGO_DB_PASS__@127.0.0.1:3306/__SOGO_DB_NAME__/sogo_admin";
+
+  SOGoUserSources = (
+    {
+      type = "sql";
+      id = "mailbox";
+      viewURL = "mysql://__SOGO_DB_USER__:__SOGO_DB_PASS__@127.0.0.1:3306/__SOGO_DB_NAME__/sogo_users";
+      canAuthenticate = YES;
+      isAddressBook = YES;
+      userPasswordAlgorithm = "blf-crypt";
+      prependPasswordScheme = NO;
+    }
+  );
+}

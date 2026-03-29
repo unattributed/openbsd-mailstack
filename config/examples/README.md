@@ -10,6 +10,10 @@ Use these tracked examples as the truth layer for the public repo:
 - `config/secrets.conf.example`
 - `config/dns.conf.example`
 - `config/ddns.conf.example`
+- `config/suricata.conf.example`
+- `config/brevo-webhook.conf.example`
+- `config/sogo.conf.example`
+- `config/sbom.conf.example`
 
 Recommended approach:
 

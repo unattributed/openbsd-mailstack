@@ -1,0 +1,4 @@
+# Local Suricata rules for openbsd-mailstack
+alert ip 10.44.0.0/24 any -> 192.0.2.10 any (msg:"LOCAL WG baseline traffic to mail host"; classtype:not-suspicious; priority:3; sid:1000001; rev:1;)
+alert tcp any any -> 192.0.2.10 22 (msg:"LOCAL baseline ssh to mail host"; classtype:attempted-recon; priority:2; sid:1000002; rev:1;)
+alert smtp any any -> 192.0.2.10 25 (msg:"LOCAL SMTP invalid pipelined sequence on public MX"; flow:established,to_server; app-layer-event:smtp.invalid_pipelined_sequence; classtype:protocol-command-decode; priority:2; sid:1000004; rev:1;)

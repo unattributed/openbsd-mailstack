@@ -1,0 +1,6 @@
+Phase 17 advanced optional integrations and gap closures generated
+enable_suricata=yes
+enable_brevo_webhook=no
+enable_sogo=no
+enable_sbom=yes
+sbom_scanner_mode=fallback
