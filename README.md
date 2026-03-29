@@ -1,117 +1,38 @@
 # openbsd-mailstack
 
-`openbsd-mailstack` is a public, operator-focused mail platform framework for OpenBSD 7.8. It publishes reusable documentation, scripts, templates, and verification tooling for a hardened single-host mail system built around Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, and supporting network and operations controls.
+`openbsd-mailstack` is a public, operator-focused mail platform framework for OpenBSD 7.8. It publishes reusable documentation, scripts, templates, staged rendered assets, and verification tooling for a hardened single-host mail system built around Postfix, Dovecot, Rspamd, Roundcube, PostfixAdmin, and supporting network and operations controls.
 
-This repository is public by design. It is not a mirror of the private `openbsd-self-hosting` repo, and it does not claim full private parity yet.
+This repository is public by design. It is not a byte-for-byte mirror of the private `openbsd-self-hosting` repo. It does provide a materially usable public-safe baseline through the documented public phases, while keeping live secrets, live evidence, and real recovery payloads out of scope.
 
 ## What this project is
 
-This project is a phase-driven public framework for building and maintaining a security-focused OpenBSD mail host.
+This project is a phase-driven public framework for building, validating, operating, and recovering an OpenBSD mail host.
 
 It is designed for operators who want:
 
-- a documented install path
-- a reproducible baseline
-- clear separation between public code and private data
-- verification and maintenance guidance
+- a documented prerequisite and install path
+- a reproducible baseline with tracked templates and generated examples
+- clear separation between public code and private operator data
+- verification, monitoring, maintenance, backup, and recovery guidance
 - safe lab testing before real deployment
 
 It is not a one-command production mail server. It is a structured public repo that guides the operator through setup, validation, operations, backup, recovery planning, and hardening.
 
-## What changed in the phase 01 parity foundation
+## Current public baseline
 
-This phase adds the public truth layer for reconciliation work and the operator input model that later phases depend on.
+The public repo now includes a public-safe baseline for:
 
-## What changed in phase 02 core runtime and config wiring
-
-This phase turns the public service layer from mostly placeholder scaffolding into a reusable runtime baseline. It adds sanitized service templates, a shared renderer, an install helper, and a verification helper for the core mail stack.
-
-New runtime assets:
-
-- `services/mariadb/`
-- `services/postfixadmin/`
-- `services/postfix/`
-- `services/dovecot/`
-- `services/nginx/`
-- `services/roundcube/`
-- `services/rspamd/`
-- `services/redis/`
-- `services/clamd/`
-- `services/freshclam/`
-
-New shared helpers:
-
-- `scripts/install/render-core-runtime-configs.ksh`
-- `scripts/install/install-core-runtime-configs.ksh`
-- `scripts/verify/verify-core-runtime-assets.ksh`
-
-The public repo still does not claim full private parity, but the core runtime layer is now materially more runnable and much closer to the private design.
-
-New core references:
-
-- `docs/project-status.md`
-- `docs/phases/phase-crosswalk.md`
-- `docs/public-private-boundary.md`
-- `docs/install/provider-account-and-credential-onboarding.md`
-- `docs/install/user-input-file-layout.md`
-
-New operator-input foundation:
-
-- ignored repo-local input files under `config/`
-- ignored overlay paths under `config/local/`
-- repo-safe provider examples under `config/examples/providers/`
-- shared loader logic in `scripts/lib/operator-inputs.ksh`
-- expanded shared validation and config-writing helpers in `scripts/lib/common.ksh`
-
-## What changed in phase 03 install, test, and operations path
-
-This phase connects the public runtime layer into a usable operator path.
-
-New public-safe workflow assets:
-
-- `docs/install/09-install-order-and-phase-sequence.md`
-- `docs/install/10-qemu-first-validation-path.md`
-- `docs/install/11-first-production-deployment-sequence.md`
-- `docs/install/12-post-install-checks.md`
-- `docs/operations/02-daily-operator-workflow.md`
-- `docs/operations/03-weekly-operator-workflow.md`
-- `scripts/install/run-phase-sequence.ksh`
-- `scripts/verify/run-post-install-checks.ksh`
-- `scripts/ops/daily-operator-review.ksh`
-- `scripts/ops/weekly-operator-review.ksh`
-
-The public repo can now guide a new operator through:
-
-- prerequisites and operator input setup
-- staged core runtime rendering
-- QEMU-first validation
-- baseline phase execution through the first production-ready mail path
-- post-install validation
-- daily and weekly review workflows
-
-Later advanced operations areas still remain lighter than private parity.
-
-## What changed in phase 08 advanced gap rollout
-
-This phase publishes the remaining highest-value public-safe advanced assets.
-
-New optional advanced assets:
-
-- `services/suricata/`
-- `services/brevo/`
-- `services/sogo/`
-- `services/sbom/`
-- `scripts/install/render-advanced-gap-configs.ksh`
-- `scripts/install/install-advanced-gap-assets.ksh`
-- `scripts/verify/verify-advanced-gap-assets.ksh`
-- `scripts/phases/phase-17-apply.ksh`
-- `scripts/phases/phase-17-verify.ksh`
-
-The public repo now includes a Suricata IDS baseline, an optional Brevo webhook listener, an optional SOGo baseline, and reusable SBOM tooling, while still keeping live endpoints, live identities, and production evidence out of scope.
+- phased apply and verify scripts through Phase 17
+- core mail runtime templates for MariaDB, PostfixAdmin, Postfix, Dovecot, nginx, Roundcube, Rspamd, Redis, ClamAV, and FreshClam
+- QEMU lab and autonomous installer workflows
+- network exposure control with PF, WireGuard, Unbound, and Vultr DDNS templates and helpers
+- backup, restore, DR portal, and DR host bootstrap workflows
+- monitoring, diagnostics, logging, reporting, maintenance, and regression helpers
+- optional Suricata, Brevo webhook, SOGo, and SBOM workflows
 
 ## Start here
 
-Read these in order:
+Read these in order for a new deployment:
 
 1. `docs/project-status.md`
 2. `docs/phases/phase-crosswalk.md`
@@ -119,74 +40,93 @@ Read these in order:
 4. `docs/architecture/01-project-architecture-and-flow.md`
 5. `docs/install/08-quick-start-and-usage-paths.md`
 6. `docs/install/09-install-order-and-phase-sequence.md`
+7. `docs/install/19-public-repo-readiness-check.md`
 
-Those documents explain:
+Those documents tell you:
 
-- what is already public
-- what is still missing or intentionally private
-- how private phases map to the public phase model
-- where to place operator-provided data safely
-- how to move from lab validation to first production deployment
+- what the public repo includes today
+- what remains intentionally private or partially documented
+- how private layers were generalized into public-safe operator inputs
+- how to move from prerequisites, to lab validation, to first deployment, to day-2 operations
+
+## Operator discovery map
+
+Use these public docs when you need a specific path:
+
+- prerequisites, `docs/install/README.md`
+- install order, `docs/install/09-install-order-and-phase-sequence.md`
+- QEMU and test path, `docs/install/06-qemu-lab-and-vm-testing.md` and `docs/install/10-qemu-first-validation-path.md`
+- first deployment path, `docs/install/11-first-production-deployment-sequence.md`
+- post-install checks, `docs/install/12-post-install-checks.md`
+- backup path, `docs/12-backup-and-disaster-recovery.md` and `docs/install/14-backup-and-restore-drill-sequence.md`
+- recovery and DR path, `docs/install/13-dr-site-provisioning.md` and `docs/install/15-dr-host-bootstrap.md`
+- monitoring and diagnostics path, `docs/install/16-monitoring-diagnostics-and-reporting.md`
+- maintenance and regression path, `docs/install/17-maintenance-upgrades-regression-and-rollback.md`
+- optional advanced path, `docs/install/18-advanced-optional-integrations-and-gap-closures.md`
+- final readiness audit, `docs/install/19-public-repo-readiness-check.md`
 
 ## Current public completeness
 
 The public repo currently contains:
 
-- install and architecture documentation
+- install, architecture, security, and operations documentation
 - phase docs and apply and verify scripts through Phase 17
-- QEMU lab and autonomous installer tooling
-- config examples and public-safe generated fragments
-- repository policy files such as `CONTRIBUTING.md` and `SECURITY.md`
-- a shared phase sequence runner and post-install verification path
-- daily and weekly operator workflow scripts
+- tracked public-safe operator input examples under `config/`
+- QEMU lab and autonomous installer tooling under `maint/`
+- staged generated service fragments under `services/generated/`
+- verification, monitoring, backup, restore, maintenance, and audit helpers under `scripts/` and `maint/`
 
-The public repo does **not** yet provide full private parity.
+The public repo does **not** include:
 
-Important current limits:
+- real secrets, tokens, PATs, or private keys
+- real domains, hostnames, IPs, or peer material tied to live infrastructure
+- encrypted DR snapshots, live mailbox data, or database dumps
+- live runtime evidence, incident data, or production telemetry exports
+- site-specific control-plane policy that cannot be generalized safely
 
-- the public runtime and install path are now coherent through the first mailstack baseline, but later operations areas are still lighter than the private repo
-- later public phases still exist with uneven depth, especially outside the core mail runtime, backup and DR, monitoring, and advanced control-plane behavior
-- private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope, although the public repo now includes a reusable SBOM workflow and optional advanced service baselines
-
-See `docs/project-status.md` for the comparison details.
+See `docs/project-status.md` for the evidence-based completeness assessment.
 
 ## Operator input model
 
-The public repo now supports a consistent operator-input discovery model.
+The public repo uses a consistent operator-input discovery model.
 
-Tracked examples:
+Tracked examples include:
 
 - `config/system.conf.example`
 - `config/network.conf.example`
 - `config/domains.conf.example`
 - `config/secrets.conf.example`
+- `config/dns.conf.example`
+- `config/ddns.conf.example`
+- `config/backup.conf.example`
+- `config/monitoring.conf.example`
+- `config/maintenance.conf.example`
+- `config/suricata.conf.example`
+- `config/brevo-webhook.conf.example`
+- `config/sogo.conf.example`
+- `config/sbom.conf.example`
 - `config/examples/providers/*.env.example`
 
-Ignored local inputs:
+Ignored local inputs include:
 
-- `config/system.conf`
-- `config/network.conf`
-- `config/domains.conf`
-- `config/secrets.conf`
+- `config/*.conf`
 - `config/local/`
 - protected host-local files under `/root/.config/openbsd-mailstack/`
 
-The shared loader in `scripts/lib/operator-inputs.ksh` reads values from those locations in a deterministic order. Later apply and verify scripts source the same shared logic through `scripts/lib/common.ksh`.
+The shared loader in `scripts/lib/operator-inputs.ksh` reads values from those locations in deterministic order. Later apply and verify scripts reuse the same shared logic through `scripts/lib/common.ksh`.
 
-See `docs/install/user-input-file-layout.md` for the full search order and file tree.
-
-## Supported deployment topologies
+## Supported deployment models
 
 `openbsd-mailstack` supports both of these public deployment models:
 
-- Single-domain mail host
-- Multi-domain mail host
+- single-domain mail host
+- multi-domain mail host
 
 All tracked examples use reserved domains only. Real domains, customer identities, provider credentials, and host-specific values must be supplied through local operator input files.
 
 ## Main usage paths
 
-### Path A, documentation-first operator path
+### Documentation-first path
 
 Use this when you want to understand the system and apply phases deliberately.
 
@@ -195,7 +135,7 @@ Use this when you want to understand the system and apply phases deliberately.
 - run phases in order
 - verify each phase before continuing
 
-### Path B, QEMU lab path
+### QEMU lab path
 
 Use this when you want to prototype without dedicated hardware.
 
@@ -205,7 +145,7 @@ Use this when you want to prototype without dedicated hardware.
 - run selected phases inside the VM
 - collect reports before changing a real host
 
-### Path C, autonomous installer path
+### Autonomous installer path
 
 Use this when you want to generate a reusable OpenBSD autoinstall pack.
 
@@ -217,24 +157,23 @@ Use this when you want to generate a reusable OpenBSD autoinstall pack.
 
 ## Core components
 
-- Mail transport: Postfix
-- Mail access and delivery: Dovecot
-- Filtering and scoring: Rspamd, Redis, ClamAV
-- Administration and webmail: PostfixAdmin, Roundcube
-- Groupware: optional SOGo, with public-safe template and staging assets
-- Network and access control: PF, WireGuard, Unbound
-- Operations: verification, monitoring, maintenance, backup, and SBOM tooling
+- Mail transport, Postfix
+- Mail access and delivery, Dovecot
+- Filtering and scoring, Rspamd, Redis, ClamAV
+- Administration and webmail, PostfixAdmin and Roundcube
+- Groupware, optional SOGo with public-safe templates and staged assets
+- Network and access control, PF, WireGuard, Unbound, and DDNS helpers
+- Operations, verification, monitoring, maintenance, backup, restore, DR, and SBOM tooling
 
 ## Repository boundary
 
 Included here:
 
 - reusable automation
-- public documentation
-- example configuration
-- verification and maintenance tooling
-- installer and bootstrap assets
-- public-safe helper scripts and generated fragments
+- public documentation and runbooks
+- example configuration and staged rendered fragments
+- verification, monitoring, and maintenance tooling
+- installer, bootstrap, backup, recovery, and audit helpers
 
 Not included here:
 
@@ -242,7 +181,7 @@ Not included here:
 - real domains, hostnames, IPs, or webhook endpoints tied to active infrastructure
 - encrypted snapshots, restore archives, or database dumps
 - live runtime evidence from private deployments
-- operator workstation state or generated install output
+- operator workstation state or generated host-local output
 
 See `docs/public-private-boundary.md` for the detailed boundary table.
 
@@ -251,20 +190,20 @@ See `docs/public-private-boundary.md` for the detailed boundary table.
 The preferred operator flow is:
 
 1. complete the install prerequisites under `docs/install/`
-2. copy or create local operator input files
-3. render and review the core runtime configs
+2. create local operator input files from the tracked examples
+3. render and review the staged configs
 4. validate in QEMU where practical
 5. run phases in order, usually through Phase 10 for the first public baseline
-6. install staged configs onto the host only after review
-7. run post-install checks and keep a daily and weekly operator review cadence
+6. add backup, monitoring, maintenance, and optional advanced layers deliberately
+7. run the final readiness audit before treating the repo as your primary operator reference
 
-## What remains to migrate
+## Exact remaining gaps
 
-The next migration waves should focus on sanitized public publication of:
+The remaining public gaps are specific, not vague:
 
-- deeper parity for PF, monitoring, backup, diagnostics, and DR automation
-- additional operational doctrine and hardened maintenance tooling
-- selected later-phase operational doctrine once host-specific policy is removed
-- optional SOGo and advanced operations material where public-safe parity is practical
+- phases 15 and 16 remain more documentation-led than automation-led
+- live production evidence, recovery archives, and site-specific control-plane doctrine remain intentionally private
+- provider-specific integrations beyond the published public-safe set are not generalized here
+- public-safe examples are reusable, but operators still need to supply their own identities, secrets, and exposure policy
 
-The crosswalk in `docs/phases/phase-crosswalk.md` is the planning baseline for that work.
+The crosswalk in `docs/phases/phase-crosswalk.md` and the final readiness check in `docs/install/19-public-repo-readiness-check.md` are the best current summary of what is finished and what is intentionally left out.
