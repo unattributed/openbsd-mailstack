@@ -1,0 +1,33 @@
+-r -- <?php
+-r -- $CONF['configured'] = true;
+-r -- $CONF['database_type'] = 'mysqli';
+-r -- $CONF['database_host'] = '127.0.0.1';
+-r -- $CONF['database_port'] = '3306';
+-r -- $CONF['database_user'] = 'postfixadmin';
+-r -- $CONF['database_password'] = 'example-secret-value-123456';
+-r -- $CONF['database_name'] = 'postfixadmin';
+-r -- $CONF['default_language'] = 'en';
+-r -- $CONF['show_footer_text'] = 'NO';
+-r -- $CONF['show_footer_text_admin'] = 'NO';
+-r -- $CONF['quota'] = 'YES';
+-r -- $CONF['domain_quota'] = 'YES';
+-r -- $CONF['used_quotas'] = 'YES';
+-r -- $CONF['new_quota_table'] = 'YES';
+-r -- $CONF['quota_multiplier'] = '1024000';
+-r -- $CONF['aliases'] = '0';
+-r -- $CONF['mailboxes'] = '0';
+-r -- $CONF['maxquota'] = '0';
+-r -- $CONF['domain_quota_default'] = '0';
+-r -- $CONF['setup_password'] = 'example-controller-hash-123456';
+-r -- $CONF['default_aliases'] = array(
+-r --     'abuse'      => 'abuse@example.com',
+-r --     'hostmaster' => 'hostmaster@example.com',
+-r --     'postmaster' => 'postmaster@example.com',
+-r --     'webmaster'  => 'webmaster@example.com',
+-r -- );
+-r -- $CONF['admin_email'] = 'ops@example.com';
+-r -- $CONF['postfix_admin_url'] = 'https://mail.example.com/postfixadmin';
+-r -- $postfixadmin_secrets = '/etc/postfixadmin/secrets.php';
+-r -- if (is_readable($postfixadmin_secrets)) {
+-r --     require $postfixadmin_secrets;
+-r -- }

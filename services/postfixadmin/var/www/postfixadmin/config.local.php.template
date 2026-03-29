@@ -1,0 +1,33 @@
+<?php
+$CONF['configured'] = true;
+$CONF['database_type'] = 'mysqli';
+$CONF['database_host'] = '127.0.0.1';
+$CONF['database_port'] = '3306';
+$CONF['database_user'] = '__POSTFIXADMIN_DB_USER__';
+$CONF['database_password'] = '__POSTFIXADMIN_DB_PASSWORD__';
+$CONF['database_name'] = '__POSTFIXADMIN_DB_NAME__';
+$CONF['default_language'] = 'en';
+$CONF['show_footer_text'] = 'NO';
+$CONF['show_footer_text_admin'] = 'NO';
+$CONF['quota'] = 'YES';
+$CONF['domain_quota'] = 'YES';
+$CONF['used_quotas'] = 'YES';
+$CONF['new_quota_table'] = 'YES';
+$CONF['quota_multiplier'] = '1024000';
+$CONF['aliases'] = '0';
+$CONF['mailboxes'] = '0';
+$CONF['maxquota'] = '0';
+$CONF['domain_quota_default'] = '0';
+$CONF['setup_password'] = '__POSTFIXADMIN_SETUP_PASSWORD_HASH__';
+$CONF['default_aliases'] = array(
+    'abuse'      => '__ABUSE_EMAIL__',
+    'hostmaster' => '__HOSTMASTER_EMAIL__',
+    'postmaster' => '__POSTMASTER_EMAIL__',
+    'webmaster'  => '__WEBMASTER_EMAIL__',
+);
+$CONF['admin_email'] = '__DOMAIN_ADMIN_EMAIL__';
+$CONF['postfix_admin_url'] = 'https://__POSTFIXADMIN_WEB_HOSTNAME__/postfixadmin';
+$postfixadmin_secrets = '/etc/postfixadmin/secrets.php';
+if (is_readable($postfixadmin_secrets)) {
+    require $postfixadmin_secrets;
+}

@@ -115,8 +115,26 @@ validate_selector() { _value="$1"; print -- "${_value}" | grep -Eq '^[A-Za-z0-9]
 validate_transport_name() { _value="$1"; print -- "${_value}" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]*$'; }
 validate_interface_name() { _value="$1"; print -- "${_value}" | grep -Eq '^[A-Za-z0-9._-]+$'; }
 validate_absolute_path() { _value="$1"; print -- "${_value}" | grep -Eq '^/'; }
-validate_dns_text() { _value="$1"; [ -n "${_value}" ] && ! print -- "${_value}" | grep -q '[\r\n]'; }
-validate_password_value() { _value="$1"; [ -n "${_value}" ] && ! print -- "${_value}" | grep -q '[\r\n]'; }
+validate_dns_text() {
+  _value="$1"
+  [ -n "${_value}" ] || return 1
+  case "${_value}" in
+    *'
+'*|*'
+'*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+validate_password_value() {
+  _value="$1"
+  [ -n "${_value}" ] || return 1
+  case "${_value}" in
+    *'
+'*|*'
+'*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
 validate_password_strength_min() { _value="$1"; [ "${#_value}" -ge 16 ]; }
 validate_numeric_id() { validate_numeric "$1"; }
 
@@ -291,4 +309,42 @@ print_phase_header() {
   print -- "${_phase_id} ${_phase_name}"
   print -- "============================================================"
   print
+}
+
+
+require_directory() {
+  _dir="$1"
+  [ -d "${_dir}" ] || die "required directory not found: ${_dir}"
+}
+
+ensure_directory() {
+  _dir="$1"
+  require_command mkdir
+  mkdir -p "${_dir}" || die "failed to create directory: ${_dir}"
+}
+
+render_template_file() {
+  _src="$1"
+  _dst="$2"
+  shift 2
+  [ -f "${_src}" ] || die "template file not found: ${_src}"
+  ensure_directory "$(dirname -- "${_dst}")"
+  : > "${_dst}" || die "unable to write rendered file: ${_dst}"
+  while IFS= read -r _line || [ -n "${_line}" ]; do
+    _rendered="${_line}"
+    for _pair in "$@"; do
+      _key="${_pair%%=*}"
+      _value="${_pair#*=}"
+      _rendered="${_rendered//__${_key}__/${_value}}"
+    done
+    print -r -- "${_rendered}" >> "${_dst}" || die "failed writing ${_dst}"
+  done < "${_src}"
+}
+
+copy_tree_contents() {
+  _src="$1"
+  _dst="$2"
+  require_directory "${_src}"
+  ensure_directory "${_dst}"
+  (cd "${_src}" && tar -cf - .) | (cd "${_dst}" && tar -xpf -) || die "failed to copy tree ${_src} to ${_dst}"
 }

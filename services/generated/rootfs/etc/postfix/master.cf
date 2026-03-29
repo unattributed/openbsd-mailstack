@@ -1,0 +1,38 @@
+-r -- smtp      inet  n       -       n       -       1       postscreen
+-r --   -o syslog_name=postfix/postscreen
+-r -- 
+-r -- smtpd     pass  -       -       n       -       -       smtpd
+-r --   -o syslog_name=postfix/smtpd-inbound
+-r --   -o smtpd_sasl_auth_enable=no
+-r -- 
+-r -- 127.0.0.1:587 inet n       -       n       -       -       smtpd
+-r --   -o syslog_name=postfix/submission-local
+-r --   -o smtpd_tls_security_level=encrypt
+-r --   -o smtpd_sasl_auth_enable=yes
+-r --   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+-r --   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+-r --   -o milter_macro_daemon_name=ORIGINATING
+-r -- 
+-r -- 10.44.0.1:587 inet n       -       n       -       -       smtpd
+-r --   -o syslog_name=postfix/submission
+-r --   -o smtpd_tls_security_level=encrypt
+-r --   -o smtpd_sasl_auth_enable=yes
+-r --   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+-r --   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+-r --   -o milter_macro_daemon_name=ORIGINATING
+-r -- 
+-r -- 127.0.0.1:465 inet n       -       n       -       -       smtpd
+-r --   -o syslog_name=postfix/smtps-local
+-r --   -o smtpd_tls_wrappermode=yes
+-r --   -o smtpd_sasl_auth_enable=yes
+-r --   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+-r --   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+-r --   -o milter_macro_daemon_name=ORIGINATING
+-r -- 
+-r -- 10.44.0.1:465 inet n       -       n       -       -       smtpd
+-r --   -o syslog_name=postfix/smtps
+-r --   -o smtpd_tls_wrappermode=yes
+-r --   -o smtpd_sasl_auth_enable=yes
+-r --   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+-r --   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+-r --   -o milter_macro_daemon_name=ORIGINATING

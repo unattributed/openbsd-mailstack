@@ -1,0 +1,5 @@
+user = __POSTFIX_DB_USER__
+password = __POSTFIX_DB_PASSWORD__
+hosts = 127.0.0.1
+dbname = __POSTFIX_DB_NAME__
+query = SELECT domain FROM domain WHERE domain='%s' AND active='1'

@@ -1,0 +1,26 @@
+[client-server]
+socket = /var/run/mysql/mysql.sock
+port   = 3306
+
+[client]
+socket = /var/run/mysql/mysql.sock
+port   = 3306
+
+[mysql]
+socket = /var/run/mysql/mysql.sock
+port   = 3306
+
+[mysqldump]
+quick
+max_allowed_packet = 64M
+
+[mysqld]
+user = _mysql
+socket = /var/run/mysql/mysql.sock
+bind-address = 127.0.0.1
+port = 3306
+skip-networking = 0
+local-infile = 0
+skip-name-resolve
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci

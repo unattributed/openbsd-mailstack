@@ -96,3 +96,8 @@ After this phase is successful, later phases can safely build:
 
 The real `config/secrets.conf` file must remain private and must never be
 committed to Git.
+
+
+## Phase 02 runtime note
+
+This phase now uses the shared core runtime renderer and installer. Review `docs/configuration/core-runtime-and-config-wiring.md`, then run `./scripts/install/render-core-runtime-configs.ksh` to stage sanitized service configs under `services/generated/rootfs/`.

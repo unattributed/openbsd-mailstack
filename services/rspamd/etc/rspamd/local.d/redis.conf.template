@@ -1,0 +1,2 @@
+servers = "__RSPAMD_REDIS_HOST__:__RSPAMD_REDIS_PORT__";
+expand_keys = true;

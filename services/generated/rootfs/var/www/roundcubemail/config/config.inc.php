@@ -1,0 +1,101 @@
+-r -- <?php
+-r -- $config = [];
+-r -- 
+-r -- /**
+-r --  * Database: MariaDB via 127.0.0.1.
+-r --  * Real credential is loaded from host-local secrets include below.
+-r --  */
+-r -- $config['db_dsnw'] = 'mysql://roundcube:example-secret-value-123456@127.0.0.1/roundcube';
+-r -- 
+-r -- /**
+-r --  * IMAP: Dovecot on mail.blackbagsecurity.com, implicit TLS on port 993.
+-r --  * Roundcube uses ssl:// for IMAPS (993).
+-r --  */
+-r -- $config['imap_host'] = 'ssl://mail.example.com:993';
+-r -- 
+-r -- /**
+-r --  * SMTP: Postfix submission on mail.blackbagsecurity.com with STARTTLS on port 587.
+-r --  * %u and %p expand to the Roundcube login username/password.
+-r --  */
+-r -- $config['smtp_host']      = 'tls://mail.example.com:587';
+-r -- $config['smtp_port']      = 587;
+-r -- $config['smtp_user']      = '%u';
+-r -- $config['smtp_pass']      = '%p';
+-r -- $config['smtp_auth_type'] = 'LOGIN';
+-r -- $config['smtp_helo_host'] = 'mail.example.com';
+-r -- 
+-r -- /** Branding. */
+-r -- $config['product_name'] = 'example.com webmail';
+-r -- $config['support_url']  = 'mailto:ops@example.com';
+-r -- 
+-r -- /**
+-r --  * Session secret placeholder. Real value is host-local.
+-r --  */
+-r -- $config['des_key'] = 'example-roundcube-des-key-123456';
+-r -- 
+-r -- /**
+-r --  * Host-local secret overlay.
+-r --  * /etc/roundcube/secrets.inc.php should define:
+-r --  *   $config['db_dsnw'] = 'mysql://roundcube:...@127.0.0.1/roundcube';
+-r --  *   $config['des_key'] = '...';
+-r --  * and must not be committed to git.
+-r --  */
+-r -- $roundcube_secrets = '/etc/roundcube/secrets.inc.php';
+-r -- if (is_readable($roundcube_secrets)) {
+-r --     require $roundcube_secrets;
+-r -- }
+-r -- 
+-r -- /** Locale. */
+-r -- $config['language'] = 'en_US';
+-r -- 
+-r -- /**
+-r --  * Logging.
+-r --  */
+-r -- $config['temp_dir']   = '/var/www/roundcubemail/temp';
+-r -- $config['log_driver'] = 'file';
+-r -- $config['log_dir']    = '/var/www/roundcubemail/logs';
+-r -- $config['syslog_id']  = 'roundcube';
+-r -- 
+-r -- /**
+-r --  * Debug.
+-r --  */
+-r -- $config['debug_level']      = 0;
+-r -- $config['sql_debug']        = false;
+-r -- $config['imap_debug']       = false;
+-r -- $config['smtp_debug']       = false;
+-r -- $config['per_user_logging'] = false;
+-r -- 
+-r -- /**
+-r --  * Users log in with full email addresses.
+-r --  */
+-r -- $config['username_domain']     = '';
+-r -- $config['include_host_config'] = false;
+-r -- 
+-r -- /**
+-r --  * SSL options: verify the Dovecot and Postfix certificates.
+-r --  * Hostname verification will now succeed because we use
+-r --  * mail.blackbagsecurity.com and we made it resolve to 127.0.0.1 locally.
+-r --  */
+-r -- $config['imap_conn_options'] = [
+-r --     'ssl' => [
+-r --         'verify_peer'       => true,
+-r --         'verify_peer_name'  => true,
+-r --         'allow_self_signed' => false,
+-r --     ],
+-r -- ];
+-r -- 
+-r -- $config['smtp_conn_options'] = [
+-r --     'ssl' => [
+-r --         'verify_peer'       => true,
+-r --         'verify_peer_name'  => true,
+-r --         'allow_self_signed' => false,
+-r --     ],
+-r -- ];
+-r -- 
+-r -- /**
+-r --  * Plugins.
+-r --  */
+-r -- $config['plugins'] = [
+-r --     'archive',
+-r --     'managesieve',
+-r -- ];

@@ -1,0 +1,7 @@
+enabled = true;
+path = "/var/rspamd/dkim/$domain.$selector.key";
+selector = "__DKIM_SELECTOR__";
+allow_envfrom_empty = true;
+allow_hdrfrom_mismatch = false;
+sign_networks = ["__WIREGUARD_SUBNET__", "127.0.0.0/8"];
+use_domain = "header";

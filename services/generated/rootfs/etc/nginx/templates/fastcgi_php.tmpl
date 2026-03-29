@@ -1,0 +1,9 @@
+# Basic FastCGI params for PHP
+include /etc/nginx/fastcgi_params;
+
+# Tell PHP we are over HTTPS
+fastcgi_param HTTPS on;
+
+# Upstream php-fpm socket; nginx is chrooted to /var/www,
+# /run/php-fpm.sock here maps to /var/www/run/php-fpm.sock on disk.
+fastcgi_pass unix:/run/php-fpm.sock;

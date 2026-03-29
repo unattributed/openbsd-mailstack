@@ -1,0 +1,37 @@
+mail_location = __DOVECOT_MAIL_LOCATION__
+mail_uid = __DOVECOT_VMAIL_UID__
+mail_gid = __DOVECOT_VMAIL_GID__
+first_valid_uid = __DOVECOT_FIRST_VALID_UID__
+last_valid_uid = __DOVECOT_LAST_VALID_UID__
+ssl = required
+ssl_cert = <__TLS_CERT_PATH_FULLCHAIN__
+ssl_key = <__TLS_CERT_PATH_KEY__
+auth_mechanisms = __DOVECOT_AUTH_MECHANISMS__
+passdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf.ext
+}
+userdb {
+  driver = static
+  args = uid=__DOVECOT_VMAIL_UID__ gid=__DOVECOT_VMAIL_GID__ home=__POSTFIX_VMAIL_BASE__/%d/%n
+}
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = _postfix
+    group = _postfix
+  }
+}
+service lmtp {
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    mode = 0600
+    user = _postfix
+    group = _postfix
+  }
+}
+protocol lmtp {
+  postmaster_address = __POSTMASTER_EMAIL__
+}
+plugin {
+  sieve_before = /etc/dovecot/sieve-before
+}

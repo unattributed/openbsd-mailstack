@@ -1,0 +1,47 @@
+# Roundcube 1.6.x on __MAIL_HOSTNAME__
+# nginx chroot: /var/www
+#
+# Real FS:   /var/www/roundcubemail
+# Chroot FS: /roundcubemail
+#
+# Exposed URLs:
+#   https://__MAIL_HOSTNAME__/
+
+# Redirect legacy Roundcube paths to the canonical root URL.
+location = /mail { return 301 /; }
+location = /webmail { return 301 /; }
+location ^~ /mail/ { return 301 /; }
+location ^~ /webmail/ { return 301 /; }
+
+# Hardened access: block direct access to sensitive paths
+location ~ ^/(bin|config|installer|logs|SQL|temp|vendor)($|/.*) {
+    deny all;
+}
+
+location ~ ^/(CHANGELOG|composer.json|INSTALL|jsdeps.json|LICENSE|README|UPGRADING)($|.*) {
+    deny all;
+}
+
+location ~ ^/plugins/.*/config.inc.php.* {
+    deny all;
+}
+
+location ~ ^/plugins/enigma/home($|/.*) {
+    deny all;
+}
+
+# Serve Roundcube at the bare host root.
+location / {
+    include /etc/nginx/templates/control-plane-allow.tmpl;
+    root /roundcubemail;
+    index index.php;
+    try_files $uri $uri/ /index.php?$query_string;
+
+    location ~ \.php$ {
+        include /etc/nginx/templates/hsts.tmpl;
+        include /etc/nginx/templates/fastcgi_php.tmpl;
+
+        fastcgi_param SCRIPT_FILENAME /roundcubemail$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT   /roundcubemail;
+    }
+}

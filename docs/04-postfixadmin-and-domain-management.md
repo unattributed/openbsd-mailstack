@@ -112,3 +112,8 @@ For newer users:
 
 After Phase 03 succeeds, the next logical phase is Postfix integration with SQL,
 so that the MTA can consume the same domain and mailbox model.
+
+
+## Phase 02 runtime note
+
+This phase now uses the shared core runtime renderer and installer. Review `docs/configuration/core-runtime-and-config-wiring.md`, then run `./scripts/install/render-core-runtime-configs.ksh` to stage sanitized service configs under `services/generated/rootfs/`.

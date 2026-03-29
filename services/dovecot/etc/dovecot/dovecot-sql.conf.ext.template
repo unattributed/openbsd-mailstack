@@ -1,0 +1,4 @@
+driver = mysql
+connect = host=127.0.0.1 dbname=__DOVECOT_DB_NAME__ user=__DOVECOT_DB_USER__ password=__DOVECOT_DB_PASSWORD__
+default_pass_scheme = BLF-CRYPT
+password_query = SELECT username as user, password FROM mailbox WHERE username = '%u' AND active = '1'

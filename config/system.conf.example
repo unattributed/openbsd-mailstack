@@ -1,24 +1,4 @@
 # config/system.conf.example
-#
-# Copy this file to config/system.conf and edit it, or let the phase scripts
-# prompt for missing values during execution.
-#
-# Public operations baseline:
-# - one primary mail host identity
-# - local health checks and generated operational guidance
-# - no destructive automation by default
-# - optional alert email target for future notifications
-#
-# Example:
-#   MAIL_HOSTNAME="mail.example.com"
-#   ADMIN_EMAIL="ops@example.com"
-#   ALERT_EMAIL="ops@example.com"
-#
-# In that model:
-# - operational summaries reference one host identity
-# - checks can validate core services locally
-# - alerting remains optional and conservative in MVP
-
 OPENBSD_VERSION="7.8"
 MAIL_HOSTNAME="mail.example.com"
 PRIMARY_DOMAIN="example.com"
@@ -26,18 +6,41 @@ ADMIN_EMAIL="ops@example.com"
 ALERT_EMAIL="ops@example.com"
 PUBLIC_IPV4="203.0.113.10"
 TIMEZONE="UTC"
-
 TLS_CERT_MODE="single_hostname"
 TLS_ACME_PROVIDER="acme-client"
 TLS_CERT_FQDN="mail.example.com"
 TLS_CERT_PATH_FULLCHAIN="/etc/ssl/mail.example.com.fullchain.pem"
 TLS_CERT_PATH_KEY="/etc/ssl/private/mail.example.com.key"
-
 ROUNDCUBE_ENABLED="yes"
 ROUNDCUBE_WEB_HOSTNAME="mail.example.com"
 POSTFIXADMIN_WEB_HOSTNAME="mail.example.com"
 RSPAMD_UI_HOSTNAME="mail.example.com"
-
+POSTFIX_PUBLIC_SMTP_BIND="0.0.0.0:25"
+POSTFIX_SUBMISSION_LOOPBACK_BIND="127.0.0.1:587"
+POSTFIX_SUBMISSION_VPN_BIND="10.44.0.1:587"
+POSTFIX_SMTPS_LOOPBACK_BIND="127.0.0.1:465"
+POSTFIX_SMTPS_VPN_BIND="10.44.0.1:465"
+POSTFIX_MYNETWORKS="127.0.0.0/8 10.44.0.0/24 192.168.1.0/24"
+POSTFIX_RELAYHOST="[smtp-relay.brevo.com]:587"
+POSTFIX_VMAIL_BASE="/var/vmail"
+POSTFIX_VMAIL_UID="2000"
+POSTFIX_VMAIL_GID="2000"
+DOVECOT_LISTEN="10.44.0.1 127.0.0.1"
+DOVECOT_MAIL_LOCATION="maildir:/var/vmail/%d/%n"
+DOVECOT_VMAIL_UID="2000"
+DOVECOT_VMAIL_GID="2000"
+DOVECOT_FIRST_VALID_UID="2000"
+DOVECOT_LAST_VALID_UID="2000"
+DOVECOT_AUTH_MECHANISMS="plain login"
+RSPAMD_MILTER_BIND="127.0.0.1:11332"
+RSPAMD_NORMAL_BIND="127.0.0.1:11333"
+RSPAMD_CONTROLLER_BIND="10.44.0.1:11334"
+RSPAMD_CONTROLLER_SECURE_IP="10.44.0.0/24"
+RSPAMD_REDIS_HOST="127.0.0.1"
+RSPAMD_REDIS_PORT="6379"
+RSPAMD_CLAMAV_ENABLED="yes"
+RSPAMD_CLAMAV_SOCKET="/var/run/clamav/clamd.sock"
+RSPAMD_CONTROLLER_PASSWORD_HASH="__generate_with_rspamadm_pw__"
 OPS_BACKUP_MODE="local"
 OPS_RETENTION_DAYS="14"
 OPS_ENABLE_ALERTS="yes"

@@ -1,0 +1,5 @@
+-r -- user = postfixadmin
+-r -- password = example-secret-value-123456
+-r -- hosts = 127.0.0.1
+-r -- dbname = postfixadmin
+-r -- query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain='%d' AND alias.address=CONCAT('%u','@',alias_domain.target_domain) AND alias.active=1 AND alias_domain.active=1

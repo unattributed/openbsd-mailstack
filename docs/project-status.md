@@ -134,3 +134,8 @@ This phase does **not** claim:
 - parity for all late private control-plane behavior
 
 That work remains for later phases.
+
+
+## Phase 02 update
+
+Phase 02 adds public-safe core runtime templates and shared rendering and installation helpers for MariaDB, PostfixAdmin, Postfix, Dovecot, nginx, Roundcube, Rspamd, Redis, ClamAV, and FreshClam. This improves the public repo from mostly generated example fragments to a reusable staged rootfs model under `services/generated/rootfs/` driven by operator input files and helper scripts.

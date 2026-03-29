@@ -1,0 +1,6 @@
+Rendered core runtime rootfs
+MAIL_HOSTNAME=mail.example.com
+PRIMARY_DOMAIN=example.com
+WIREGUARD_SUBNET=10.44.0.0/24
+RSPAMD_CONTROLLER_BIND=10.44.0.1:11334
+OUTPUT_ROOT=/tmp/phase02/work/services/generated/rootfs

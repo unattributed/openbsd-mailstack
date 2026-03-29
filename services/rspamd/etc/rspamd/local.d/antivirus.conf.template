@@ -1,0 +1,22 @@
+# PHASE-06C: Rspamd antivirus integration using ClamAV
+# local.d/antivirus.conf contains scanner blocks only,
+# the outer `antivirus {}` is defined in modules.d/antivirus.conf.
+
+clamav {
+  action = "reject";         # hard reject infected mail
+  log_clean = true;
+  symbol = "CLAM_VIRUS";
+  type = "clamav";
+
+  # Socket path taken from /etc/clamd.conf:
+  #   LocalSocket __RSPAMD_CLAMAV_SOCKET__
+  # Antivirus module expects `servers`, which may be a Unix socket path.
+  servers = "__RSPAMD_CLAMAV_SOCKET__";
+
+  # Let ClamAV scan MIME parts, this is the recommended modern setting
+  scan_mime_parts = true;
+
+  # Retry transient local-socket failures before yielding CLAM_VIRUS_FAIL.
+  retransmits = 4;
+  timeout = 20s;
+}

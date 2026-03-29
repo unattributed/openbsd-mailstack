@@ -1,39 +1,15 @@
 # config/network.conf.example
-#
-# Copy this file to config/network.conf and edit it, or let later phase scripts
-# prompt for missing values during execution.
-#
-# Public project baseline:
-# - public SMTP exposed as needed
-# - WireGuard used for trusted administrative and web access
-# - nginx webmail and admin surfaces restricted to the WireGuard subnet
-#
-# Example:
-#   ENABLE_WIREGUARD="yes"
-#   WIREGUARD_INTERFACE="wg0"
-#   WIREGUARD_SUBNET="10.44.0.0/24"
-#   WEB_VPN_ONLY="yes"
-#
-# In that model:
-# - Roundcube is reachable only from the WireGuard subnet
-# - PostfixAdmin is reachable only from the WireGuard subnet
-# - Rspamd UI is reachable only from the WireGuard subnet
-# - public HTTPS exposure is intentionally avoided until the broader project
-#   matures beyond MVP and has been fully tested
-#
-# External DNS provider
 DNS_PROVIDER="vultr"
-
-# API key must NOT be stored here
-# Use an environment variable or protected local file instead:
-#   export VULTR_API_KEY="REDACTED"
-#   . /root/.secrets/vultr.conf
-
 LAN_INTERFACE="em0"
 WAN_INTERFACE="em1"
 LAN_IPV4="192.168.1.10"
 LAN_CIDR="24"
+LAN_SUBNET="192.168.1.0/24"
 ENABLE_WIREGUARD="yes"
 WIREGUARD_INTERFACE="wg0"
+WIREGUARD_ADDRESS="10.44.0.1/24"
+WIREGUARD_BIND_IPV4="10.44.0.1"
 WIREGUARD_SUBNET="10.44.0.0/24"
 WEB_VPN_ONLY="yes"
+NGINX_HTTP_BIND="0.0.0.0:80"
+NGINX_HTTPS_BINDS="127.0.0.1:443 10.44.0.1:443"

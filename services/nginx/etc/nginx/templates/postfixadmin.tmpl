@@ -1,0 +1,41 @@
+# PostfixAdmin 4.x on __MAIL_HOSTNAME__
+# nginx chroot: /var/www
+#
+# Real FS:   /var/www/postfixadmin/public
+# Chroot FS: /postfixadmin/public
+#
+# Exposed URL:
+#   https://__MAIL_HOSTNAME__/postfixadmin/
+
+# Redirect bare /postfixadmin to trailing slash
+location = /postfixadmin {
+    return 301 /postfixadmin/;
+}
+
+# Deny dangerous setup/upgrade endpoints
+location = /postfixadmin/setup.php   { deny all; }
+location = /postfixadmin/upgrade.php { deny all; }
+
+# Static content and front controller under /postfixadmin/
+# This serves css, js, images, and index.php, but PHP files will
+# actually be handled by the separate regex location below.
+location /postfixadmin/ {
+    include /etc/nginx/templates/control-plane-allow.tmpl;
+    alias /postfixadmin/public/;
+    index index.php;
+
+}
+
+# PHP handler for PostfixAdmin
+location ~ ^/postfixadmin/(.+\.php)$ {
+    include /etc/nginx/templates/control-plane-allow.tmpl;
+    include /etc/nginx/templates/hsts.tmpl;
+    include /etc/nginx/templates/fastcgi_php.tmpl;
+
+    # The capture is the path under /postfixadmin/, for example:
+    #   /postfixadmin/login.php  ->  login.php
+    # so SCRIPT_FILENAME becomes /postfixadmin/public/login.php
+    fastcgi_param SCRIPT_FILENAME /postfixadmin/public/$1;
+    fastcgi_param DOCUMENT_ROOT   /postfixadmin/public;
+
+}

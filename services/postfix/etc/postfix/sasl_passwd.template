@@ -1,0 +1,1 @@
+[smtp-relay.brevo.com]:587 __BREVO_SMTP_LOGIN__:__BREVO_SMTP_PASSWORD__

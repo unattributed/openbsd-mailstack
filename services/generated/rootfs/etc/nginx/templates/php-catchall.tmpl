@@ -1,0 +1,5 @@
+# Catch-all PHP handler for any remaining .php under this vhost's root
+location ~ \.php$ {
+    include /etc/nginx/templates/fastcgi_php.tmpl;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+}

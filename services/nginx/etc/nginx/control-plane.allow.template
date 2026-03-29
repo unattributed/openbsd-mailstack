@@ -1,0 +1,2 @@
+allow __WIREGUARD_SUBNET__;
+allow 127.0.0.1;

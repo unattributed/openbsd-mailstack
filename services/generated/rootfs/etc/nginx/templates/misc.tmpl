@@ -1,0 +1,24 @@
+# Allow access to ACME challenges.
+# nginx is chrooted to /var/www, so alias /acme/ -> /var/www/acme on disk.
+location ^~ /.well-known/acme-challenge/ {
+    alias /acme/;
+    allow all;
+    autoindex off;
+}
+
+# Thunderbird autoconfig served from the mail host for VPN-side discovery.
+location = /.well-known/autoconfig/mail/config-v1.1.xml {
+    alias /htdocs/.well-known/autoconfig/mail/config-v1.1.xml;
+    default_type application/xml;
+}
+
+# Other .well-known paths (if needed) can be added separately.
+
+# Deny all attempts to access hidden files (e.g. .htaccess, .git)
+location ~ /\. {
+    deny all;
+}
+
+# Quiet noisy requests (still logged in unified access log)
+location = /favicon.ico  { log_not_found off; }
+location = /robots.txt   { log_not_found off; }

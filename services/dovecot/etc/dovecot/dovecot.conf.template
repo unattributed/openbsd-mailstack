@@ -1,0 +1,5 @@
+log_path = /var/log/dovecot.log
+protocols = imap lmtp
+listen = __DOVECOT_LISTEN__
+!include conf.d/*.conf
+!include_try local.conf

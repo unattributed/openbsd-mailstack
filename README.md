@@ -22,6 +22,31 @@ It is not a one-command production mail server. It is a structured public repo t
 
 This phase adds the public truth layer for reconciliation work and the operator input model that later phases depend on.
 
+## What changed in phase 02 core runtime and config wiring
+
+This phase turns the public service layer from mostly placeholder scaffolding into a reusable runtime baseline. It adds sanitized service templates, a shared renderer, an install helper, and a verification helper for the core mail stack.
+
+New runtime assets:
+
+- `services/mariadb/`
+- `services/postfixadmin/`
+- `services/postfix/`
+- `services/dovecot/`
+- `services/nginx/`
+- `services/roundcube/`
+- `services/rspamd/`
+- `services/redis/`
+- `services/clamd/`
+- `services/freshclam/`
+
+New shared helpers:
+
+- `scripts/install/render-core-runtime-configs.ksh`
+- `scripts/install/install-core-runtime-configs.ksh`
+- `scripts/verify/verify-core-runtime-assets.ksh`
+
+The public repo still does not claim full private parity, but the core runtime layer is now materially more runnable and much closer to the private design.
+
 New core references:
 
 - `docs/project-status.md`
@@ -69,9 +94,9 @@ The public repo does **not** yet provide full private parity.
 
 Important current limits:
 
-- several private service configuration trees have not been published yet in sanitized form
-- the public `services/` tree is still mostly placeholder scaffolding
-- later public phases exist, but some are concise baseline documents rather than parity-level migrations
+- several private service configuration trees are now published in sanitized form for the core mail runtime
+- the public `services/` tree now contains real service templates, but later operational areas are still lighter than private parity
+- later public phases still exist with uneven depth, especially outside the core mail runtime and web plane
 - private DR payloads, live evidence, runtime inventories, and production secrets remain intentionally out of scope
 
 See `docs/project-status.md` for the comparison details.
@@ -187,8 +212,8 @@ The preferred operator flow is:
 
 The next migration waves should focus on sanitized public publication of:
 
-- service configuration templates for the mail plane and web plane
-- generic PF, monitoring, backup, and diagnostics tooling
+- deeper parity for PF, monitoring, backup, diagnostics, and DR automation
+- additional operational doctrine and hardened maintenance tooling
 - selected later-phase operational doctrine once host-specific policy is removed
 - optional SOGo and advanced operations material where public-safe parity is practical
 

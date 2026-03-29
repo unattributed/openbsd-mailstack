@@ -1,0 +1,38 @@
+smtp      inet  n       -       n       -       1       postscreen
+  -o syslog_name=postfix/postscreen
+
+smtpd     pass  -       -       n       -       -       smtpd
+  -o syslog_name=postfix/smtpd-inbound
+  -o smtpd_sasl_auth_enable=no
+
+__POSTFIX_SUBMISSION_LOOPBACK_BIND__ inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission-local
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+
+__POSTFIX_SUBMISSION_VPN_BIND__ inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+
+__POSTFIX_SMTPS_LOOPBACK_BIND__ inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/smtps-local
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+
+__POSTFIX_SMTPS_VPN_BIND__ inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING

@@ -183,3 +183,8 @@ generated helper outputs as review artifacts before your live deployment step.
 
 After Phase 05 succeeds, continue to the phase that prepares TLS and certificate
 automation for the mail and web stack.
+
+
+## Phase 02 runtime note
+
+This phase now uses the shared core runtime renderer and installer. Review `docs/configuration/core-runtime-and-config-wiring.md`, then run `./scripts/install/render-core-runtime-configs.ksh` to stage sanitized service configs under `services/generated/rootfs/`.

@@ -182,3 +182,8 @@ generated helper outputs as review artifacts before your live deployment step.
 
 After Phase 04 succeeds, continue to the phase that wires Dovecot into the same
 SQL model for mailbox authentication and delivery.
+
+
+## Phase 02 runtime note
+
+This phase now uses the shared core runtime renderer and installer. Review `docs/configuration/core-runtime-and-config-wiring.md`, then run `./scripts/install/render-core-runtime-configs.ksh` to stage sanitized service configs under `services/generated/rootfs/`.

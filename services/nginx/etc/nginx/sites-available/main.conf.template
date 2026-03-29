@@ -1,0 +1,21 @@
+# HTTP vhost, mainly for ACME and redirect to HTTPS
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name _;
+
+    # Allow ACME challenge over HTTP without redirect
+    # nginx chroot: /var/www, so alias /acme/ -> /var/www/acme on disk
+    location ^~ /.well-known/acme-challenge/ {
+        alias /acme/;
+        try_files $uri =404;
+        allow all;
+    }
+
+    # Redirect all other HTTP traffic to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}

@@ -107,3 +107,8 @@ For newer users:
 
 After Phase 04 succeeds, the next logical phase is Dovecot integration, so that
 mailbox authentication and delivery can consume the same SQL-backed domain model.
+
+
+## Phase 02 runtime note
+
+This phase now uses the shared core runtime renderer and installer. Review `docs/configuration/core-runtime-and-config-wiring.md`, then run `./scripts/install/render-core-runtime-configs.ksh` to stage sanitized service configs under `services/generated/rootfs/`.
