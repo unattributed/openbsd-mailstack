@@ -1,0 +1,3 @@
+# Managed command-scoped doas policy for openbsd-mailstack
+permit persist :__DOAS_BREAKGLASS_GROUP__
+__DOAS_RULES__

@@ -1,0 +1,9 @@
+# Managed by doas-policy-transition.ksh
+permit persist :wheel
+permit nopass operator as root cmd true
+permit nopass operator as root cmd install
+permit nopass operator as root cmd rcctl
+permit nopass operator as root cmd pfctl
+permit nopass operator as root cmd sshd args -t
+permit nopass operator as root cmd sshd args -T
+permit nopass operator as root cmd crontab

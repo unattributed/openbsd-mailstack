@@ -1,0 +1,8 @@
+Authentication policy baseline
+- Require passwords of at least 16 characters.
+- Keep webmail VPN-only during the public-safe baseline: yes.
+- Keep admin surfaces VPN-only during the public-safe baseline: yes.
+- Keep TLS mandatory for client and web access.
+- Treat second-factor rollout as staged work, current stage: plan.
+- Roundcube second-factor status: evaluate.
+- PostfixAdmin second-factor status: evaluate.

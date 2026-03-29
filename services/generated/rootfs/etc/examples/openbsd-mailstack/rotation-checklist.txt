@@ -1,0 +1,9 @@
+Rotation checklist
+1. Identify secret or key to rotate
+2. Identify dependent services
+3. Generate replacement value or keypair
+4. Update host-local runtime files
+5. Reload or restart impacted services
+6. Verify service functionality
+7. Revoke or remove old material
+8. Update backup and recovery references

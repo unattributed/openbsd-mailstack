@@ -18,13 +18,7 @@ tracked_file() {
   fi
 }
 
-for _path in \
-  config/secrets.conf \
-  config/backup.conf \
-  config/dr-site.conf \
-  config/dr-host.conf \
-  config/monitoring.conf \
-  config/maintenance.conf; do
+for _path in   config/secrets.conf   config/backup.conf   config/dr-site.conf   config/dr-host.conf   config/monitoring.conf   config/maintenance.conf   config/security.conf   config/secrets-runtime.conf; do
   if tracked_file "${_path}"; then
     fail "tracked operator input should not be committed: ${_path}"
   else
@@ -33,10 +27,15 @@ for _path in \
 done
 
 if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  if git -C "${REPO_ROOT}" grep -n 'PRIVATE KEY-----' -- . >/dev/null 2>&1; then
-    fail "tracked files appear to contain private key material"
+  if git -C "${REPO_ROOT}" grep -n 'PRIVATE KEY-----' -- README.md docs config services >/dev/null 2>&1; then
+    fail "tracked publishable files appear to contain private key material"
   else
-    pass "no tracked private key markers found"
+    pass "no tracked private key markers found in publishable files"
+  fi
+  if git -C "${REPO_ROOT}" grep -n 'mail.blackbagsecurity.com' -- README.md docs config services >/dev/null 2>&1; then
+    fail "tracked publishable files still contain the private deployment hostname"
+  else
+    pass "no private deployment hostname markers found in publishable files"
   fi
 fi
 

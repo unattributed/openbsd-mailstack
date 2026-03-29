@@ -1,22 +1,26 @@
 #!/bin/ksh
-set -e
+set -eu
 
-PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-AUTH_DIR="${PROJECT_ROOT}/services/auth"
-DOVECOT_DIR="${PROJECT_ROOT}/services/dovecot"
-ROUNDCUBE_DIR="${PROJECT_ROOT}/services/roundcube"
+PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)"
+OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+FAIL=0
 
-for f in \
-"${AUTH_DIR}/authentication-policy.example.generated" \
-"${AUTH_DIR}/password-policy.example.generated" \
-"${AUTH_DIR}/second-factor-roadmap.example.generated" \
-"${DOVECOT_DIR}/dovecot-auth-hardening-notes.example.generated" \
-"${ROUNDCUBE_DIR}/roundcube-auth-hardening-notes.example.generated" \
-"${AUTH_DIR}/phase-15-summary.txt"
-do
-  if [ -f "${f}" ]; then
-    echo "PASS ${f} exists"
+pass() { print -- "PASS $*"; }
+warn() { print -- "WARN $*"; }
+fail() { print -- "FAIL $*"; FAIL=1; }
+
+for _f in   "${PROJECT_ROOT}/maint/doas-policy-baseline-check.ksh"   "${PROJECT_ROOT}/maint/doas-policy-transition.ksh"   "${PROJECT_ROOT}/maint/ssh-hardening-window.ksh"   "${PROJECT_ROOT}/maint/sshd-watchdog.ksh"   "${PROJECT_ROOT}/services/auth/etc/doas/doas.conf.baseline.template"   "${PROJECT_ROOT}/services/auth/etc/doas/doas.conf.command-scoped.template"   "${PROJECT_ROOT}/services/auth/etc/ssh/sshd_config.phase15.template"   "${OUT_DIR}/doas.conf.baseline"   "${OUT_DIR}/doas.conf.command-scoped"   "${OUT_DIR}/sshd_config.phase15"   "${OUT_DIR}/authentication-policy.txt"   "${OUT_DIR}/password-policy.txt"   "${OUT_DIR}/second-factor-roadmap.txt"   "${OUT_DIR}/phase-15-summary.txt"; do
+  if [ -f "${_f}" ]; then
+    pass "${_f} exists"
   else
-    echo "WARN ${f} missing"
+    fail "${_f} missing"
   fi
 done
+
+if grep -RIn 'mail.blackbagsecurity.com' "${PROJECT_ROOT}/services/auth" >/dev/null 2>&1; then
+  fail "services/auth still contains a private hostname reference"
+else
+  pass "services/auth is free of private hostname references"
+fi
+
+[ "${FAIL}" -eq 0 ]

@@ -1,0 +1,5 @@
+Phase 15 security hardening baseline rendered
+- doas baseline policy example
+- command-scoped doas policy example
+- sshd hardening example
+- authentication policy and roadmap artifacts

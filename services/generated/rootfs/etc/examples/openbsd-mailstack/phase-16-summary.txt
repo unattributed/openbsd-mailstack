@@ -1,0 +1,5 @@
+Phase 16 runtime secret handling baseline rendered
+- host-local runtime secret layout
+- permissions guidance
+- PostfixAdmin and Roundcube runtime secret examples
+- database env file examples

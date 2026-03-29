@@ -1,0 +1,3 @@
+# Managed baseline doas policy for openbsd-mailstack
+permit persist :__DOAS_BREAKGLASS_GROUP__
+permit keepenv nopass __DOAS_NOPASS_USER__ as root

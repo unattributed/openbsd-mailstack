@@ -1,0 +1,9 @@
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+MaxAuthTries 4
+MaxSessions 8
+ClientAliveInterval 300
+ClientAliveCountMax 2
+LoginGraceTime 30

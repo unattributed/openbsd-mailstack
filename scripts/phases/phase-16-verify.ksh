@@ -1,20 +1,25 @@
 #!/bin/ksh
-set -e
+set -eu
 
-PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-SECRETS_DIR="${PROJECT_ROOT}/services/secrets"
-KEYS_DIR="${PROJECT_ROOT}/services/keys"
+PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)"
+OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+FAIL=0
 
-for f in \
-"${SECRETS_DIR}/secret-inventory.example.generated" \
-"${KEYS_DIR}/key-material-inventory.example.generated" \
-"${SECRETS_DIR}/rotation-checklist.example.generated" \
-"${KEYS_DIR}/secure-storage-notes.example.generated" \
-"${SECRETS_DIR}/phase-16-summary.txt"
-do
-  if [ -f "${f}" ]; then
-    echo "PASS ${f} exists"
+pass() { print -- "PASS $*"; }
+fail() { print -- "FAIL $*"; FAIL=1; }
+
+for _f in   "${PROJECT_ROOT}/maint/runtime-secret-layout.ksh"   "${PROJECT_ROOT}/maint/repo-secret-guard.ksh"   "${PROJECT_ROOT}/services/secrets/etc/examples/postfixadmin-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/examples/sogo-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/postfixadmin/secrets.php.template"   "${PROJECT_ROOT}/services/secrets/etc/roundcube/secrets.inc.php.template"   "${PROJECT_ROOT}/services/generated/rootfs/etc/postfixadmin/secrets.php.example"   "${PROJECT_ROOT}/services/generated/rootfs/etc/roundcube/secrets.inc.php.example"   "${OUT_DIR}/postfixadmin-db.env"   "${OUT_DIR}/sogo-db.env"   "${OUT_DIR}/runtime-secret-paths.txt"   "${OUT_DIR}/runtime-secret-permissions.txt"   "${OUT_DIR}/rotation-checklist.txt"   "${OUT_DIR}/phase-16-summary.txt"; do
+  if [ -f "${_f}" ]; then
+    pass "${_f} exists"
   else
-    echo "WARN ${f} missing"
+    fail "${_f} missing"
   fi
 done
+
+if ${PROJECT_ROOT}/maint/repo-secret-guard.ksh >/dev/null 2>&1; then
+  pass "repo-secret-guard.ksh passes on the tracked repo state"
+else
+  fail "repo-secret-guard.ksh reported a tracked secret hygiene issue"
+fi
+
+[ "${FAIL}" -eq 0 ]

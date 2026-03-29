@@ -42,15 +42,15 @@ load_project_operator_inputs() {
     _home_root="${HOME}/.config/openbsd-mailstack"
   fi
 
-  load_named_input_files_from_root "${_repo_root}"         "system.conf"         "network.conf"         "domains.conf"         "secrets.conf"         "dns.conf"         "ddns.conf"         "suricata.conf"         "brevo-webhook.conf"         "sogo.conf"         "sbom.conf"
+  load_named_input_files_from_root "${_repo_root}"     "system.conf"     "network.conf"     "domains.conf"     "secrets.conf"     "dns.conf"     "ddns.conf"     "backup.conf"     "backup-schedule.conf"     "dr-site.conf"     "dr-host.conf"     "monitoring.conf"     "maintenance.conf"     "security.conf"     "secrets-runtime.conf"
 
-  load_named_input_files_from_root "${_overlay_root}"         "system.conf"         "network.conf"         "domains.conf"         "secrets.conf"         "dns.conf"         "ddns.conf"         "suricata.conf"         "brevo-webhook.conf"         "sogo.conf"         "sbom.conf"         "providers/vultr.env"         "providers/brevo.env"         "providers/virustotal.env"         "operator.env"
+  load_named_input_files_from_root "${_overlay_root}"     "system.conf"     "network.conf"     "domains.conf"     "secrets.conf"     "dns.conf"     "ddns.conf"     "backup.conf"     "backup-schedule.conf"     "dr-site.conf"     "dr-host.conf"     "monitoring.conf"     "maintenance.conf"     "security.conf"     "secrets-runtime.conf"     "providers/vultr.env"     "providers/brevo.env"     "providers/virustotal.env"     "operator.env"
 
   if [ -n "${_home_root}" ]; then
-    load_named_input_files_from_root "${_home_root}"           "system.conf"           "network.conf"           "domains.conf"           "secrets.conf"           "dns.conf"           "ddns.conf"         "suricata.conf"         "brevo-webhook.conf"         "sogo.conf"         "sbom.conf"           "providers/vultr.env"           "providers/brevo.env"           "providers/virustotal.env"           "operator.env"
+    load_named_input_files_from_root "${_home_root}"       "system.conf"       "network.conf"       "domains.conf"       "secrets.conf"       "dns.conf"       "ddns.conf"       "backup.conf"       "backup-schedule.conf"       "dr-site.conf"       "dr-host.conf"       "monitoring.conf"       "maintenance.conf"       "security.conf"       "secrets-runtime.conf"       "providers/vultr.env"       "providers/brevo.env"       "providers/virustotal.env"       "operator.env"
   fi
 
-  load_named_input_files_from_root "${_host_root}"         "system.conf"         "network.conf"         "domains.conf"         "secrets.conf"         "dns.conf"         "ddns.conf"         "suricata.conf"         "brevo-webhook.conf"         "sogo.conf"         "sbom.conf"         "providers/vultr.env"         "providers/brevo.env"         "providers/virustotal.env"         "operator.env"
+  load_named_input_files_from_root "${_host_root}"     "system.conf"     "network.conf"     "domains.conf"     "secrets.conf"     "dns.conf"     "ddns.conf"     "backup.conf"     "backup-schedule.conf"     "dr-site.conf"     "dr-host.conf"     "monitoring.conf"     "maintenance.conf"     "security.conf"     "secrets-runtime.conf"     "providers/vultr.env"     "providers/brevo.env"     "providers/virustotal.env"     "operator.env"
 
   source_if_readable "/root/.config/vultr/api.env"
   source_if_readable "/root/.config/brevo/brevo.env"
@@ -61,12 +61,11 @@ load_project_operator_inputs() {
 
 operator_input_search_order() {
   cat <<EOF
-1. ${PROJECT_ROOT}/config/*.conf, including suricata.conf, brevo-webhook.conf, sogo.conf, sbom.conf
+1. ${PROJECT_ROOT}/config/*.conf
 2. $(operator_input_root)/*.conf
 3. $(operator_input_root)/providers/*.env
 4. ${HOME:-/root}/.config/openbsd-mailstack/*.conf and providers/*.env
 5. /root/.config/openbsd-mailstack/*.conf and providers/*.env
-   - includes suricata.conf, brevo-webhook.conf, sogo.conf, sbom.conf
 6. Legacy provider paths:
    - /root/.config/vultr/api.env
    - /root/.config/brevo/brevo.env

@@ -1,0 +1,3 @@
+# Managed by doas-policy-baseline-check.ksh
+permit persist :wheel
+permit keepenv nopass operator as root

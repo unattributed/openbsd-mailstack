@@ -10,10 +10,14 @@ Use these tracked examples as the truth layer for the public repo:
 - `config/secrets.conf.example`
 - `config/dns.conf.example`
 - `config/ddns.conf.example`
-- `config/suricata.conf.example`
-- `config/brevo-webhook.conf.example`
-- `config/sogo.conf.example`
-- `config/sbom.conf.example`
+- `config/backup.conf.example`
+- `config/backup-schedule.conf.example`
+- `config/dr-site.conf.example`
+- `config/dr-host.conf.example`
+- `config/monitoring.conf.example`
+- `config/maintenance.conf.example`
+- `config/security.conf.example`
+- `config/secrets-runtime.conf.example`
 
 Recommended approach:
 
@@ -21,9 +25,11 @@ Recommended approach:
 2. create real local values in ignored paths such as `config/local/`
 3. store provider credentials in ignored provider files, not in tracked examples
 4. render staged assets before applying them to a host
+5. keep runtime secrets and private keys in host-local files, not in git
 
 Provider examples in this directory match the supported loader search paths documented in:
 
 - `docs/install/provider-account-and-credential-onboarding.md`
 - `docs/install/user-input-file-layout.md`
 - `docs/install/02-vultr-account-and-api-setup.md`
+- `docs/install/21-security-hardening-and-runtime-secrets.md`

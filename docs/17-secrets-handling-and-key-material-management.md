@@ -2,101 +2,92 @@
 
 ## Purpose
 
-This phase extends the public `openbsd-mailstack` project with a secrets and key
-material management baseline.
+This phase now moves beyond inventory notes and publishes a reusable,
+public-safe runtime secret layout model.
 
-The focus is on:
+It covers:
 
-- secret classification
-- key material handling guidance
-- storage boundary definition
-- rotation planning
-- public-safe handling patterns
-- operator review artifacts
+- host-local runtime secret file layout
+- tracked example secret-bearing files that remain safe to publish
+- ownership and mode expectations
+- guarded repo hygiene checks
+- rotation guidance that maps to the public services already present
 
-## Why this matters
+## What is now automated
 
-A secure mail platform relies on secrets and keys that must be handled
-deliberately.
+The public repo now includes runnable helpers for:
 
-This phase helps operators define:
+- rendering host-local runtime secret stubs into a safe staging directory
+- creating host-local secret directories
+- verifying expected runtime secret paths if they exist
+- checking the tracked repo for secret hygiene regressions
 
-- which values are secrets
-- which files contain private key material
-- what must never enter Git
-- where encrypted storage should be preferred
-- how rotation and review should be staged
+The main helpers are:
 
-## Public baseline
+- `maint/runtime-secret-layout.ksh`
+- `maint/repo-secret-guard.ksh`
+- `scripts/phases/phase-16-apply.ksh`
+- `scripts/phases/phase-16-verify.ksh`
 
-The public baseline for this phase is conservative:
+## Public-safe runtime secret model
 
-- never commit live secrets
-- never commit private keys
-- keep example config separate from real secret values
-- prefer encrypted storage for backup copies of key material
-- document rotation and recovery before making changes
-- use operator-reviewed workflows, not blind automation
+Tracked files contain examples only.
+Live values stay outside git.
 
-## Secret classes
+The public-safe baseline uses these classes:
 
-### Class 1, service credentials
+### Service credentials
 
 Examples:
 
-- MariaDB passwords
 - PostfixAdmin database credentials
-- Dovecot SQL credentials
-- API keys
+- SOGo database credentials
+- API credentials such as VirusTotal
 
-### Class 2, private key material
-
-Examples:
-
-- TLS private keys
-- DKIM private keys
-- signing keys used for backup verification
-
-### Class 3, sensitive operational artifacts
+### Runtime PHP secret files
 
 Examples:
 
-- backup encryption keys
-- emergency recovery bundles
+- `/etc/postfixadmin/secrets.php`
+- `/etc/roundcube/secrets.inc.php`
+
+### Operational recovery credentials
+
+Examples:
+
+- DR env files
 - off-host restore credentials
+- PATs used by operator-controlled automation
 
-## Public-safe handling rules
+## Inputs
 
-- commit only `*.example` files or generated placeholders
-- store live secrets outside Git
-- encrypt backup copies of key material
-- document ownership and permissions clearly
-- review access to secret-bearing files regularly
+This phase uses values from:
 
-## Rotation model
+- `config/secrets-runtime.conf.example`
+- `config/secrets.conf.example`
+- `config/system.conf.example`
 
-Recommended stages:
+## Outputs
 
-1. inventory the secret or key
-2. identify dependencies
-3. prepare replacement value or keypair
-4. update service configuration
-5. reload or restart service safely
-6. verify functionality
-7. revoke or remove old material
-8. update backup and recovery references
+Phase 16 now renders public-safe examples under:
 
-## Outputs in this phase
+- `services/generated/rootfs/etc/postfixadmin/secrets.php.example`
+- `services/generated/rootfs/etc/roundcube/secrets.inc.php.example`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/postfixadmin-db.env`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/sogo-db.env`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/runtime-secret-paths.txt`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/runtime-secret-permissions.txt`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/rotation-checklist.txt`
 
-This phase generates example artifacts for:
+## What remains intentionally private
 
-- secret inventory guidance
-- key material inventory guidance
-- rotation checklist
-- secure storage notes
-- phase summary
+This phase still does not publish:
 
-## Next step
+- real passwords, PATs, API tokens, or SMTP credentials
+- real TLS, DKIM, or WireGuard private keys
+- encrypted restore payloads
+- production mailbox archives or database dumps
+- live site-specific recovery credentials
 
-After this phase, the project is ready for either a full documentation cleanup
-pass or deeper policy work around compliance, auditability, and enforcement.
+That boundary is intentional. The public repo now provides the layout and the
+checks, while operators provide the real secret material locally.

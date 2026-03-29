@@ -1,0 +1,12 @@
+Second-factor roadmap
+Stage 1
+- Strong passwords
+- VPN-only web and admin access
+- Operational review of auth failures
+
+Stage 2
+- Validate Roundcube and PostfixAdmin second-factor compatibility
+- Test recovery and operator lockout procedures
+
+Stage 3
+- Evaluate app-password or gateway-assisted models for legacy mail clients

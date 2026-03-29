@@ -2,99 +2,83 @@
 
 ## Purpose
 
-This phase extends the public `openbsd-mailstack` project with a security
-hardening and authentication baseline.
+This phase now publishes a runnable, public-safe hardening baseline for the two
+most reusable host controls that were still mostly documentation-led:
 
-The focus is on:
+- `doas` policy posture
+- SSH daemon hardening during a maintenance window
 
-- authentication boundary design
-- password handling guidance
-- staged second-factor planning
-- Dovecot and Roundcube hardening notes
-- Thunderbird and other IMAP client reality constraints
-- public-safe authentication policy artifacts
+It also keeps the authentication policy work grounded in what the public repo can
+actually support for PostfixAdmin, Roundcube, IMAP, and submission.
 
-## Why this matters
+## What is now automated
 
-A secure mail platform needs a clear authentication model, not just working
-services.
+The public repo now includes tracked and reusable helpers for:
 
-This phase helps operators define:
+- baseline `doas` policy rendering and drift checks
+- optional command-scoped `doas` policy rendering, apply, check, and rollback
+- SSH hardening planning, apply, verify, and rollback
+- SSH watchdog health checks for a hardened host
+- rendered public-safe examples for `doas.conf` and `sshd_config`
 
-- where primary authentication occurs
-- what can realistically support second factor controls
-- how to stage stronger authentication over time
-- how to keep the MVP secure without promising unsupported client behavior
+The main helpers are:
 
-## Public baseline
+- `maint/doas-policy-baseline-check.ksh`
+- `maint/doas-policy-transition.ksh`
+- `maint/ssh-hardening-window.ksh`
+- `maint/sshd-watchdog.ksh`
+- `scripts/phases/phase-15-apply.ksh`
+- `scripts/phases/phase-15-verify.ksh`
 
-The public baseline for this phase is conservative:
+## Authentication model
+
+The public-safe baseline remains conservative:
 
 - strong unique passwords are required
-- VPN-only access remains in place for web and admin surfaces
-- Roundcube remains the interim webmail interface
-- Dovecot authentication remains the IMAP and submission credential authority
-- second-factor planning is documented in stages rather than forced blindly
+- web and admin surfaces remain VPN-only during the baseline deployment model
+- Roundcube remains a practical first webmail interface
+- Dovecot remains the IMAP and submission credential authority
+- second-factor rollout is staged, not blindly promised for all mail clients
 
-## Important compatibility reality
+## Why this is still not a universal MFA phase
 
-Traditional mail clients such as Thunderbird typically authenticate to IMAP and
-submission using username and password. That means universal TOTP enforcement at
-the mail protocol layer is not a simple drop-in feature for standard clients.
+Traditional mail clients such as Thunderbird normally authenticate over IMAP and
+submission with username and password. Universal TOTP enforcement at the mail
+protocol layer is not a drop-in feature for standard clients.
 
-Because of that, the public baseline is:
+The public repo therefore treats second factor as:
 
-- do not claim universal TOTP support for all mail clients by default
-- document staged hardening options
-- keep Roundcube and admin surfaces behind WireGuard during MVP
-- use stronger password and account policy now
-- evaluate app-password or gateway-based second-factor designs later
+- realistic for web surfaces first
+- optional and staged for administrative surfaces
+- future design work for legacy client compatibility paths
 
-## Hardening stages
+## Inputs
 
-### Stage 1, baseline hardening
+This phase uses values from:
 
-- require strong unique passwords
-- lock down VPN-only surfaces
-- reduce account sprawl
-- keep TLS mandatory
-- maintain mail filtering and abuse controls
-- review service logs regularly
+- `config/security.conf.example`
+- `config/system.conf.example`
+- `config/network.conf.example`
 
-### Stage 2, web and admin second factor
+## Outputs
 
-This is the first realistic second-factor target because web flows are easier to
-protect than legacy mail protocols.
+Phase 15 now renders public-safe examples under:
 
-Targets:
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/doas.conf.baseline`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/doas.conf.command-scoped`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/sshd_config.phase15`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/authentication-policy.txt`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/password-policy.txt`
+- `services/generated/rootfs/etc/examples/openbsd-mailstack/second-factor-roadmap.txt`
 
-- Roundcube, if a supported second-factor approach is validated
-- PostfixAdmin
-- any future administrative web surfaces
+## What remains intentionally out of scope
 
-### Stage 3, client-aware advanced auth
+This public phase still does not publish:
 
-Possible future paths:
+- live `/etc/doas.conf` from a production host
+- live `/etc/ssh/sshd_config` from a production host
+- private identity-provider integrations
+- operator-specific MFA infrastructure
+- host-specific command overlays that would reveal a private automation estate
 
-- app-password model
-- identity proxy model
-- gateway-enforced second factor
-- alternative auth architecture beyond basic IMAP password flows
-
-These should be treated as advanced design work, not MVP assumptions.
-
-## Outputs in this phase
-
-This phase generates example artifacts for:
-
-- authentication policy guidance
-- password policy guidance
-- staged second-factor roadmap
-- Dovecot and Roundcube hardening notes
-- phase summary
-
-## Next step
-
-After this phase, the project is ready for a full public consistency and
-documentation audit, or for deeper hardening phases focused on secrets handling,
-identity integration, or enforcement controls.
+Those remain operator-supplied or private by design.

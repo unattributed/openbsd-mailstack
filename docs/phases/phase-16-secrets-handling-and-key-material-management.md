@@ -2,30 +2,42 @@
 
 ## Purpose
 
-Extend the public mail stack with:
+Extend the public mail stack with real public-safe runtime secret layout assets
+for:
 
-- secret classification guidance
-- key material handling baseline
-- rotation and storage notes
+- host-local secret files
+- PHP runtime secret examples
+- database env file examples
+- permissions and rotation guidance
 
 ## Inputs
 
-- MAIL_HOSTNAME
-- ADMIN_EMAIL
-- ALERT_EMAIL
+- `config/secrets-runtime.conf.example`
+- `config/secrets.conf.example`
+- `config/system.conf.example`
 
 ## Outputs
 
-- secret inventory example
-- key inventory example
+- runtime secret path inventory
+- runtime secret permissions inventory
+- PostfixAdmin and Roundcube runtime secret examples
+- host-local env file examples
 - rotation checklist
-- secure storage notes
 - phase summary
+
+## Main helpers
+
+- `maint/runtime-secret-layout.ksh`
+- `maint/repo-secret-guard.ksh`
 
 ## Run
 
-doas ./scripts/phases/phase-16-apply.ksh
+```sh
+./scripts/phases/phase-16-apply.ksh
+```
 
 Verify:
 
+```sh
 ./scripts/phases/phase-16-verify.ksh
+```

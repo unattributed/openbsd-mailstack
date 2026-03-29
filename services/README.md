@@ -1,5 +1,26 @@
-# services
+# Services Tree
 
-This directory holds public-safe service templates and staged rendered output for the core mail runtime, backup and DR workflows, the operational visibility layer, the network exposure layer, and optional advanced integrations such as Suricata, Brevo webhook, SOGo, and SBOM workflows.
+This directory holds tracked public-safe service assets and staged generated examples.
 
-Tracked content here should remain source templates, staged generated examples, or portable helper assets. Compiled cache artifacts such as `__pycache__/` directories and `*.pyc` files must not be committed.
+Tracked source assets live under service-specific directories such as:
+
+- `mariadb/`
+- `postfixadmin/`
+- `postfix/`
+- `dovecot/`
+- `nginx/`
+- `roundcube/`
+- `rspamd/`
+- `redis/`
+- `clamd/`
+- `freshclam/`
+- `firewall/`
+- `wireguard/`
+- `dns/`
+- `ddns/`
+- `auth/`
+- `secrets/`
+
+Rendered public-safe examples live under `generated/rootfs/`.
+
+Do not commit private keys, runtime dumps, `__pycache__`, or live local artifacts here.

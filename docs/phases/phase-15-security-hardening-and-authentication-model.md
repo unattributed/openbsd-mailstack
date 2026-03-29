@@ -2,32 +2,43 @@
 
 ## Purpose
 
-Extend the public mail stack with:
+Extend the public mail stack with real public-safe hardening artifacts for:
 
-- authentication policy baseline
-- staged second-factor planning
-- compatibility-aware hardening guidance
+- `doas` policy review
+- optional command-scoped `doas` rollout
+- SSH maintenance-window hardening
+- staged authentication policy outputs
 
 ## Inputs
 
-- MAIL_HOSTNAME
-- ADMIN_EMAIL
-- ROUNDCUBE_ENABLED
-- WEB_VPN_ONLY
+- `config/security.conf.example`
+- `config/system.conf.example`
+- `config/network.conf.example`
 
 ## Outputs
 
-- auth policy example
-- password policy example
+- rendered `doas` baseline policy example
+- rendered command-scoped `doas` policy example
+- rendered SSH hardening example
+- authentication policy and password policy artifacts
 - second-factor roadmap
-- Dovecot hardening notes
-- Roundcube hardening notes
 - phase summary
+
+## Main helpers
+
+- `maint/doas-policy-baseline-check.ksh`
+- `maint/doas-policy-transition.ksh`
+- `maint/ssh-hardening-window.ksh`
+- `maint/sshd-watchdog.ksh`
 
 ## Run
 
-doas ./scripts/phases/phase-15-apply.ksh
+```sh
+./scripts/phases/phase-15-apply.ksh
+```
 
 Verify:
 
+```sh
 ./scripts/phases/phase-15-verify.ksh
+```

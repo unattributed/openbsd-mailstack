@@ -1,68 +1,56 @@
-# Project status
+# Project Status
 
-## Final public audit summary
+## Current public completeness
 
-The public repo now provides a materially usable public-safe operator baseline for OpenBSD mailstack deployment and operations. The final audit result is:
+The public repo now contains a materially usable baseline for:
 
-- **Yes**, a new user can discover prerequisites from `docs/install/README.md`
-- **Yes**, a new user can discover install order from `docs/install/09-install-order-and-phase-sequence.md`
-- **Yes**, a new user can discover the test and QEMU path from `docs/install/06-qemu-lab-and-vm-testing.md` and `docs/install/10-qemu-first-validation-path.md`
-- **Yes**, a new user can discover the operations path from `docs/operations/` and the later install docs
-- **Yes**, a new user can discover the backup path from `docs/12-backup-and-disaster-recovery.md` and `docs/install/14-backup-and-restore-drill-sequence.md`
-- **Yes**, a new user can discover the recovery and DR path from `docs/install/13-dr-site-provisioning.md`, `docs/install/15-dr-host-bootstrap.md`, and `docs/14-off-host-replication-and-restore-testing.md`
-- **Yes**, QEMU and autonomous installer materials are present as public features under `maint/qemu/` and `maint/openbsd-autonomous-installer/`
-
-## Current public-safe scope
-
-The public repo now contains public-safe material for:
-
-- operator input handling and phase orchestration
+- phase 01 parity foundation and operator input handling
 - core mail runtime templates and staged rendered assets
-- QEMU lab and autonomous installer workflows
-- backup, DR portal, DR host bootstrap, restore drill, and off-host replication helpers
-- monitoring, diagnostics, reporting, and log-management helpers
-- maintenance, upgrades, regression, and rollback planning helpers
-- PF, WireGuard, DNS, and Vultr DDNS templates and helpers
-- optional Suricata, Brevo webhook, SOGo, and SBOM workflows
+- install, QEMU validation, and operator workflow guidance
+- backup, restore, DR portal, and DR host provisioning guidance
+- monitoring, diagnostics, and reporting helpers
+- maintenance, upgrade, regression, and rollback helpers
+- network exposure, PF, WireGuard, DNS, and Vultr DDNS baseline assets
+- advanced optional Suricata, Brevo, SOGo, and SBOM assets
+- phase 15 security hardening and authentication helpers
+- phase 16 runtime secret layout and repo hygiene helpers
 
-## Private source areas and current public disposition
+## What was closed in this gap-closure pass
 
-| Private source area | Public disposition |
-|---|---|
-| `mariadb`, `postfixadmin`, `postfix`, `dovecot`, `nginx`, `roundcubemail`, `rspamd`, `redis`, `clamd`, `freshclam` | materially migrated into `services/`, `scripts/install/`, and `scripts/verify/` |
-| `firewall`, `wg`, `dns`, `ddns` | materially migrated into public-safe templates, renderers, and verification helpers |
-| `backup-ops` | materially migrated into backup, restore, DR, and drill workflows |
-| `monitoring`, `mail-diagnostics`, `system`, `utilities` | materially absorbed into `scripts/ops/`, `scripts/verify/`, `maint/`, and docs |
-| `suricata`, `brevo`, `sogo`, `sbom` | published as optional public-safe advanced layers |
-| `evidence` | intentionally private |
-| `deprecated` | intentionally not migrated |
-| host-specific control-plane policy and live inventories | intentionally private or only partially generalized |
+The public repo previously had two remaining core gaps that were real, not vague:
 
-## Exact remaining gaps
+- Phase 15 was more documentation-led than automation-led
+- Phase 16 was more documentation-led than automation-led
 
-The remaining public gaps are now specific:
+That is now reduced substantially.
 
-1. Phase 15, security hardening, remains more documentation-led than automation-led.
-2. Phase 16, secrets handling and key material management, remains more documentation-led than automation-led.
-3. Live production evidence, incident artifacts, mailbox data, restore payloads, and provider credentials remain intentionally private.
-4. Site-specific control-plane automation and autonomous remediation policy are not generalized into this public repo.
-5. Some optional integrations remain provider-bound by design, even where public-safe templates now exist.
+The public repo now includes public-safe tooling for:
 
-## Cleanup completed in the final audit
+- broad baseline `doas` policy rendering and drift checks
+- optional command-scoped `doas` transition with backup and rollback
+- SSH hardening planning, apply, verify, and rollback
+- SSH watchdog health checks
+- host-local runtime secret directory layout planning
+- host-local runtime secret stub rendering into safe staging locations
+- repo secret hygiene checks that also guard against private hostname regression
 
-The final audit cleaned up or added:
+## What remains intentionally unresolved
 
-- stale completeness wording in top-level navigation docs
-- a clearer prerequisites, install, test, operations, backup, and recovery discovery path
-- a public repo readiness check doc and verifier
-- removal of accidental Python cache artifacts from tracked service content
-- service-level ignore rules to prevent future `__pycache__` and `*.pyc` commits
+The remaining gaps are now specific boundaries rather than missing core migration work:
 
-## Recommended next step
+- live production evidence, restore archives, and site-specific control-plane doctrine remain intentionally private
+- provider-specific integrations beyond the published public-safe set are not generalized here
+- operators must still supply their own identities, secrets, private keys, and exposure policy locally
 
-Use `docs/install/19-public-repo-readiness-check.md` and `scripts/verify/verify-public-repo-readiness.ksh` before treating the repo as your authoritative public operator baseline.
+## Practical outcome
 
+A new operator can now discover, render, review, validate, and maintain a public-safe mail stack baseline from the public repo alone.
 
-## Post-audit correction pass
+The operator still needs to provide:
 
-A final public-only correction pass removed the remaining Roundcube hostname leak and cleaned malformed staged generated files. Use `docs/install/20-public-only-validation-pass.md` together with `maint/final-public-validation-pass.ksh` when you want the final public-safe readiness check.
+- domains and network values
+- provider accounts and API credentials
+- host-local runtime secret files
+- exposure policy and final hardening choices
+
+That is part of the public design, not an unclosed migration defect.
