@@ -14,7 +14,7 @@ It publishes reusable documentation, configuration examples, phase scripts, main
 - ClamAV and FreshClam
 - PF, WireGuard, DNS, and DDNS
 
-It also includes public-safe operational layers for QEMU validation, autonomous install preparation, backup and recovery, monitoring, the richer static `/_ops/monitor/` site path, maintenance, security hardening, runtime secret handling, and optional Suricata, Brevo, SOGo, and SBOM workflows.
+It also includes public-safe operational layers for QEMU validation, autonomous install preparation, backup and recovery, monitoring, maintenance, security hardening, runtime secret handling, and optional Suricata, Brevo, SOGo, and SBOM workflows.
 
 ## What this repository is, and is not
 
@@ -44,7 +44,6 @@ Read these in order:
 8. [Public repo readiness check](docs/install/19-public-repo-readiness-check.md)
 9. [Public-only validation pass](docs/install/20-public-only-validation-pass.md)
 10. [Security hardening and runtime secrets](docs/install/21-security-hardening-and-runtime-secrets.md)
-11. [OpenBSD native ops monitoring site](docs/install/22-openbsd-native-ops-monitoring-site.md)
 
 ## Documentation map
 
@@ -65,7 +64,7 @@ The public repository now contains:
 - a core runtime rendering path for mail, web, filtering, and SQL services
 - QEMU lab and autonomous installer tooling
 - tracked config examples and ignored local input paths
-- backup, disaster recovery, monitoring, the richer static `/_ops/monitor/` site layer, maintenance, and network exposure helpers
+- backup, disaster recovery, monitoring, maintenance, and network exposure helpers
 - public-safe hardening and runtime secret layout helpers
 - optional Suricata, Brevo, SOGo, and SBOM layers
 - staged rendered examples under `services/generated/rootfs/`
@@ -136,5 +135,9 @@ Useful commands after the repository is populated with local inputs:
 
 ## Repository companions
 
-- `SECURITY.md` for reporting security issues
+- `CODE_OF_CONDUCT.md` for project participation expectations
 - `CONTRIBUTING.md` for contribution expectations
+- `SECURITY.md` for reporting security issues
+- `LICENSE` for repository licensing terms
+- `.github/ISSUE_TEMPLATE/` for public issue intake
+- `.github/pull_request_template.md` for pull request structure

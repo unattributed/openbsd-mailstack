@@ -1,0 +1,71 @@
+name: Bug report
+summary: Report a reproducible defect in public automation, docs, templates, or verification logic.
+description: Use this for problems in the public repository surface.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug report.
+
+        Do not include live secrets, private host evidence, recovery archives, or production-only data.
+        For security-sensitive issues, use the private path described in `SECURITY.md`.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - docs and onboarding
+        - install and render tooling
+        - phase apply and verify
+        - qemu lab and autonomous install
+        - monitoring and operations
+        - backup and disaster recovery
+        - network, pf, wireguard, dns, or ddns
+        - advanced optional integrations
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the problem clearly and concisely.
+      placeholder: What broke, or what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Provide exact steps, commands, and input conditions.
+      placeholder: |
+        1. Create these local input files...
+        2. Run this command...
+        3. Observe this failure...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OpenBSD version, workstation OS, shell, or other context.
+      placeholder: OpenBSD 7.8 host, Parrot OS workstation, ksh, etc.
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Logs or artifacts
+      description: Paste sanitized output only. Remove secrets and private details first.

@@ -1,0 +1,35 @@
+name: Documentation gap
+summary: Report unclear, missing, stale, or contradictory public documentation.
+description: Use this when the repo docs do not match the actual public implementation.
+title: "docs: "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for documentation gaps, onboarding confusion, stale references, or broken public navigation.
+  - type: input
+    id: path
+    attributes:
+      label: Affected file or section
+      placeholder: docs/install/README.md or README.md section name
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      placeholder: The doc is stale, the path is broken, the step order is unclear, or the guidance contradicts the scripts.
+    validations:
+      required: true
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested correction
+      placeholder: Describe the correction, or the missing content the repo should include.
+  - type: textarea
+    id: validation
+    attributes:
+      label: How you validated the problem
+      placeholder: Walkthrough performed, link checked, script compared, or phase reviewed.

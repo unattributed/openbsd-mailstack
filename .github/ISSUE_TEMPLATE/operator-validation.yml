@@ -1,0 +1,44 @@
+name: Operator validation report
+summary: Share a lab, qemu, or host-side validation result for the public repo.
+description: Use this to report a validated workflow outcome, especially after install, upgrade, backup, recovery, or monitoring changes.
+title: "validation: "
+labels:
+  - validation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for sanitized validation reports from QEMU, lab, or real-host testing.
+
+        Do not include real secrets, recovery payloads, or private incident evidence.
+  - type: dropdown
+    id: path
+    attributes:
+      label: Validation path
+      options:
+        - docs walkthrough only
+        - qemu lab
+        - autonomous installer lab
+        - real host, non-production
+        - real host, production-safe sanitized result
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: What was validated
+      placeholder: Which phases, scripts, docs, or workflows were exercised?
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result
+      placeholder: What succeeded, what failed, and what still needs work?
+    validations:
+      required: true
+  - type: textarea
+    id: followup
+    attributes:
+      label: Follow-up recommendations
+      placeholder: Optional improvement ideas, missing docs, or defect notes.

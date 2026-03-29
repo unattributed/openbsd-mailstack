@@ -18,6 +18,13 @@ Good contribution areas include:
 
 ## Before You Start
 
+Please review these repository standards before contributing:
+
+- `CODE_OF_CONDUCT.md`
+- `CONTRIBUTING.md`
+- `SECURITY.md`
+- `.github/pull_request_template.md`
+
 Please check that your change:
 
 - fits the public scope of this repository
