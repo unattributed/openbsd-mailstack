@@ -1,0 +1,43 @@
+#!/bin/ksh
+set -eu
+( set -o pipefail ) 2>/dev/null && set -o pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+FAIL=0
+
+pass() { print -- "PASS: $*"; }
+fail() { print -- "FAIL: $*"; FAIL=1; }
+
+tracked_file() {
+  _path="$1"
+  if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git -C "${REPO_ROOT}" ls-files --error-unmatch "${_path}" >/dev/null 2>&1
+  else
+    [ -e "${REPO_ROOT}/${_path}" ]
+  fi
+}
+
+for _path in \
+  config/secrets.conf \
+  config/backup.conf \
+  config/dr-site.conf \
+  config/dr-host.conf \
+  config/monitoring.conf \
+  config/maintenance.conf; do
+  if tracked_file "${_path}"; then
+    fail "tracked operator input should not be committed: ${_path}"
+  else
+    pass "operator input remains untracked: ${_path}"
+  fi
+done
+
+if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  if git -C "${REPO_ROOT}" grep -n 'PRIVATE KEY-----' -- . >/dev/null 2>&1; then
+    fail "tracked files appear to contain private key material"
+  else
+    pass "no tracked private key markers found"
+  fi
+fi
+
+[ "${FAIL}" -eq 0 ]

@@ -25,6 +25,7 @@ It exists so operators can:
 - `lab-vm-ssh.ksh`
 - `vm-phase-report-runner.ksh`
 - `lab-dr-restore-runner.ksh`
+- `lab-openbsd78-upgrade.ksh`
 
 ## Workflow summary
 
@@ -36,6 +37,7 @@ It exists so operators can:
 6. run phases inside the VM
 7. collect and review reports
 8. run a staged restore rehearsal with `lab-dr-restore-runner.ksh`
+9. rehearse maintenance and upgrade flow with `lab-openbsd78-upgrade.ksh`
 
 ## Notes
 

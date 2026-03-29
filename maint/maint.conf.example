@@ -1,0 +1,11 @@
+# Public-safe maintenance baseline for openbsd-mailstack.
+# Copy to a local path, such as config/maintenance.conf, then adjust.
+
+REPO_ROOT="/home/foo/Workspace/openbsd-mailstack"
+STATE_DIR="/var/db/openbsd-mailstack"
+ALERT_TO="ops@example.net"
+ALERT_FROM="root@mail.example.net"
+REGRESSION_PROBE_TO="ops@example.net"
+
+SERVICE_CANDIDATES="postfix dovecot rspamd redis clamd freshclam nginx php83_fpm php84_fpm mysqld"
+FORBIDDEN_SERVICE_CANDIDATES="smtpd"

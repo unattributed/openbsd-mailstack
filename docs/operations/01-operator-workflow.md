@@ -62,6 +62,7 @@ Use these together:
 - `docs/operations/02-daily-operator-workflow.md`
 - `docs/operations/03-weekly-operator-workflow.md`
 - `docs/operations/05-monitoring-diagnostics-and-reporting.md`
+- `docs/operations/06-maintenance-upgrades-and-regression.md`
 
 ## Current roadmap note
 

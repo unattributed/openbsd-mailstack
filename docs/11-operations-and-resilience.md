@@ -119,4 +119,4 @@ For newer users:
 
 ## Next step
 
-After Phase 10 succeeds, the public repo now has a backup and DR layer plus a practical monitoring baseline. The next logical work is to extend those layers selectively where private material can be generalized safely.
+After Phase 10 succeeds, the public repo now has a backup and DR layer, a practical monitoring baseline, and a public-safe maintenance and regression workflow. The next logical work is to extend those layers selectively where private material can be generalized safely.

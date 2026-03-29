@@ -19,6 +19,7 @@ Comparison was performed against the archive contents, not against a live checko
 | Install and ops path | Mature private install and maintenance doctrine | Publicly usable after phases 01 to 03 | Public path is now coherent through the first mail baseline. |
 | Backup and DR path | Mature and host-specific | Publicly usable after phase 04 baseline | Public repo now has public-safe backup, restore, QEMU drill, and DR site provisioning assets. |
 | Monitoring and diagnostics path | Mature and host-specific | Publicly usable after phase 05 baseline | Public repo now has public-safe monitoring inputs, static monitoring pages, log summaries, health reports, and install helpers. |
+| Maintenance and regression path | Mature and host-specific | Publicly usable after phase 06 baseline | Public repo now has public-safe maintenance inputs, syspatch and package upgrade wrappers, regression checks, rollback guidance, and QEMU rehearsal helpers. |
 
 ## What is already public and usable
 
@@ -36,6 +37,7 @@ The public repo already has a solid framework layer:
 - daily and weekly operator review scripts under `scripts/ops/`
 - public-safe backup, restore, replication, and DR site provisioning helpers
 - public-safe monitoring, diagnostics, log rotation, and reporting helpers
+- public-safe maintenance, upgrade, regression, and rollback helpers
 
 That means the public repo is already more than a placeholder. It now has a coherent public framework, an operator input model, a reusable runtime layer, a workable install and validation path, and a materially usable baseline for backup and DR.
 
@@ -49,7 +51,7 @@ The private repo still contains large functional areas that have not yet been pu
 - site-specific operational doctrine tied to a live deployment
 - advanced monitoring site content, control-plane automation, and private off-host DR repositories
 
-The public repo now supports backup, restore, restore drills, DR site provisioning, and a practical monitoring baseline, but it still does not claim full private parity for live infrastructure evidence, private dashboards, or private recovery payload handling.
+The public repo now supports backup, restore, restore drills, DR site provisioning, a practical monitoring baseline, and a public-safe maintenance and regression layer, but it still does not claim full private parity for live infrastructure evidence, private dashboards, private recovery payload handling, or private control-plane governance.
 
 ## Public phase maturity, honest view
 
@@ -102,9 +104,21 @@ Phase 05 adds a public-safe monitoring and diagnostics layer that a new operator
 - nginx, newsyslog, and cron templates for the monitoring baseline
 - stronger phase 14 documentation and helper wiring
 
+## What Phase 06 adds
+
+Phase 06 adds a public-safe maintenance and regression layer that a new operator can actually use:
+
+- `config/maintenance.conf.example`
+- loader support for maintenance operator inputs
+- reusable maintenance preflight, report-mode, and apply-mode helpers
+- public-safe `syspatch` and `pkg_add -u` wrappers
+- regression checks and rollback guidance
+- a weekly maintenance cron installer and cron runner
+- a QEMU maintenance rehearsal helper
+
 ## Functional status matrix
 
-| Area | Private repo | Public repo before reconciliation | Public repo after phases 01 to 04 |
+| Area | Private repo | Public repo before reconciliation | Public repo after phases 01 to 06 |
 |---|---|---|---|
 | Truth layer for completeness | Implicit in private tree structure | Missing | Added |
 | Phase crosswalk | Private phase trees only | Missing | Added |
@@ -118,6 +132,7 @@ Phase 05 adds a public-safe monitoring and diagnostics layer that a new operator
 | Backup and restore path | Mature and host-specific | Placeholder only | Public-safe baseline added |
 | DR portal and restore drill path | Private and host-specific | Not public | Public-safe baseline added |
 | Monitoring and reporting path | Mature and host-specific | Checklist-only baseline | Public-safe baseline added |
+| Maintenance and regression path | Mature and host-specific | Baseline-only doctrine | Public-safe baseline added |
 | DR artifacts and live runtime evidence | Private only | Not public | Remain private by design |
 
 ## What can now be done entirely from the public repo
@@ -134,6 +149,7 @@ A new operator can now do the following without relying on private-only files:
 8. install public-safe backup helpers, create backup sets, verify them, and rehearse restore drills
 9. provision a repo-managed DR site for internal recovery guidance
 10. install and use a public-safe monitoring, diagnostics, and reporting baseline
+11. rehearse and run public-safe maintenance, upgrade, and regression workflows
 
 ## Immediate next migration candidates
 
@@ -143,6 +159,7 @@ The most useful next public parity work items are:
 2. extend the published diagnostics and maintenance tooling from `mail-diagnostics/`, `monitoring/`, and `sbom/` where it can be generalized safely
 3. selectively migrate later-phase doctrine where it can be detached from the live private host
 4. publish more of the monitoring and reporting stack in a similarly public-safe form
+5. selectively migrate deeper maintenance governance and upgrade control-plane behavior where it can be generalized safely
 
 ## Non-goals of this phase
 
@@ -169,3 +186,7 @@ operator inputs, a static monitoring site generator, health reports, cron-safe
 reporting wrappers, nginx and newsyslog templates, and phase 14 apply and verify
 wiring. Private dashboards, private telemetry feeds, and site-specific control
 plane behavior remain outside the public scope.
+
+## Phase 06 status
+
+The public repo now includes a real public-safe maintenance layer, including a maintenance input example, preflight and report-mode checks, `syspatch` and `pkg_add` wrappers, regression testing, rollback guidance, a weekly maintenance cron helper, and a QEMU rehearsal path for maintenance and upgrade windows. Private change-governance policy, live operator identities, and autonomous remediation remain outside the public scope.

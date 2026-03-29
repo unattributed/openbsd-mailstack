@@ -23,6 +23,7 @@ This directory contains external prerequisites and install-side preparation docu
 15. `14-backup-and-restore-drill-sequence.md`
 16. `15-dr-host-bootstrap.md`
 17. `16-monitoring-diagnostics-and-reporting.md`
+18. `17-maintenance-upgrades-regression-and-rollback.md`
 
 ## What changed in Phase 01
 
@@ -63,6 +64,16 @@ This install set now also includes:
 - log summary, health report, and cron-report helpers
 - install guidance for nginx, newsyslog, and cron wiring
 
+## What changed in Phase 06
+
+This install set now also includes:
+
+- a shared maintenance operator input file
+- public-safe syspatch and package-upgrade wrappers
+- regression and rollback guidance for change windows
+- optional host-side install helpers for maintenance tooling
+- a QEMU rehearsal path for maintenance and upgrade work
+
 ## Optional operator paths
 
 ### QEMU lab path
@@ -91,6 +102,10 @@ Use `13-dr-site-provisioning.md`, `14-backup-and-restore-drill-sequence.md`, and
 ### Monitoring and diagnostics path
 
 Use `16-monitoring-diagnostics-and-reporting.md` after the runtime and backup layers are in place and you want a daily operator visibility baseline.
+
+### Maintenance and upgrade path
+
+Use `17-maintenance-upgrades-regression-and-rollback.md` after the runtime, backup, and monitoring layers are in place and you want a reproducible maintenance and change-validation workflow.
 
 ## Security rule
 

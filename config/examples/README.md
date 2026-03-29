@@ -13,6 +13,7 @@ Use these files together with:
 - `config/dr-site.conf.example`
 - `config/dr-host.conf.example`
 - `config/monitoring.conf.example`
+- `config/maintenance.conf.example`
 
 Recommended approach:
 
@@ -27,3 +28,9 @@ Provider examples in this directory match the supported loader search paths docu
 - `docs/install/13-dr-site-provisioning.md`
 - `docs/install/15-dr-host-bootstrap.md`
 - `docs/install/16-monitoring-diagnostics-and-reporting.md`
+- `docs/install/17-maintenance-upgrades-regression-and-rollback.md`
+
+## Maintenance and upgrade inputs
+
+Later public phases also support a tracked example for maintenance and upgrade policy inputs.
+Use `config/maintenance.conf.example` as the starting point, then place real operator values in one of the ignored local input paths described in `docs/install/user-input-file-layout.md`.

@@ -1,0 +1,30 @@
+# Copy to config/maintenance.conf or config/local/maintenance.conf and adjust.
+# Do not commit local operator values.
+
+# Directory used to store maintenance state snapshots, reports, and rollback notes.
+MAINTENANCE_STATE_DIR="/var/db/openbsd-mailstack"
+
+# Optional operator alerting target used by maintenance helpers.
+ALERT_EMAIL="ops@example.net"
+ALERT_FROM="root@mail.example.net"
+
+# Optional delivery target for post-maintenance probe mail.
+REGRESSION_PROBE_TO="ops@example.net"
+
+# Timeouts and behavior controls.
+PKG_ADD_TIMEOUT_SECS="1800"
+ALLOW_PKG_TIMEOUT_CONTINUE="0"
+SYSPATCH_FALLBACK_URL="https://cdn.openbsd.org/pub/OpenBSD"
+
+# Safety controls.
+MAINTENANCE_REQUIRE_CLEAN_GIT="yes"
+MAINTENANCE_ENABLE_SECRET_GUARD="yes"
+MAINTENANCE_ENABLE_DESIGN_AUTHORITY="yes"
+MAINTENANCE_ENABLE_REGRESSION="yes"
+MAINTENANCE_ENABLE_PROBE="no"
+MAINTENANCE_AUTO_ROLLBACK_PLAN="yes"
+
+# Weekly scheduling defaults for generated cron snippets.
+MAINTENANCE_CRON_DAY="0"
+MAINTENANCE_CRON_HOUR="4"
+MAINTENANCE_CRON_MINUTE="15"
