@@ -20,6 +20,7 @@ The public autonomous installer directory lives at:
 It provides:
 
 - profile example file
+- guided profile builder
 - renderer script
 - lab and real install.conf generation
 - site78.tgz generation
@@ -44,20 +45,22 @@ The installer layer also derives:
 - host and domain naming
 - OpenBSD install answer file content
 
-## Why this matters
+## Guided profile builder
 
-The original prototype used `foo` and `/home/foo` directly. The public project must not assume that.
+The guided builder is the recommended first step for most users.
 
-The autonomous installer renderer fixes that by allowing the operator to declare:
+Run:
 
-- the username
-- the home path
-- the SSH public key
-- the bootstrap network assumptions
+```sh
+ksh maint/openbsd-autonomous-installer/guided-profile-builder.ksh
+```
+
+It creates a local untracked profile file, prompts for the required values, and writes a ready-to-render installer profile without forcing the operator to edit templates manually.
 
 ## Main files
 
 - `installer-profile.example.env`
+- `guided-profile-builder.ksh`
 - `render-installer-pack.ksh`
 - `install.conf.78.lab.template`
 - `install.conf.78.real.template`
@@ -68,38 +71,27 @@ The autonomous installer renderer fixes that by allowing the operator to declare
 
 ## Typical workflow
 
-### 1. Create a local profile
+### 1. Create a local profile with the guided builder
 
 ```sh
-cp maint/openbsd-autonomous-installer/installer-profile.example.env \
-   maint/openbsd-autonomous-installer/installer-profile.local.env
+ksh maint/openbsd-autonomous-installer/guided-profile-builder.ksh
 ```
 
-### 2. Edit the local profile
-
-Set at least:
-
-- `OPERATOR_USER`
-- `PARROT_PUBKEY`
-- `LAN_IF_DEFAULT`
-- `LAN_NET_DEFAULT`
-- `HOST_IP_DEFAULT`
-
-### 3. Render the installer pack
+### 2. Render the installer pack
 
 ```sh
 ksh maint/openbsd-autonomous-installer/render-installer-pack.ksh \
   --profile maint/openbsd-autonomous-installer/installer-profile.local.env
 ```
 
-### 4. Serve the generated pack over HTTP
+### 3. Serve the generated pack over HTTP
 
 ```sh
 sh maint/openbsd-autonomous-installer/serve-autoinstall.sh \
   /home/foo/Workspace/openbsd-mailstack/maint/openbsd-autonomous-installer/build/default 8000
 ```
 
-### 5. Boot OpenBSD and choose autoinstall
+### 4. Boot OpenBSD and choose autoinstall
 
 Use either the generated lab or real install response file.
 
@@ -120,9 +112,10 @@ Generated outputs include:
 
 ## Design notes
 
-- the public baseline now uses `OPERATOR_USER` and `OPERATOR_HOME`
+- the public baseline uses `OPERATOR_USER` and `OPERATOR_HOME`
 - no file in this layer should assume `/home/foo`
 - no file in this layer should assume the operator is named `foo`
+- the guided builder writes only local profile data
 - all live secrets remain outside Git
 
 ## Security notes

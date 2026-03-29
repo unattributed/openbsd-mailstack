@@ -8,7 +8,7 @@ It is based on the prototype work from the original private project, but removes
 
 ## Key improvement
 
-The public layer now lets the operator declare:
+The public layer lets the operator declare:
 
 - `OPERATOR_USER`
 - `OPERATOR_HOME`
@@ -17,10 +17,12 @@ The public layer now lets the operator declare:
 - `HOST_IP_DEFAULT`
 - `PARROT_PUBKEY`
 
+It also includes a guided profile builder so the operator does not need to hand-edit the profile template on first use.
+
 ## Main workflow
 
-1. copy `installer-profile.example.env` to a local profile file
-2. edit the local profile
+1. run `guided-profile-builder.ksh`
+2. review the local profile file
 3. run `render-installer-pack.ksh`
 4. serve the generated pack over HTTP
 5. use OpenBSD autoinstall with the generated `install.conf`
@@ -34,6 +36,7 @@ Generated files are written to:
 ## Files
 
 - `installer-profile.example.env`
+- `guided-profile-builder.ksh`
 - `render-installer-pack.ksh`
 - `install.conf.78.lab.template`
 - `install.conf.78.real.template`
