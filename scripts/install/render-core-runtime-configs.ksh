@@ -151,6 +151,7 @@ render_core() {
   render_template_file "${PROJECT_ROOT}/services/postfix/etc/postfix/postscreen_access.cidr.template" "${OUTPUT_ROOT}/etc/postfix/postscreen_access.cidr"     "WIREGUARD_SUBNET=${WIREGUARD_SUBNET}" "LAN_SUBNET=${LAN_SUBNET}"
   cp "${PROJECT_ROOT}/services/postfix/etc/postfix/tls_policy.template" "${OUTPUT_ROOT}/etc/postfix/tls_policy"
   render_template_file "${PROJECT_ROOT}/services/postfix/etc/postfix/sasl_passwd.template" "${OUTPUT_ROOT}/etc/postfix/sasl_passwd"     "BREVO_SMTP_LOGIN=${BREVO_SMTP_LOGIN}" "BREVO_SMTP_PASSWORD=${BREVO_SMTP_PASSWORD}"
+  build_postfix_hash_maps_in_tree "${OUTPUT_ROOT}" 0
 
   render_template_file "${PROJECT_ROOT}/services/dovecot/etc/dovecot/dovecot.conf.template" "${OUTPUT_ROOT}/etc/dovecot/dovecot.conf"     "DOVECOT_LISTEN=${DOVECOT_LISTEN}"
   render_template_file "${PROJECT_ROOT}/services/dovecot/etc/dovecot/local.conf.template" "${OUTPUT_ROOT}/etc/dovecot/local.conf"     "DOVECOT_MAIL_LOCATION=${DOVECOT_MAIL_LOCATION}" "DOVECOT_VMAIL_UID=${DOVECOT_VMAIL_UID}" "DOVECOT_VMAIL_GID=${DOVECOT_VMAIL_GID}"     "DOVECOT_FIRST_VALID_UID=${DOVECOT_FIRST_VALID_UID}" "DOVECOT_LAST_VALID_UID=${DOVECOT_LAST_VALID_UID}"     "TLS_CERT_PATH_FULLCHAIN=${TLS_CERT_PATH_FULLCHAIN}" "TLS_CERT_PATH_KEY=${TLS_CERT_PATH_KEY}"     "DOVECOT_AUTH_MECHANISMS=${DOVECOT_AUTH_MECHANISMS}" "POSTFIX_VMAIL_BASE=${POSTFIX_VMAIL_BASE}" "POSTMASTER_EMAIL=${POSTMASTER_EMAIL}"

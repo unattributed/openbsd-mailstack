@@ -44,6 +44,52 @@ runtime_secret_file_mode() {
   print -- "${OPENBSD_MAILSTACK_RUNTIME_SECRET_FILE_MODE:-${RUNTIME_SECRET_FILE_MODE:-0600}}"
 }
 
+postfix_hash_source_relative_paths() {
+  cat <<'EOF'
+etc/postfix/sasl_passwd
+etc/postfix/tls_policy
+EOF
+}
+
+find_postmap_command() {
+  if command_exists postmap; then
+    command -v postmap
+  elif [ -x /usr/local/sbin/postmap ]; then
+    print -- "/usr/local/sbin/postmap"
+  else
+    print -- ""
+  fi
+}
+
+build_postfix_hash_maps_in_tree() {
+  _root="$1"
+  _require_postmap="${2:-0}"
+  _postmap="$(find_postmap_command)"
+
+  if [ -z "${_postmap}" ]; then
+    if [ "${_require_postmap}" = "1" ]; then
+      die "postmap is required to build postfix hash maps under ${_root}, but it was not found in PATH"
+    fi
+    log_warn "postmap not available, skipping postfix hash map build under ${_root}"
+    return 0
+  fi
+
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    _src="${_root%/}/${_rel}"
+    [ -f "${_src}" ] || continue
+    "${_postmap}" "${_src}" >/dev/null 2>&1 || die "failed to build postfix hash map for ${_src} using ${_postmap}"
+  done <<EOF
+$(postfix_hash_source_relative_paths)
+EOF
+
+  if [ -f "${_root%/}/etc/postfix/sasl_passwd.db" ]; then
+    apply_runtime_secret_mode "${_root%/}/etc/postfix/sasl_passwd.db"
+  fi
+
+  log_info "ensured postfix hash maps under ${_root}"
+}
+
 core_runtime_secret_relative_paths() {
   cat <<'EOF'
 etc/postfix/mysql_virtual_domains_maps.cf

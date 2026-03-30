@@ -64,7 +64,7 @@ Recommended dry-run style install step:
 doas ./scripts/install/install-core-runtime-configs.ksh --target-root /tmp/openbsd-mailstack-staging
 ```
 
-Review the staged result under `/tmp/openbsd-mailstack-staging` before writing to `/`.
+Review the staged result under `/tmp/openbsd-mailstack-staging` before writing to `/`. Confirm that `/tmp/openbsd-mailstack-staging/etc/postfix/sasl_passwd.db` and `/tmp/openbsd-mailstack-staging/etc/postfix/tls_policy.db` are present.
 
 ### 6. Install onto the live host root
 

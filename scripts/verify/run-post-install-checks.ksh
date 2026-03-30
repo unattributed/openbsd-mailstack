@@ -91,6 +91,46 @@ check_secret_mode() {
   fi
 }
 
+check_required_file() {
+  _file="$1"
+  _label="$2"
+  if [ -f "${_file}" ]; then
+    pass "${_label}: ${_file}"
+  else
+    fail "${_label} is missing: ${_file}"
+  fi
+}
+
+check_required_secret_mode() {
+  _file="$1"
+  _label="$2"
+  if [ ! -f "${_file}" ]; then
+    fail "${_label} is missing: ${_file}"
+    return 0
+  fi
+  _expected_mode="$(normalize_mode_octal "$(runtime_secret_file_mode)")"
+  _actual_mode="$(normalize_mode_octal "$(file_mode_octal "${_file}")")"
+  if [ -n "${_actual_mode}" ] && [ "${_actual_mode}" = "${_expected_mode}" ]; then
+    pass "${_label} mode ok (${_actual_mode}): ${_file}"
+  else
+    fail "${_label} mode mismatch, expected ${_expected_mode}, got ${_actual_mode:-unknown}: ${_file}"
+  fi
+}
+
+check_postfix_hash_maps_in_tree() {
+  _root="$1"
+  _label_prefix="$2"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    _source_file="${_root%/}/${_rel}"
+    _db_file="${_source_file}.db"
+    check_required_file "${_source_file}" "${_label_prefix} postfix hash source"
+    check_required_file "${_db_file}" "${_label_prefix} postfix hash map"
+  done <<EOF
+$(postfix_hash_source_relative_paths)
+EOF
+}
+
 check_repo_state() {
   print_phase_header "POST-INSTALL" "repo checks"
 
@@ -109,6 +149,13 @@ check_repo_state() {
   done <<EOF
 $(core_runtime_secret_relative_paths)
 EOF
+
+  if [ -n "$(find_postmap_command)" ]; then
+    check_postfix_hash_maps_in_tree "${CORE_RENDER_ROOT}" "live runtime"
+    check_required_secret_mode "${CORE_RENDER_ROOT%/}/etc/postfix/sasl_passwd.db" "live postfix sasl hash map"
+  else
+    warn "postmap not available, skipping live postfix hash map verification in ${CORE_RENDER_ROOT}"
+  fi
 
   _phase=0
   while [ "${_phase}" -le 10 ]; do
@@ -197,6 +244,8 @@ check_host_state() {
   done <<EOF
 $(core_runtime_secret_relative_paths)
 EOF
+  check_postfix_hash_maps_in_tree "/" "installed"
+  check_required_secret_mode "/etc/postfix/sasl_passwd.db" "installed postfix sasl hash map"
 
   _db_service=""
   if _db_service="$(detect_mariadb_service_name 2>/dev/null)" && [ -n "${_db_service}" ]; then

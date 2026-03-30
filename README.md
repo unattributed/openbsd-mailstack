@@ -125,7 +125,7 @@ Those are design boundaries, not undocumented defects.
 
 ## Validation and maintenance entry points
 
-Useful commands after the repository is populated with local inputs:
+Useful commands after the repository is populated with local inputs. The install helper also rebuilds the required Postfix `hash:` maps for `sasl_passwd` and `tls_policy` inside the target root so fresh installs do not depend on a separate manual `postmap` step:
 
 ```sh
 ./scripts/install/render-core-runtime-configs.ksh

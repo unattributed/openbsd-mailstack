@@ -65,6 +65,15 @@ if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside
   done <<EOF
 $(core_runtime_secret_relative_paths)
 EOF
+  _sasl_db="${REPO_ROOT}/${CORE_RUNTIME_RENDER_ROOT_REL}/etc/postfix/sasl_passwd.db"
+  if [ -f "${_sasl_db}" ]; then
+    _actual_mode="$(normalize_mode_octal "$(file_mode_octal "${_sasl_db}")")"
+    if [ -n "${_actual_mode}" ] && [ "${_actual_mode}" = "${_expected_mode}" ]; then
+      pass "live postfix sasl hash map mode ok (${_actual_mode}): ${CORE_RUNTIME_RENDER_ROOT_REL}/etc/postfix/sasl_passwd.db"
+    else
+      fail "live postfix sasl hash map mode mismatch, expected ${_expected_mode}, got ${_actual_mode:-unknown}: ${CORE_RUNTIME_RENDER_ROOT_REL}/etc/postfix/sasl_passwd.db"
+    fi
+  fi
 fi
 
 [ "${FAIL}" -eq 0 ]

@@ -22,7 +22,7 @@ Run:
 
 By default this creates a live operator filesystem tree under `.work/runtime/rootfs/`.
 
-That live tree may contain real credentials and other deployment-specific values. It is gitignored and should remain local to the operator checkout. Secret-bearing rendered files are forced to mode `0600` during render and re-enforced during install.
+That live tree may contain real credentials and other deployment-specific values. It is gitignored and should remain local to the operator checkout. Secret-bearing rendered files are forced to mode `0600` during render and re-enforced during install. When `postmap` is available during render, the helper also builds `sasl_passwd.db` and `tls_policy.db` in the live tree.
 
 Override the default live render destination when needed:
 
@@ -35,6 +35,8 @@ OPENBSD_MAILSTACK_CORE_RENDER_ROOT=/tmp/openbsd-mailstack-runtime/rootfs ./scrip
 ```sh
 doas ./scripts/install/install-core-runtime-configs.ksh
 ```
+
+The install helper rebuilds the required Postfix `hash:` maps inside the target root and fails loudly if `postmap` is unavailable at install time.
 
 For a lab or alternate root:
 

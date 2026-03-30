@@ -18,6 +18,7 @@ The script can validate:
 
 - presence of core repo assets
 - presence of rendered runtime artifacts
+- presence of required Postfix `hash:` map databases for relay credentials and TLS policy
 - presence of key installed config files on an OpenBSD host
 - service status for known rcctl services when running on OpenBSD
 - basic operator input validity when values are present

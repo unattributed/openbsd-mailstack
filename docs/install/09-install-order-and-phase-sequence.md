@@ -14,7 +14,7 @@ A new operator can now do the following using only public-safe repo assets:
 2. render the live operator runtime tree under `.work/runtime/rootfs/`, while using `services/generated/rootfs/` as the sanitized example reference
 3. test the install path in QEMU
 4. run the public phase sequence through the first usable mail baseline
-5. stage and install the rendered configs onto a target OpenBSD host
+5. stage and install the rendered configs onto a target OpenBSD host, with the install helper rebuilding the required Postfix `hash:` maps
 6. run post-install checks and operator workflows
 7. extend the baseline with backup, monitoring, maintenance, hardening, runtime secrets, and optional advanced layers
 

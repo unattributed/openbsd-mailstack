@@ -58,8 +58,12 @@ main() {
   [ -d "${GENERATED_ROOT}" ] || die "generated rootfs missing: ${GENERATED_ROOT}"
   ensure_directory "${TARGET_ROOT}"
   copy_tree_contents "${GENERATED_ROOT}" "${TARGET_ROOT}"
+  build_postfix_hash_maps_in_tree "${TARGET_ROOT}" 1
   enforce_core_runtime_secret_permissions_in_tree "${TARGET_ROOT}"
-  log_info "installed staged core runtime from ${GENERATED_ROOT} into ${TARGET_ROOT} with runtime secret permissions enforced"
+  if [ -f "${TARGET_ROOT%/}/etc/postfix/sasl_passwd.db" ]; then
+    apply_runtime_secret_mode "${TARGET_ROOT%/}/etc/postfix/sasl_passwd.db"
+  fi
+  log_info "installed staged core runtime from ${GENERATED_ROOT} into ${TARGET_ROOT} with postfix hash maps and runtime secret permissions enforced"
 }
 
 main "$@"
