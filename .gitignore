@@ -1,2 +1,6 @@
 # Gitignored live operator render workspace
 .work/
+
+# Python cache and bytecode artifacts
+__pycache__/
+*.py[cod]
