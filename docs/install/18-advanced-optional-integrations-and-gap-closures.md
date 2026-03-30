@@ -28,6 +28,7 @@ Review staged output under:
 
 - `services/generated/rootfs/etc/suricata/`
 - `services/generated/rootfs/etc/nginx/templates/`
+  - confirm Brevo and SOGo includes reference `/etc/nginx/templates/control-plane-allow.tmpl`, not the raw allowlist file
 - `services/generated/rootfs/etc/sogo/`
 - `services/generated/rootfs/usr/local/sbin/`
 - `services/generated/sbom/`

@@ -18,8 +18,8 @@ A new operator can now use the public repo to:
 
 - render a Suricata IDS baseline for OpenBSD
 - stage helper scripts for Suricata dashboard export and PF candidate generation
-- stage an optional Brevo webhook listener behind nginx
-- stage an optional SOGo baseline behind nginx
+- stage an optional Brevo webhook listener behind nginx, under the same control-plane allow wrapper used by the monitoring surface
+- stage an optional SOGo baseline behind nginx, under the same control-plane allow wrapper used by the monitoring surface
 - generate a public-safe source SBOM and host inventory, then run fallback or mapped vulnerability scans
 
 ## What remains optional or private

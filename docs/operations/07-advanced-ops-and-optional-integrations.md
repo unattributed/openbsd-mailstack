@@ -15,13 +15,14 @@ This runbook defines a practical operator review pattern for the late optional i
 
 - confirm the listener remains bound to loopback
 - confirm nginx alone exposes the webhook path
+- confirm the nginx location include uses `/etc/nginx/templates/control-plane-allow.tmpl`, so the final `deny all;` remains in force
 - review `/var/log/brevo-webhook.log`
 - confirm the state file updates when test events are posted
 - expect state writes to be serialized intentionally so concurrent webhook bursts do not lose counters or recent-event entries
 
 ## SOGo review
 
-- confirm SOGo remains behind the same access-control model as the rest of the web plane
+- confirm SOGo remains behind the same access-control model as the rest of the web plane, using `/etc/nginx/templates/control-plane-allow.tmpl`
 - confirm `sogo.conf` ownership and modes
 - test `.well-known/caldav` and `.well-known/carddav` redirects only after the rest of the mail stack is stable
 
