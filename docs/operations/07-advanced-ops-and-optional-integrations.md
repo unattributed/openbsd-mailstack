@@ -17,6 +17,7 @@ This runbook defines a practical operator review pattern for the late optional i
 - confirm nginx alone exposes the webhook path
 - review `/var/log/brevo-webhook.log`
 - confirm the state file updates when test events are posted
+- expect state writes to be serialized intentionally so concurrent webhook bursts do not lose counters or recent-event entries
 
 ## SOGo review
 

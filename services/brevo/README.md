@@ -4,7 +4,7 @@ This directory holds public-safe templates for an optional Brevo event webhook l
 
 Included here:
 
-- `brevo_webhook.py.template`, a non-blocking Python listener
+- `brevo_webhook.py.template`, a threaded Python listener with serialized state updates
 - `brevo_webhook.rcd.template`, an OpenBSD `rc.d` wrapper
 - `brevo_webhook.locations.tmpl.template`, an nginx location include
 - an example environment file

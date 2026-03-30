@@ -16,10 +16,12 @@ Usage:
 
 import json
 import os
-import sys
-import time
 import signal
 import subprocess
+import sys
+import tempfile
+import threading
+import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from typing import Any
@@ -41,6 +43,7 @@ ALERT_EVENTS = set(
 
 MAX_RECENT = 50
 SENDMAIL_TIMEOUT = 5  # hard cap, never block webhook
+STATE_LOCK = threading.Lock()
 
 
 def log_line(message: str) -> None:
@@ -96,15 +99,78 @@ def load_state() -> dict[str, Any]:
 
 
 def save_state(state: dict[str, Any]) -> None:
-    """Persist state atomically via tmp file + replace."""
-    tmp = STATE_PATH + ".tmp"
+    """Persist state atomically via unique tmp file + replace."""
+    tmp_path = None
     try:
-        os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
-        with open(tmp, "w", encoding="utf-8") as fh:
+        state_dir = os.path.dirname(STATE_PATH) or "."
+        os.makedirs(state_dir, exist_ok=True)
+        fd, tmp_path = tempfile.mkstemp(prefix="brevo-webhook-", suffix=".tmp", dir=state_dir)
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
             json.dump(state, fh, indent=2, sort_keys=True)
-        os.replace(tmp, STATE_PATH)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp_path, STATE_PATH)
     except Exception as exc:
         log_line(f"state write failed: {exc}")
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def update_state(items: list[dict[str, Any]]) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Apply event mutations under a process-local lock and return alert work."""
+    alerts: list[tuple[dict[str, Any], dict[str, Any]]] = []
+
+    with STATE_LOCK:
+        state = load_state()
+        state["updated_epoch"] = int(time.time())
+
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            ev = normalize(item)
+
+            totals = state["brevo"]["totals"]
+            totals["total_events"] += 1
+
+            mapping = {
+                "delivered": "delivered",
+                "sent": "delivered",
+                "soft_bounce": "bounced",
+                "hard_bounce": "bounced",
+                "bounced": "bounced",
+                "blocked": "blocked",
+                "deferred": "deferred",
+                "spam": "spam",
+                "complaint": "spam",
+            }
+
+            key = mapping.get(ev["event"])
+            if key:
+                totals[key] += 1
+
+            state["recent"].insert(
+                0,
+                {
+                    "event": ev["event"],
+                    "email": ev["email"],
+                    "ts_epoch": ev["ts_epoch"],
+                    "ts_iso": ev["ts_iso"],
+                    "message_id": ev["message_id"],
+                },
+            )
+
+            if len(state["recent"]) > MAX_RECENT:
+                state["recent"] = state["recent"][:MAX_RECENT]
+
+            if ev["event"] in ALERT_EVENTS:
+                alerts.append((ev, item))
+
+        save_state(state)
+
+    return alerts
 
 
 def fork_sendmail(body: str) -> None:
@@ -200,57 +266,16 @@ class Handler(BaseHTTPRequestHandler):
 
         items = payload if isinstance(payload, list) else [payload]
 
-        state = load_state()
-        state["updated_epoch"] = int(time.time())
+        alerts = update_state(items)
 
-        for item in items:
-            if not isinstance(item, dict):
-                continue
-            ev = normalize(item)
-
-            totals = state["brevo"]["totals"]
-            totals["total_events"] += 1
-
-            mapping = {
-                "delivered": "delivered",
-                "sent": "delivered",
-                "soft_bounce": "bounced",
-                "hard_bounce": "bounced",
-                "bounced": "bounced",
-                "blocked": "blocked",
-                "deferred": "deferred",
-                "spam": "spam",
-                "complaint": "spam",
-            }
-
-            key = mapping.get(ev["event"])
-            if key:
-                totals[key] += 1
-
-            state["recent"].insert(
-                0,
-                {
-                    "event": ev["event"],
-                    "email": ev["email"],
-                    "ts_epoch": ev["ts_epoch"],
-                    "ts_iso": ev["ts_iso"],
-                    "message_id": ev["message_id"],
-                },
+        for ev, item in alerts:
+            send_alert_async(
+                ev["event"],
+                ev["email"],
+                ev["message_id"],
+                ev["ts_iso"],
+                item,
             )
-
-            if len(state["recent"]) > MAX_RECENT:
-                state["recent"] = state["recent"][:MAX_RECENT]
-
-            if ev["event"] in ALERT_EVENTS:
-                send_alert_async(
-                    ev["event"],
-                    ev["email"],
-                    ev["message_id"],
-                    ev["ts_iso"],
-                    item,
-                )
-
-        save_state(state)
 
         self.send_response(200)
         self.send_header("Content-Type", "text/plain")
