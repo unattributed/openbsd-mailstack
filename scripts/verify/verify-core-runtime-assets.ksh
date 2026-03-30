@@ -34,4 +34,24 @@ done
 
 CORE_RENDER_ROOT="$(core_runtime_render_root)"
 [ -d "${CORE_RENDER_ROOT}" ] && pass "live rendered rootfs exists: ${CORE_RENDER_ROOT}" || fail "live rendered rootfs not present yet at ${CORE_RENDER_ROOT}, run render-core-runtime-configs.ksh"
+
+if [ -d "${CORE_RENDER_ROOT}" ]; then
+  _expected_mode="$(normalize_mode_octal "$(runtime_secret_file_mode)")"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    _path="${CORE_RENDER_ROOT%/}/${_rel}"
+    if [ -f "${_path}" ]; then
+      _actual_mode="$(normalize_mode_octal "$(file_mode_octal "${_path}")")"
+      if [ -n "${_actual_mode}" ] && [ "${_actual_mode}" = "${_expected_mode}" ]; then
+        pass "live runtime secret mode ok (${_actual_mode}): ${_path}"
+      else
+        fail "live runtime secret mode mismatch, expected ${_expected_mode}, got ${_actual_mode:-unknown}: ${_path}"
+      fi
+    else
+      fail "live runtime secret file missing: ${_path}"
+    fi
+  done <<EOF
+$(core_runtime_secret_relative_paths)
+EOF
+fi
 [ ${FAIL} -eq 0 ]

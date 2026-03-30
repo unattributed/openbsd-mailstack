@@ -4,6 +4,9 @@ set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+COMMON_LIB="${REPO_ROOT}/scripts/lib/common.ksh"
+[ -f "${COMMON_LIB}" ] || { print -- "ERROR missing shared library: ${COMMON_LIB}" >&2; exit 1; }
+. "${COMMON_LIB}"
 FAIL=0
 CORE_RUNTIME_RENDER_ROOT_REL=".work/runtime/rootfs"
 
@@ -48,6 +51,20 @@ if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside
   else
     pass "no tracked files found under .work/"
   fi
+  _expected_mode="$(normalize_mode_octal "$(runtime_secret_file_mode)")"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    _path="${REPO_ROOT}/${CORE_RUNTIME_RENDER_ROOT_REL}/${_rel}"
+    [ -f "${_path}" ] || continue
+    _actual_mode="$(normalize_mode_octal "$(file_mode_octal "${_path}")")"
+    if [ -n "${_actual_mode}" ] && [ "${_actual_mode}" = "${_expected_mode}" ]; then
+      pass "live runtime secret mode ok (${_actual_mode}): ${CORE_RUNTIME_RENDER_ROOT_REL}/${_rel}"
+    else
+      fail "live runtime secret mode mismatch, expected ${_expected_mode}, got ${_actual_mode:-unknown}: ${CORE_RUNTIME_RENDER_ROOT_REL}/${_rel}"
+    fi
+  done <<EOF
+$(core_runtime_secret_relative_paths)
+EOF
 fi
 
 [ "${FAIL}" -eq 0 ]

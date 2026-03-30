@@ -58,7 +58,8 @@ main() {
   [ -d "${GENERATED_ROOT}" ] || die "generated rootfs missing: ${GENERATED_ROOT}"
   ensure_directory "${TARGET_ROOT}"
   copy_tree_contents "${GENERATED_ROOT}" "${TARGET_ROOT}"
-  log_info "installed staged core runtime from ${GENERATED_ROOT} into ${TARGET_ROOT}"
+  enforce_core_runtime_secret_permissions_in_tree "${TARGET_ROOT}"
+  log_info "installed staged core runtime from ${GENERATED_ROOT} into ${TARGET_ROOT} with runtime secret permissions enforced"
 }
 
 main "$@"

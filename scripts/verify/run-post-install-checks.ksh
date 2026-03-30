@@ -75,6 +75,22 @@ warn_if_missing() {
   fi
 }
 
+check_secret_mode() {
+  _file="$1"
+  _label="$2"
+  if [ ! -f "${_file}" ]; then
+    warn "${_label} is missing: ${_file}"
+    return 0
+  fi
+  _expected_mode="$(normalize_mode_octal "$(runtime_secret_file_mode)")"
+  _actual_mode="$(normalize_mode_octal "$(file_mode_octal "${_file}")")"
+  if [ -n "${_actual_mode}" ] && [ "${_actual_mode}" = "${_expected_mode}" ]; then
+    pass "${_label} mode ok (${_actual_mode}): ${_file}"
+  else
+    fail "${_label} mode mismatch, expected ${_expected_mode}, got ${_actual_mode:-unknown}: ${_file}"
+  fi
+}
+
 check_repo_state() {
   print_phase_header "POST-INSTALL" "repo checks"
 
@@ -87,6 +103,12 @@ check_repo_state() {
   check_file_exists "${CORE_RENDER_ROOT}/etc/nginx/sites-available/main.conf" "live rendered nginx config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/rspamd/local.d/worker-proxy.inc" "live rendered rspamd config present"
   check_file_exists "${CORE_RENDER_ROOT}/var/www/postfixadmin/config.local.php" "live rendered postfixadmin config present"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    check_secret_mode "${CORE_RENDER_ROOT%/}/${_rel}" "live runtime secret"
+  done <<EOF
+$(core_runtime_secret_relative_paths)
+EOF
 
   _phase=0
   while [ "${_phase}" -le 10 ]; do
@@ -169,6 +191,12 @@ check_host_state() {
   warn_if_missing "/etc/nginx/sites-available/main.conf" "installed nginx config"
   warn_if_missing "/etc/rspamd/local.d/worker-proxy.inc" "installed rspamd config"
   warn_if_missing "/var/www/postfixadmin/config.local.php" "installed postfixadmin config"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    check_secret_mode "/${_rel}" "installed runtime secret"
+  done <<EOF
+$(core_runtime_secret_relative_paths)
+EOF
 
   _db_service=""
   if _db_service="$(detect_mariadb_service_name 2>/dev/null)" && [ -n "${_db_service}" ]; then

@@ -68,7 +68,7 @@ The public repository now contains:
 - public-safe hardening and runtime secret layout helpers
 - optional Suricata, Brevo, SOGo, and SBOM layers
 - tracked sanitized rendered examples under `services/generated/rootfs/`
-- a gitignored live core runtime render workspace under `.work/runtime/rootfs/`
+- a gitignored live core runtime render workspace under `.work/runtime/rootfs/`, with secret-bearing files forced to mode `0600` during render and install
 
 ## Practical operator outcome
 

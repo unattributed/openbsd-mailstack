@@ -22,7 +22,7 @@ Run:
 
 By default this creates a live operator filesystem tree under `.work/runtime/rootfs/`.
 
-That live tree may contain real credentials and other deployment-specific values. It is gitignored and should remain local to the operator checkout.
+That live tree may contain real credentials and other deployment-specific values. It is gitignored and should remain local to the operator checkout. Secret-bearing rendered files are forced to mode `0600` during render and re-enforced during install.
 
 Override the default live render destination when needed:
 

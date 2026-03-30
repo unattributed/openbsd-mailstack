@@ -145,7 +145,7 @@ Recommended permissions for files containing secrets:
 - owner: `root`
 - mode: `0600`
 
-Repo-local non-secret files may be less strict, but keeping all operator-input files restricted is still a good default.
+Repo-local non-secret files may be less strict, but keeping all operator-input files restricted is still a good default. The live core runtime renderer also forces secret-bearing rendered files and their installed copies to mode `0600`.
 
 ## Failure and prompting behavior
 

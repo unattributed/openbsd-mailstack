@@ -40,6 +40,79 @@ core_runtime_example_root() {
   print -- "${CORE_RUNTIME_EXAMPLE_ROOT}"
 }
 
+runtime_secret_file_mode() {
+  print -- "${OPENBSD_MAILSTACK_RUNTIME_SECRET_FILE_MODE:-${RUNTIME_SECRET_FILE_MODE:-0600}}"
+}
+
+core_runtime_secret_relative_paths() {
+  cat <<'EOF'
+etc/postfix/mysql_virtual_domains_maps.cf
+etc/postfix/mysql_virtual_mailbox_maps.cf
+etc/postfix/mysql_virtual_alias_maps.cf
+etc/postfix/mysql_virtual_alias_domain_maps.cf
+etc/postfix/sasl_passwd
+etc/dovecot/dovecot-sql.conf.ext
+etc/rspamd/local.d/worker-controller.inc
+var/www/postfixadmin/config.local.php
+var/www/roundcubemail/config/config.inc.php
+EOF
+}
+
+is_core_runtime_secret_path() {
+  _path="$1"
+  case "${_path}" in
+    */etc/postfix/mysql_virtual_domains_maps.cf|etc/postfix/mysql_virtual_domains_maps.cf) return 0 ;;
+    */etc/postfix/mysql_virtual_mailbox_maps.cf|etc/postfix/mysql_virtual_mailbox_maps.cf) return 0 ;;
+    */etc/postfix/mysql_virtual_alias_maps.cf|etc/postfix/mysql_virtual_alias_maps.cf) return 0 ;;
+    */etc/postfix/mysql_virtual_alias_domain_maps.cf|etc/postfix/mysql_virtual_alias_domain_maps.cf) return 0 ;;
+    */etc/postfix/sasl_passwd|etc/postfix/sasl_passwd) return 0 ;;
+    */etc/dovecot/dovecot-sql.conf.ext|etc/dovecot/dovecot-sql.conf.ext) return 0 ;;
+    */etc/rspamd/local.d/worker-controller.inc|etc/rspamd/local.d/worker-controller.inc) return 0 ;;
+    */var/www/postfixadmin/config.local.php|var/www/postfixadmin/config.local.php) return 0 ;;
+    */var/www/roundcubemail/config/config.inc.php|var/www/roundcubemail/config/config.inc.php) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+apply_runtime_secret_mode() {
+  _path="$1"
+  [ -f "${_path}" ] || return 0
+  _mode="$(runtime_secret_file_mode)"
+  require_command chmod
+  chmod "${_mode}" "${_path}" || die "failed to set runtime secret file mode ${_mode} on ${_path}"
+}
+
+enforce_core_runtime_secret_permissions_in_tree() {
+  _root="$1"
+  while IFS= read -r _rel || [ -n "${_rel}" ]; do
+    [ -n "${_rel}" ] || continue
+    _path="${_root%/}/${_rel}"
+    [ -f "${_path}" ] || continue
+    apply_runtime_secret_mode "${_path}"
+  done <<EOF
+$(core_runtime_secret_relative_paths)
+EOF
+}
+
+file_mode_octal() {
+  _path="$1"
+  [ -e "${_path}" ] || { print -- ""; return 0; }
+  if stat -f '%Lp' "${_path}" >/dev/null 2>&1; then
+    stat -f '%Lp' "${_path}"
+  elif stat -c '%a' "${_path}" >/dev/null 2>&1; then
+    stat -c '%a' "${_path}"
+  else
+    print -- ""
+  fi
+}
+
+normalize_mode_octal() {
+  _mode="$1"
+  _normalized="$(print -- "${_mode}" | sed 's/^0*//')"
+  [ -n "${_normalized}" ] || _normalized="0"
+  print -- "${_normalized}"
+}
+
 load_project_config() {
   if command_exists load_project_operator_inputs; then
     load_project_operator_inputs
@@ -339,6 +412,12 @@ render_template_file() {
   shift 2
   [ -f "${_src}" ] || die "template file not found: ${_src}"
   ensure_directory "$(dirname -- "${_dst}")"
+  _is_secret=0
+  if is_core_runtime_secret_path "${_dst}"; then
+    _is_secret=1
+    _saved_umask="$(umask)"
+    umask 077
+  fi
   : > "${_dst}" || die "unable to write rendered file: ${_dst}"
   while IFS= read -r _line || [ -n "${_line}" ]; do
     _rendered="${_line}"
@@ -349,6 +428,10 @@ render_template_file() {
     done
     printf '%s\n' "${_rendered}" >> "${_dst}" || die "failed writing ${_dst}"
   done < "${_src}"
+  if [ "${_is_secret}" -eq 1 ]; then
+    apply_runtime_secret_mode "${_dst}"
+    umask "${_saved_umask}"
+  fi
 }
 
 copy_tree_contents() {
