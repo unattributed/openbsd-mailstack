@@ -6,7 +6,13 @@ Phase 02 adds a shared runtime rendering model.
 
 The core service templates live under `services/<service>/` and are sanitized for public use.
 
-## Rendered rootfs
+## Tracked example rootfs
+
+`services/generated/rootfs/` remains the tracked sanitized example tree.
+
+Some files in that example tree use secret-bearing filenames, but they only contain placeholder values for public-safe documentation.
+
+## Live operator rootfs
 
 Run:
 
@@ -14,7 +20,15 @@ Run:
 ./scripts/install/render-core-runtime-configs.ksh
 ```
 
-This creates a staged filesystem tree under `services/generated/rootfs/`.
+By default this creates a live operator filesystem tree under `.work/runtime/rootfs/`.
+
+That live tree may contain real credentials and other deployment-specific values. It is gitignored and should remain local to the operator checkout.
+
+Override the default live render destination when needed:
+
+```sh
+OPENBSD_MAILSTACK_CORE_RENDER_ROOT=/tmp/openbsd-mailstack-runtime/rootfs ./scripts/install/render-core-runtime-configs.ksh
+```
 
 ## Install into a target root
 
@@ -26,4 +40,10 @@ For a lab or alternate root:
 
 ```sh
 ./scripts/install/install-core-runtime-configs.ksh --target-root /tmp/openbsd-mailstack-root
+```
+
+To install from a non-default live render location:
+
+```sh
+./scripts/install/install-core-runtime-configs.ksh --render-root /tmp/openbsd-mailstack-runtime/rootfs --target-root /tmp/openbsd-mailstack-root
 ```

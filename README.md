@@ -67,14 +67,15 @@ The public repository now contains:
 - backup, disaster recovery, monitoring, maintenance, and network exposure helpers
 - public-safe hardening and runtime secret layout helpers
 - optional Suricata, Brevo, SOGo, and SBOM layers
-- staged rendered examples under `services/generated/rootfs/`
+- tracked sanitized rendered examples under `services/generated/rootfs/`
+- a gitignored live core runtime render workspace under `.work/runtime/rootfs/`
 
 ## Practical operator outcome
 
 With operator-provided data and external account setup, a new operator can use the public repository to:
 
 1. create local input files and provider credential files
-2. render the core runtime and review staged output
+2. render the live core runtime and review `.work/runtime/rootfs/`
 3. validate the baseline in QEMU
 4. apply and verify the phased deployment path on a real OpenBSD host
 5. run post-install checks, operations checks, maintenance checks, and backup workflows

@@ -11,7 +11,7 @@ The public repo now contains enough material to validate the first install and r
 That gives you a chance to confirm:
 
 - your operator input files load correctly
-- the staged runtime tree renders correctly
+- the live runtime tree renders correctly
 - the public phase sequence runs in order
 - the post-install validation path behaves as expected
 
@@ -44,11 +44,13 @@ ksh maint/qemu/lab-openbsd78-build.ksh
 
 Use your preferred safe method, such as `scp`, `rsync`, or a Git clone inside the VM.
 
-### 4. Render the runtime tree inside the VM
+### 4. Render the live runtime tree inside the VM
 
 ```sh
 ./scripts/install/render-core-runtime-configs.ksh
 ```
+
+This writes the live operator render into `.work/runtime/rootfs/` by default.
 
 ### 5. Run the first public baseline
 

@@ -11,7 +11,7 @@ It ties together prerequisites, core runtime rendering, phase execution order, v
 A new operator can now do the following using only public-safe repo assets:
 
 1. complete provider onboarding and local operator input setup
-2. render the sanitized runtime tree under `services/generated/rootfs/`
+2. render the live operator runtime tree under `.work/runtime/rootfs/`, while using `services/generated/rootfs/` as the sanitized example reference
 3. test the install path in QEMU
 4. run the public phase sequence through the first usable mail baseline
 5. stage and install the rendered configs onto a target OpenBSD host
@@ -50,9 +50,11 @@ From the repo root:
 ./scripts/install/render-core-runtime-configs.ksh
 ```
 
-Review the staged tree under:
+Review the live operator tree under:
 
-- `services/generated/rootfs/`
+- `.work/runtime/rootfs/`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example tree.
 
 ### 4. Choose validation path first
 
@@ -114,8 +116,8 @@ Review [Project status](../project-status.md) and [Phase crosswalk](../phases/ph
 
 ## Install sequence on a real OpenBSD host
 
-1. render the runtime tree
-2. review staged output
+1. render the live runtime tree
+2. review the live operator output under `.work/runtime/rootfs/`
 3. run the phase sequence
 4. install the rendered configs onto the host
 5. run post-install checks

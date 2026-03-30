@@ -5,6 +5,7 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 FAIL=0
+CORE_RUNTIME_RENDER_ROOT_REL=".work/runtime/rootfs"
 
 pass() { print -- "PASS: $*"; }
 fail() { print -- "FAIL: $*"; FAIL=1; }
@@ -36,6 +37,16 @@ if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside
     fail "tracked publishable files still contain the private deployment hostname"
   else
     pass "no private deployment hostname markers found in publishable files"
+  fi
+  if git -C "${REPO_ROOT}" check-ignore -q "${CORE_RUNTIME_RENDER_ROOT_REL}"; then
+    pass "live core runtime render root is gitignored: ${CORE_RUNTIME_RENDER_ROOT_REL}"
+  else
+    fail "live core runtime render root should be gitignored: ${CORE_RUNTIME_RENDER_ROOT_REL}"
+  fi
+  if git -C "${REPO_ROOT}" ls-files .work | grep -q .; then
+    fail "tracked files found under .work/"
+  else
+    pass "no tracked files found under .work/"
   fi
 fi
 

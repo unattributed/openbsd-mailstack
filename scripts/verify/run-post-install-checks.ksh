@@ -12,6 +12,7 @@ COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
 }
 
 . "${COMMON_LIB}"
+CORE_RENDER_ROOT="$(core_runtime_render_root)"
 
 CHECK_REPO=1
 CHECK_HOST=1
@@ -81,11 +82,11 @@ check_repo_state() {
   check_file_exists "${PROJECT_ROOT}/scripts/install/install-core-runtime-configs.ksh" "install helper present"
   check_file_exists "${PROJECT_ROOT}/scripts/install/run-phase-sequence.ksh" "phase sequence runner present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh" "core runtime verifier present"
-  check_file_exists "${PROJECT_ROOT}/services/generated/rootfs/etc/postfix/main.cf" "rendered postfix config present"
-  check_file_exists "${PROJECT_ROOT}/services/generated/rootfs/etc/dovecot/dovecot.conf" "rendered dovecot config present"
-  check_file_exists "${PROJECT_ROOT}/services/generated/rootfs/etc/nginx/sites-available/main.conf" "rendered nginx config present"
-  check_file_exists "${PROJECT_ROOT}/services/generated/rootfs/etc/rspamd/local.d/worker-proxy.inc" "rendered rspamd config present"
-  check_file_exists "${PROJECT_ROOT}/services/generated/rootfs/var/www/postfixadmin/config.local.php" "rendered postfixadmin config present"
+  check_file_exists "${CORE_RENDER_ROOT}/etc/postfix/main.cf" "live rendered postfix config present"
+  check_file_exists "${CORE_RENDER_ROOT}/etc/dovecot/dovecot.conf" "live rendered dovecot config present"
+  check_file_exists "${CORE_RENDER_ROOT}/etc/nginx/sites-available/main.conf" "live rendered nginx config present"
+  check_file_exists "${CORE_RENDER_ROOT}/etc/rspamd/local.d/worker-proxy.inc" "live rendered rspamd config present"
+  check_file_exists "${CORE_RENDER_ROOT}/var/www/postfixadmin/config.local.php" "live rendered postfixadmin config present"
 
   _phase=0
   while [ "${_phase}" -le 10 ]; do

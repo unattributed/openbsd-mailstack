@@ -32,5 +32,6 @@ for _path in \
   [ -f "${PROJECT_ROOT}/${_path}" ] && pass "present: ${_path}" || fail "missing: ${_path}"
 done
 
-[ -d "${PROJECT_ROOT}/services/generated/rootfs" ] && pass "rendered rootfs exists" || fail "rendered rootfs not present yet, run render-core-runtime-configs.ksh"
+CORE_RENDER_ROOT="$(core_runtime_render_root)"
+[ -d "${CORE_RENDER_ROOT}" ] && pass "live rendered rootfs exists: ${CORE_RENDER_ROOT}" || fail "live rendered rootfs not present yet at ${CORE_RENDER_ROOT}, run render-core-runtime-configs.ksh"
 [ ${FAIL} -eq 0 ]

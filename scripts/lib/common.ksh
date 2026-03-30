@@ -7,6 +7,8 @@ export PATH
 PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P 2>/dev/null || pwd -P)"
 CONFIG_DIR="${PROJECT_ROOT}/config"
 OPERATOR_INPUT_LIB="${PROJECT_ROOT}/scripts/lib/operator-inputs.ksh"
+CORE_RUNTIME_RENDER_ROOT_DEFAULT="${PROJECT_ROOT}/.work/runtime/rootfs"
+CORE_RUNTIME_EXAMPLE_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
 
 : "${OPENBSD_MAILSTACK_NONINTERACTIVE:=0}"
 
@@ -29,6 +31,14 @@ source_if_readable() {
 }
 
 load_config_file() { source_if_readable "$1"; }
+
+core_runtime_render_root() {
+  print -- "${OPENBSD_MAILSTACK_CORE_RENDER_ROOT:-${CORE_RUNTIME_RENDER_ROOT_DEFAULT}}"
+}
+
+core_runtime_example_root() {
+  print -- "${CORE_RUNTIME_EXAMPLE_ROOT}"
+}
 
 load_project_config() {
   if command_exists load_project_operator_inputs; then

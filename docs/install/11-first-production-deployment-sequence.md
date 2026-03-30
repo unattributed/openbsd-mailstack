@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document defines the first production deployment sequence for the public repo after the operator has validated the design in QEMU or has otherwise reviewed the staged runtime carefully.
+This document defines the first production deployment sequence for the public repo after the operator has validated the design in QEMU or has otherwise reviewed the live runtime tree carefully.
 
 ## Scope
 
@@ -36,15 +36,17 @@ Confirm the host has:
 ./scripts/install/render-core-runtime-configs.ksh
 ```
 
-### 3. Review the staged runtime tree
+### 3. Review the live runtime tree
 
 Inspect at least:
 
-- `services/generated/rootfs/etc/postfix/`
-- `services/generated/rootfs/etc/dovecot/`
-- `services/generated/rootfs/etc/nginx/`
-- `services/generated/rootfs/etc/rspamd/`
-- `services/generated/rootfs/var/www/postfixadmin/`
+- `.work/runtime/rootfs/etc/postfix/`
+- `.work/runtime/rootfs/etc/dovecot/`
+- `.work/runtime/rootfs/etc/nginx/`
+- `.work/runtime/rootfs/etc/rspamd/`
+- `.work/runtime/rootfs/var/www/postfixadmin/`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ### 4. Run the public phase sequence
 

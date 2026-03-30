@@ -41,7 +41,7 @@ If you are new to the repository:
 1. complete provider onboarding and local input setup
 2. review the architecture and configuration wiring docs
 3. use the QEMU-first path
-4. render the core runtime tree and inspect `services/generated/rootfs/`
+4. render the live core runtime tree and inspect `.work/runtime/rootfs/`, using `services/generated/rootfs/` only as the sanitized example reference
 5. run the phase sequence through the baseline you want to test
 6. build the monitoring layer you want, including the richer static `/_ops/monitor/` site when needed
 7. run post-install checks and the public-only validation pass
