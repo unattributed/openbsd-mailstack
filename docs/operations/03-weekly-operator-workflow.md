@@ -14,7 +14,7 @@ Use:
 
 1. run the post-install checks
 2. run the wider verify suite for the baseline phase range
-3. review the rendered runtime tree if you changed inputs or templates
+3. review `.work/runtime/rootfs/` if you changed core runtime inputs or templates, and review `services/generated/rootfs/` or `services/generated/sbom/` if you changed optional staged assets
 4. review operations-related warnings before making new changes
 
 ## Weekly command

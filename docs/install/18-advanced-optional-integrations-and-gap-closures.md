@@ -24,7 +24,7 @@ Review these first:
 ./scripts/install/render-advanced-gap-configs.ksh
 ```
 
-Review staged output under:
+Review staged optional output under, distinct from the live core runtime tree at `.work/runtime/rootfs/`:
 
 - `services/generated/rootfs/etc/suricata/`
 - `services/generated/rootfs/etc/nginx/templates/`

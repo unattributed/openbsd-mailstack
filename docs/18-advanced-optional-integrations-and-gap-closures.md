@@ -48,5 +48,5 @@ The public repo still does not publish:
 1. review the new tracked example files under `config/`
 2. place real optional values in ignored local inputs if you plan to enable them
 3. run `scripts/phases/phase-17-apply.ksh`
-4. review `services/generated/rootfs/` and `services/generated/sbom/`
+4. review the staged optional asset trees under `services/generated/rootfs/` and `services/generated/sbom/`, keeping in mind that the live core runtime tree remains `.work/runtime/rootfs/`
 5. install optional assets only where they fit your deployment model
