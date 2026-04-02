@@ -134,6 +134,21 @@ check_documentation_integrity() {
   fi
 }
 
+check_auxiliary_validation_scripts() {
+  for _checker in     "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh"     "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
+  do
+    if [ -x "${_checker}" ] || [ -f "${_checker}" ]; then
+      if ksh "${_checker}"; then
+        pass "auxiliary asset validation passed: ${_checker#${PROJECT_ROOT}/}"
+      else
+        fail "auxiliary asset validation failed: ${_checker#${PROJECT_ROOT}/}"
+      fi
+    else
+      fail "auxiliary asset validation script missing: ${_checker}"
+    fi
+  done
+}
+
 check_render_root_defaults() {
   _core_root="$(core_runtime_render_root)"
   case "${_core_root}" in
@@ -165,6 +180,7 @@ main() {
   check_phase_coverage
   check_documentation_integrity
   check_render_root_defaults
+  check_auxiliary_validation_scripts
   check_no_stale_generated_doc_references
   check_no_temp_path_leaks_in_tracked_generated_examples
   check_ksh_syntax

@@ -127,3 +127,14 @@ Generated outputs include:
 - do not place real provider credentials in tracked files
 - do not place private keys in the rendered public pack
 - keep your real profile file local and untracked
+
+
+## Asset validation
+
+The repository now includes a dedicated autonomous installer verifier:
+
+```sh
+./scripts/verify/verify-autonomous-installer-assets.ksh
+```
+
+When an installer pack has been rendered, this verifier also checks the generated output set for completeness and unresolved placeholder drift.

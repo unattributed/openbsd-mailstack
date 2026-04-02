@@ -56,6 +56,8 @@ At minimum, the public checks should validate:
 - the absence of unresolved `__PLACEHOLDER__` tokens in concrete generated examples
 - the continued use of gitignored `.work/` paths for live operator-generated outputs
 - essential service wiring patterns in tracked sanitized examples and live render trees
+- QEMU lab asset integrity for the public rehearsal layer
+- autonomous installer asset integrity, including generated pack outputs when rendered
 
 The current repo-side semantic verifier is:
 
@@ -67,6 +69,18 @@ The current rendered config verifier is:
 
 ```sh
 ./scripts/verify/verify-rendered-config-integrity.ksh
+```
+
+The current QEMU lab asset verifier is:
+
+```sh
+./scripts/verify/verify-lab-assets.ksh
+```
+
+The current autonomous installer asset verifier is:
+
+```sh
+./scripts/verify/verify-autonomous-installer-assets.ksh
 ```
 
 
@@ -85,6 +99,8 @@ It should be able to:
 - create temporary example-backed operator inputs
 - render live runtime trees into temporary gitignored paths
 - run repo semantic integrity checks
+- validate QEMU lab assets
+- render and validate an autonomous installer pack in a temporary build root
 - exercise the public-safe render and phase surfaces that are valid to prove in CI
 
 ## F. Intentional boundaries

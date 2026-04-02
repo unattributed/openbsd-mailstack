@@ -50,3 +50,12 @@ The profile file itself is local and untracked. The build directory is generated
 ## Safety rule
 
 Do not commit local profiles or live secrets.
+
+
+## Validation
+
+Before serving or using a rendered installer pack, run:
+
+```sh
+./scripts/verify/verify-autonomous-installer-assets.ksh
+```

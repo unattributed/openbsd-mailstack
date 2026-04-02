@@ -5,7 +5,8 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROFILE=""
 PROFILE_NAME=""
-BUILD_ROOT="${SCRIPT_DIR}/build"
+: "${OPENBSD_MAILSTACK_AUTOINSTALL_BUILD_ROOT:=${SCRIPT_DIR}/build}"
+BUILD_ROOT="${OPENBSD_MAILSTACK_AUTOINSTALL_BUILD_ROOT}"
 
 usage() {
   cat <<'USAGE'

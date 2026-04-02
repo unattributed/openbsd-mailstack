@@ -136,6 +136,8 @@ Useful commands after the repository is populated with local inputs. The install
 ./scripts/verify/verify-rendered-config-integrity.ksh
 ./scripts/verify/verify-host-service-integrity.ksh
 ./scripts/verify/verify-documentation-integrity.ksh
+./scripts/verify/verify-lab-assets.ksh
+./scripts/verify/verify-autonomous-installer-assets.ksh
 ./maint/validate-public-hardening-surface.ksh
 ./scripts/verify/run-repo-ci-gates.ksh
 ```

@@ -65,6 +65,7 @@ prepare_ci_environment() {
   export OPENBSD_MAILSTACK_ADVANCED_SBOM_ROOT="${TMP_ROOT}/advanced/sbom"
   export OPENBSD_MAILSTACK_BACKUP_DR_WORK_ROOT="${TMP_ROOT}/backup-dr"
   export OPENBSD_MAILSTACK_OPERATIONS_WORK_ROOT="${TMP_ROOT}/operations"
+  export OPENBSD_MAILSTACK_AUTOINSTALL_BUILD_ROOT="${TMP_ROOT}/autoinstall-build"
 }
 
 main() {
@@ -73,6 +74,10 @@ main() {
   run "${PROJECT_ROOT}/scripts/verify/verify-documentation-integrity.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-public-repo-readiness.ksh"
+  run "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh"
+  run "${PROJECT_ROOT}/maint/openbsd-autonomous-installer/guided-profile-builder.ksh" --noninteractive --output "${TMP_ROOT}/installer-profile.local.env"
+  run "${PROJECT_ROOT}/maint/openbsd-autonomous-installer/render-installer-pack.ksh" --profile "${TMP_ROOT}/installer-profile.local.env"
+  run "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
 
   run "${PROJECT_ROOT}/scripts/install/render-core-runtime-configs.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh"

@@ -136,3 +136,14 @@ Do not place live provider secrets into the tracked repository while using the l
 ## Next step
 
 After the lab VM is working, continue with the phase-driven workflow as you would on a real host, but keep all provider secrets in protected local files only. When the VM path is stable, move to `docs/install/11-first-production-deployment-sequence.md`.
+
+
+## Asset validation
+
+The repository now includes a dedicated QEMU lab asset verifier:
+
+```sh
+./scripts/verify/verify-lab-assets.ksh
+```
+
+Use it to confirm that the public QEMU rehearsal layer is internally complete before you start a VM build.
