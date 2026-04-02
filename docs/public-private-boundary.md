@@ -74,3 +74,8 @@ Backup and DR planning output is now written into the gitignored live workspace 
 ## Live operations planning outputs
 
 Operations and resilience planning output is now written into the gitignored live workspace under `.work/operations/`. These artifacts are operator-specific working material, not tracked publishable repo examples.
+
+
+## Live advanced optional planning outputs
+
+Advanced optional planning output is now written into the gitignored live workspace under `.work/advanced/`. These artifacts are operator-specific working material, not tracked publishable repo examples.

@@ -113,6 +113,7 @@ Use these after the early baseline is stable and you are ready to add:
 - network exposure refinement
 - security hardening and runtime secret layout
 - optional advanced integrations
+- advanced optional plan packs and readiness reporting
 
 Review [Project status](../project-status.md) and [Phase crosswalk](../phases/phase-crosswalk.md) before promoting those layers to a real host.
 

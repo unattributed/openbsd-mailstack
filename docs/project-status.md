@@ -25,7 +25,7 @@ A new operator can now:
 3. render the core runtime and later optional layers
 4. validate the build path in QEMU
 5. apply and verify the phased deployment path on a real OpenBSD host
-6. use backup, DR, monitoring, the richer `/_ops/monitor/` path, and maintenance workflows from the public repo
+6. use backup, DR, monitoring, the richer `/_ops/monitor/` path, maintenance workflows, and advanced optional Phase 17 plan packs from the public repo
 7. use the targeted public hardening validation pass to confirm the current publishable hardening surface is internally coherent
 
 ## What still depends on the operator

@@ -91,6 +91,9 @@ main() {
 
   run "${PROJECT_ROOT}/scripts/install/render-advanced-gap-configs.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-advanced-gap-assets.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-17-apply.ksh"
+  run "${PROJECT_ROOT}/scripts/ops/advanced-readiness-report.ksh" --write
+  run "${PROJECT_ROOT}/scripts/phases/phase-17-verify.ksh"
 
   run "${PROJECT_ROOT}/scripts/phases/phase-10-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-10-verify.ksh"

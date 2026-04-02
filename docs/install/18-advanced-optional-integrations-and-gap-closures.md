@@ -32,6 +32,8 @@ Review staged optional output under, distinct from the live core runtime tree at
 - `.work/advanced/rootfs/etc/sogo/`
 - `.work/advanced/rootfs/usr/local/sbin/`
 - `.work/advanced/sbom/`
+- `.work/advanced/phase-17/`
+- `.work/advanced/readiness/advanced-readiness.txt`
 
 ## Install optional assets onto a host
 
@@ -50,7 +52,9 @@ doas ./scripts/install/install-advanced-gap-assets.ksh --apply
 ## Verify
 
 ```sh
+./scripts/ops/advanced-readiness-report.ksh --write
 ./scripts/verify/verify-advanced-gap-assets.ksh
+./scripts/phases/phase-17-verify.ksh
 ```
 
 ## Notes
