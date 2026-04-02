@@ -55,7 +55,7 @@ Run:
 ksh maint/openbsd-autonomous-installer/guided-profile-builder.ksh
 ```
 
-It creates a local untracked profile file, prompts for the required values, and writes a ready-to-render installer profile without forcing the operator to edit templates manually.
+It creates a local untracked profile file, prompts for the required values, and writes a ready-to-render installer profile without forcing the operator to edit templates manually. The default output path is `maint/openbsd-autonomous-installer/installer-profile.local.env`, which is intentionally local and untracked.
 
 ## Main files
 
@@ -84,12 +84,16 @@ ksh maint/openbsd-autonomous-installer/render-installer-pack.ksh \
   --profile maint/openbsd-autonomous-installer/installer-profile.local.env
 ```
 
+`maint/openbsd-autonomous-installer/installer-profile.local.env` is created by the guided builder and is intentionally not a tracked repo file.
+
 ### 3. Serve the generated pack over HTTP
 
 ```sh
 sh maint/openbsd-autonomous-installer/serve-autoinstall.sh \
-  /home/foo/Workspace/openbsd-mailstack/maint/openbsd-autonomous-installer/build/default 8000
+  /home/foo/Workspace/openbsd-mailstack/maint/openbsd-autonomous-installer/build/<profile-name> 8000
 ```
+
+Replace `<profile-name>` with the `PROFILE_NAME` from your local installer profile, for example `default` if you kept the builder default.
 
 ### 4. Boot OpenBSD and choose autoinstall
 

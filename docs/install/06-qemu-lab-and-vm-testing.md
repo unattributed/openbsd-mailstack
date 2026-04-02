@@ -80,11 +80,13 @@ These defaults are used in the example scripts, but can be overridden with envir
 
 ### 1. Review the example config
 
-Copy and adjust:
+Copy the example to a local untracked file beside it, then adjust the local copy:
 
 ```sh
 cp maint/qemu/qemu-lab.conf.example maint/qemu/qemu-lab.conf.local
 ```
+
+`maint/qemu/qemu-lab.conf.local` is an operator-local file created by this step. It is intentionally not tracked in the repo.
 
 ### 2. Fetch OpenBSD media
 

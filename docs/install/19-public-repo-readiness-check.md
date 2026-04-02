@@ -98,3 +98,13 @@ The public repository is considered ready when the remaining work is local opera
 - provider accounts and API keys
 - host-local runtime secret files
 - final hardening choices
+
+## Documentation integrity
+
+The repo readiness surface now includes a dedicated documentation checker:
+
+```sh
+./scripts/verify/verify-documentation-integrity.ksh
+```
+
+This verifies local markdown links and documented repo file paths, while allowing explicitly local or generated paths such as `.work/`, `.local` files, and installer build outputs.

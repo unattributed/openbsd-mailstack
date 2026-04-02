@@ -121,6 +121,19 @@ check_no_temp_path_leaks_in_tracked_generated_examples() {
   trap - EXIT HUP INT TERM
 }
 
+check_documentation_integrity() {
+  _checker="${PROJECT_ROOT}/scripts/verify/verify-documentation-integrity.ksh"
+  if [ -x "${_checker}" ] || [ -f "${_checker}" ]; then
+    if ksh "${_checker}"; then
+      pass "documentation integrity checks passed"
+    else
+      fail "documentation integrity checks failed"
+    fi
+  else
+    fail "documentation integrity checker missing: ${_checker}"
+  fi
+}
+
 check_render_root_defaults() {
   _core_root="$(core_runtime_render_root)"
   case "${_core_root}" in
@@ -150,6 +163,7 @@ print_summary() {
 
 main() {
   check_phase_coverage
+  check_documentation_integrity
   check_render_root_defaults
   check_no_stale_generated_doc_references
   check_no_temp_path_leaks_in_tracked_generated_examples

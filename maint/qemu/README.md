@@ -41,4 +41,5 @@ It exists so operators can:
 
 ## Notes
 
-This directory is public and reusable. It must never contain live secrets, private keys, or customer-specific state.
+- Copy `qemu-lab.conf.example` to `qemu-lab.conf.local` when you want a local lab-specific config. That `.local` file is intentionally operator-local and untracked.
+- This directory is public and reusable. It must never contain live secrets, private keys, or customer-specific state.
