@@ -22,7 +22,9 @@ The script can validate:
 - syntax and semantic integrity of repo-side shell and Python automation when the local toolchain is available
 - presence of key installed config files on an OpenBSD host
 - service status for known rcctl services when running on OpenBSD
-- host-side semantic config checks such as `postfix check`, `nginx -t`, `doveconf -n`, `rspamadm configtest`, and PHP linting when the required commands are available
+- listener presence for key services such as Postfix, Dovecot, nginx, and Rspamd when those services are running
+- host-side semantic config checks such as `postfix check`, `nginx -t`, `doveconf -n`, `rspamadm configtest`, `unbound-checkconf`, and PHP linting when the required commands are available
+- PF status, mail queue state, and basic disk-usage signals on a live OpenBSD host
 - basic operator input validity when values are present
 
 ## Recommended usage
@@ -34,6 +36,7 @@ Use this after a real deployment or a serious QEMU validation run:
 ```sh
 ./scripts/verify/run-post-install-checks.ksh
 ./scripts/verify/verify-rendered-config-integrity.ksh
+./scripts/verify/verify-host-service-integrity.ksh
 ```
 
 ### Repo-only check
@@ -88,3 +91,14 @@ The repo and post-install validation surfaces now include a rendered config inte
 ```
 
 This checks the tracked sanitized render tree, and any live `.work/` render trees that exist, for key service wiring patterns and unresolved uppercase placeholders.
+
+
+## Dedicated host service integrity check
+
+Use this when you want the live OpenBSD host verification surface directly:
+
+```sh
+./scripts/verify/verify-host-service-integrity.ksh
+```
+
+This dedicated verifier checks service status, expected listener ports, key installed config paths, runtime secret file modes, mail queue state, PF status, and disk-usage signals.

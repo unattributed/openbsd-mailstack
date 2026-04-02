@@ -78,6 +78,7 @@ doas ./scripts/install/install-core-runtime-configs.ksh
 
 ```sh
 ./scripts/verify/run-post-install-checks.ksh
+./scripts/verify/verify-host-service-integrity.ksh
 ```
 
 ### 8. Start the daily and weekly operator cadence

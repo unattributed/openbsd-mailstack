@@ -159,69 +159,18 @@ run_rendered_config_validation() {
   fi
 }
 
-run_command_check() {
-  _label="$1"
-  shift
-  if "$@" >/dev/null 2>&1; then
-    pass "${_label}"
-  else
-    fail "${_label}"
-  fi
-}
-
-lint_php_file_if_present() {
-  _file="$1"
-  _label="$2"
-  if [ ! -f "${_file}" ]; then
-    warn "${_label} is missing: ${_file}"
+run_host_service_validation() {
+  _script="${PROJECT_ROOT}/scripts/verify/verify-host-service-integrity.ksh"
+  if [ ! -x "${_script}" ]; then
+    fail "host service verifier is missing or not executable: ${_script}"
     return 0
   fi
-  if command_exists php; then
-    run_command_check "${_label} syntax ok" php -l "${_file}"
-  elif command_exists php83; then
-    run_command_check "${_label} syntax ok" php83 -l "${_file}"
+
+  if "${_script}"; then
+    pass "host service verifier passed"
   else
-    warn "php cli not available, skipping ${_label} syntax check"
+    fail "host service verifier reported a problem"
   fi
-}
-
-check_host_semantics() {
-  if command_exists postfix; then
-    run_command_check "postfix check passed" postfix check
-  else
-    warn "postfix command not available, skipping postfix check"
-  fi
-
-  if command_exists nginx; then
-    run_command_check "nginx -t passed" nginx -t
-  else
-    warn "nginx command not available, skipping nginx syntax check"
-  fi
-
-  if command_exists doveconf; then
-    run_command_check "doveconf -n passed" doveconf -n
-  elif command_exists dovecot; then
-    run_command_check "dovecot -n passed" dovecot -n
-  else
-    warn "dovecot configuration tool not available, skipping dovecot syntax check"
-  fi
-
-  if command_exists rspamadm; then
-    run_command_check "rspamadm configtest passed" rspamadm configtest
-  else
-    warn "rspamadm not available, skipping rspamd configtest"
-  fi
-
-  if [ -f "/var/unbound/etc/unbound.conf" ] || [ -f "/var/unbound/etc/conf.d/mailstack-zones.conf" ]; then
-    if command_exists unbound-checkconf; then
-      run_command_check "unbound-checkconf passed" unbound-checkconf
-    else
-      warn "unbound-checkconf not available, skipping unbound syntax check"
-    fi
-  fi
-
-  lint_php_file_if_present "/var/www/postfixadmin/config.local.php" "PostfixAdmin config"
-  lint_php_file_if_present "/var/www/roundcubemail/config/config.inc.php" "Roundcube config"
 }
 
 check_repo_state() {
@@ -233,6 +182,7 @@ check_repo_state() {
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh" "core runtime verifier present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" "repo semantic verifier present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh" "rendered config verifier present"
+  check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-host-service-integrity.ksh" "host service verifier present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/postfix/main.cf" "live rendered postfix config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/dovecot/dovecot.conf" "live rendered dovecot config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/nginx/sites-available/main.conf" "live rendered nginx config present"
@@ -284,41 +234,6 @@ EOF2
   fi
 }
 
-service_present() {
-  _svc="$1"
-  rcctl ls all 2>/dev/null | grep -qx "${_svc}"
-}
-
-check_service_if_present() {
-  _svc="$1"
-  if service_present "${_svc}"; then
-    if rcctl check "${_svc}" >/dev/null 2>&1; then
-      pass "service running: ${_svc}"
-    else
-      fail "service not healthy: ${_svc}"
-    fi
-  else
-    warn "service not present in rcctl inventory: ${_svc}"
-  fi
-}
-
-check_disk_usage() {
-  _mount="$1"
-  [ -d "${_mount}" ] || return 0
-  _used="$(df -Pk "${_mount}" 2>/dev/null | awk 'NR==2 {gsub(/%/,"",$5); print $5}')"
-  if [ -z "${_used}" ]; then
-    warn "unable to read disk usage for ${_mount}"
-    return 0
-  fi
-  if [ "${_used}" -ge 90 ]; then
-    fail "disk usage critical on ${_mount}: ${_used}%"
-  elif [ "${_used}" -ge 80 ]; then
-    warn "disk usage elevated on ${_mount}: ${_used}%"
-  else
-    pass "disk usage healthy on ${_mount}: ${_used}%"
-  fi
-}
-
 check_host_state() {
   print_phase_header "POST-INSTALL" "host checks"
 
@@ -345,35 +260,7 @@ EOF2
   check_postfix_hash_maps_in_tree "/" "installed"
   check_required_secret_mode "/etc/postfix/sasl_passwd.db" "installed postfix sasl hash map"
 
-  _db_service=""
-  if _db_service="$(detect_mariadb_service_name 2>/dev/null)" && [ -n "${_db_service}" ]; then
-    check_service_if_present "${_db_service}"
-  else
-    warn "could not determine the MariaDB rcctl service name"
-  fi
-
-  for _svc in postfix dovecot nginx rspamd redis redis_server clamd freshclam php83_fpm; do
-    check_service_if_present "${_svc}"
-  done
-
-  check_host_semantics
-
-  if command_exists mailq; then
-    _queue_output="$(mailq 2>/dev/null || true)"
-    if print -- "${_queue_output}" | grep -qi 'Mail queue is empty'; then
-      pass "mail queue is empty"
-    elif [ -n "${_queue_output}" ]; then
-      warn "mail queue is not empty, review mailq output"
-    else
-      warn "mailq returned no output"
-    fi
-  else
-    warn "mailq command is not available"
-  fi
-
-  check_disk_usage "/"
-  check_disk_usage "/var"
-  check_disk_usage "/var/vmail"
+  run_host_service_validation
 }
 
 main() {

@@ -134,6 +134,7 @@ Useful commands after the repository is populated with local inputs. The install
 ./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10
 ./scripts/verify/run-post-install-checks.ksh
 ./scripts/verify/verify-rendered-config-integrity.ksh
+./scripts/verify/verify-host-service-integrity.ksh
 ./scripts/verify/verify-documentation-integrity.ksh
 ./maint/validate-public-hardening-surface.ksh
 ./scripts/verify/run-repo-ci-gates.ksh
