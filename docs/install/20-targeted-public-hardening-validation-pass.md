@@ -9,6 +9,7 @@ Use it after applying public cleanup, hardening, or runtime-secret changes, espe
 - phase 15 hardening artifacts
 - phase 16 runtime-secret layout artifacts
 - public repo readiness and publishable-content checks
+- repo-side semantic integrity checks for the current public surface
 
 ## Validation flow
 
@@ -32,6 +33,9 @@ This targeted pass currently checks for:
 - tracked operator input files that should remain untracked
 - malformed generated examples caught by the public readiness checks
 - repo secret guard failures
+- repo-side shell and Python syntax checks when local validators are available
+- unresolved placeholders in concrete generated examples
+- phase apply and verify script coverage through Phase 17
 
 ## What this does not claim
 

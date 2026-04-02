@@ -21,10 +21,10 @@ WARN_COUNT=0
 PASS_COUNT=0
 
 usage() {
-  cat <<'EOF'
+  cat <<'EOF2'
 Usage:
   ./scripts/verify/run-post-install-checks.ksh [--repo-only|--host-only|--help]
-EOF
+EOF2
 }
 
 pass() { print -- "[$(timestamp)] PASS  $*"; PASS_COUNT=$((PASS_COUNT + 1)); }
@@ -126,9 +126,88 @@ check_postfix_hash_maps_in_tree() {
     _db_file="${_source_file}.db"
     check_required_file "${_source_file}" "${_label_prefix} postfix hash source"
     check_required_file "${_db_file}" "${_label_prefix} postfix hash map"
-  done <<EOF
+  done <<EOF2
 $(postfix_hash_source_relative_paths)
-EOF
+EOF2
+}
+
+run_repo_semantic_validation() {
+  _script="${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh"
+  if [ ! -x "${_script}" ]; then
+    fail "repository semantic verifier is missing or not executable: ${_script}"
+    return 0
+  fi
+
+  if "${_script}"; then
+    pass "repository semantic verifier passed"
+  else
+    fail "repository semantic verifier reported a problem"
+  fi
+}
+
+run_command_check() {
+  _label="$1"
+  shift
+  if "$@" >/dev/null 2>&1; then
+    pass "${_label}"
+  else
+    fail "${_label}"
+  fi
+}
+
+lint_php_file_if_present() {
+  _file="$1"
+  _label="$2"
+  if [ ! -f "${_file}" ]; then
+    warn "${_label} is missing: ${_file}"
+    return 0
+  fi
+  if command_exists php; then
+    run_command_check "${_label} syntax ok" php -l "${_file}"
+  elif command_exists php83; then
+    run_command_check "${_label} syntax ok" php83 -l "${_file}"
+  else
+    warn "php cli not available, skipping ${_label} syntax check"
+  fi
+}
+
+check_host_semantics() {
+  if command_exists postfix; then
+    run_command_check "postfix check passed" postfix check
+  else
+    warn "postfix command not available, skipping postfix check"
+  fi
+
+  if command_exists nginx; then
+    run_command_check "nginx -t passed" nginx -t
+  else
+    warn "nginx command not available, skipping nginx syntax check"
+  fi
+
+  if command_exists doveconf; then
+    run_command_check "doveconf -n passed" doveconf -n
+  elif command_exists dovecot; then
+    run_command_check "dovecot -n passed" dovecot -n
+  else
+    warn "dovecot configuration tool not available, skipping dovecot syntax check"
+  fi
+
+  if command_exists rspamadm; then
+    run_command_check "rspamadm configtest passed" rspamadm configtest
+  else
+    warn "rspamadm not available, skipping rspamd configtest"
+  fi
+
+  if [ -f "/var/unbound/etc/unbound.conf" ] || [ -f "/var/unbound/etc/conf.d/mailstack-zones.conf" ]; then
+    if command_exists unbound-checkconf; then
+      run_command_check "unbound-checkconf passed" unbound-checkconf
+    else
+      warn "unbound-checkconf not available, skipping unbound syntax check"
+    fi
+  fi
+
+  lint_php_file_if_present "/var/www/postfixadmin/config.local.php" "PostfixAdmin config"
+  lint_php_file_if_present "/var/www/roundcubemail/config/config.inc.php" "Roundcube config"
 }
 
 check_repo_state() {
@@ -138,6 +217,7 @@ check_repo_state() {
   check_file_exists "${PROJECT_ROOT}/scripts/install/install-core-runtime-configs.ksh" "install helper present"
   check_file_exists "${PROJECT_ROOT}/scripts/install/run-phase-sequence.ksh" "phase sequence runner present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh" "core runtime verifier present"
+  check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" "repo semantic verifier present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/postfix/main.cf" "live rendered postfix config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/dovecot/dovecot.conf" "live rendered dovecot config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/nginx/sites-available/main.conf" "live rendered nginx config present"
@@ -146,9 +226,9 @@ check_repo_state() {
   while IFS= read -r _rel || [ -n "${_rel}" ]; do
     [ -n "${_rel}" ] || continue
     check_secret_mode "${CORE_RENDER_ROOT%/}/${_rel}" "live runtime secret"
-  done <<EOF
+  done <<EOF2
 $(core_runtime_secret_relative_paths)
-EOF
+EOF2
 
   if [ -n "$(find_postmap_command)" ]; then
     check_postfix_hash_maps_in_tree "${CORE_RENDER_ROOT}" "live runtime"
@@ -158,12 +238,14 @@ EOF
   fi
 
   _phase=0
-  while [ "${_phase}" -le 10 ]; do
+  while [ "${_phase}" -le 17 ]; do
     _id="$(printf '%02d' "${_phase}")"
     warn_if_missing "${PROJECT_ROOT}/scripts/phases/phase-${_id}-apply.ksh" "phase ${_id} apply script"
     warn_if_missing "${PROJECT_ROOT}/scripts/phases/phase-${_id}-verify.ksh" "phase ${_id} verify script"
     _phase=$(( _phase + 1 ))
   done
+
+  run_repo_semantic_validation
 
   load_project_config || true
 
@@ -241,9 +323,9 @@ check_host_state() {
   while IFS= read -r _rel || [ -n "${_rel}" ]; do
     [ -n "${_rel}" ] || continue
     check_secret_mode "/${_rel}" "installed runtime secret"
-  done <<EOF
+  done <<EOF2
 $(core_runtime_secret_relative_paths)
-EOF
+EOF2
   check_postfix_hash_maps_in_tree "/" "installed"
   check_required_secret_mode "/etc/postfix/sasl_passwd.db" "installed postfix sasl hash map"
 
@@ -257,6 +339,8 @@ EOF
   for _svc in postfix dovecot nginx rspamd redis redis_server clamd freshclam php83_fpm; do
     check_service_if_present "${_svc}"
   done
+
+  check_host_semantics
 
   if command_exists mailq; then
     _queue_output="$(mailq 2>/dev/null || true)"

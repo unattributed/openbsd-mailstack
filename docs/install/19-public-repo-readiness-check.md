@@ -44,7 +44,25 @@ The repository should also satisfy these documentation conditions:
 - no document still implies private assets were published when they were not
 - navigation documents point to the current public-safe baseline, not an earlier lighter state
 
-## D. Intentional boundaries
+## D. Repository semantic integrity
+
+A ready public repo should also be able to prove more than simple file presence.
+
+At minimum, the public checks should validate:
+
+- phase apply and verify coverage through Phase 17
+- shell syntax for repo automation when `ksh` is available locally
+- Python syntax for tracked Python helpers when a Python interpreter is available locally
+- the absence of unresolved `__PLACEHOLDER__` tokens in concrete generated examples
+- the continued use of gitignored `.work/` paths for live operator-generated outputs
+
+The current repo-side semantic verifier is:
+
+```sh
+./scripts/verify/verify-repo-semantic-integrity.ksh
+```
+
+## E. Intentional boundaries
 
 The following are still intentionally private:
 
@@ -53,7 +71,7 @@ The following are still intentionally private:
 - real secrets, PATs, API tokens, and private keys
 - site-specific control-plane doctrine
 
-## E. Final operator reality
+## F. Final operator reality
 
 The public repository is considered ready when the remaining work is local operator population of:
 

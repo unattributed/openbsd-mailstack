@@ -19,8 +19,10 @@ The script can validate:
 - presence of core repo assets
 - presence of rendered runtime artifacts
 - presence of required Postfix `hash:` map databases for relay credentials and TLS policy
+- syntax and semantic integrity of repo-side shell and Python automation when the local toolchain is available
 - presence of key installed config files on an OpenBSD host
 - service status for known rcctl services when running on OpenBSD
+- host-side semantic config checks such as `postfix check`, `nginx -t`, `doveconf -n`, `rspamadm configtest`, and PHP linting when the required commands are available
 - basic operator input validity when values are present
 
 ## Recommended usage
@@ -55,13 +57,14 @@ After the post-install checks, it is reasonable to run:
 
 ```sh
 ./scripts/verify/verify-core-runtime-assets.ksh
-./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10 --verify-only
+./scripts/verify/verify-repo-semantic-integrity.ksh
+./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 17 --verify-only
 ```
 
 ## Interpreting results
 
 - `PASS` means the check succeeded as expected.
-- `WARN` means the check could not be fully confirmed or the current repo state is lighter than a live host state.
+- `WARN` means the check could not be fully confirmed because a dependency, optional tool, or host service was not available.
 - `FAIL` means the public baseline is not yet consistent enough for confident promotion.
 
 ## What this script intentionally does not do
