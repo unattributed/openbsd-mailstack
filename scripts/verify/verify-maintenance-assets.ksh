@@ -28,6 +28,7 @@ main() {
     scripts/install/install-maintenance-assets.ksh \
     scripts/verify/verify-maintenance-assets.ksh \
     scripts/ops/maintenance-run.ksh \
+    scripts/ops/operations-readiness-report.ksh \
     maint/openbsd-syspatch.ksh \
     maint/openbsd-pkg-upgrade.ksh \
     maint/regression-test.ksh \

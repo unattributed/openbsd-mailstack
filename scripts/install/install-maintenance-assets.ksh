@@ -31,7 +31,8 @@ main() {
     maint/phase-todo-audit.ksh \
     maint/install-weekly-ops-cron.ksh \
     maint/weekly-maintenance-cron.ksh \
-    maint/verify-mailstack.ksh; do
+    maint/verify-mailstack.ksh \
+    scripts/ops/operations-readiness-report.ksh; do
     _path="${PROJECT_ROOT}/${_src}"
     [ -f "${_path}" ] || continue
     install -m 0755 "${_path}" "${MAINT_SBINDIR}/$(basename -- "${_src}")"

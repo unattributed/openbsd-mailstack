@@ -122,9 +122,10 @@ Review [Project status](../project-status.md) and [Phase crosswalk](../phases/ph
 2. review the live operator output under `.work/runtime/rootfs/`
 3. run the phase sequence
 4. install the rendered configs onto the host
-5. run post-install checks
-6. run the targeted public hardening validation pass
-7. only then expose or depend on the host for wider use
+5. generate live operations plan packs under `.work/operations/` when you complete phase 10
+6. run post-install checks
+7. run the targeted public hardening validation pass
+8. only then expose or depend on the host for wider use
 
 See [First production deployment sequence](11-first-production-deployment-sequence.md) for the detailed host order.
 

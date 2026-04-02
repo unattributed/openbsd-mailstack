@@ -10,7 +10,7 @@ The public repository now provides a materially usable public-safe baseline for:
 - install order, QEMU validation, and first production deployment guidance
 - backup, disaster recovery, restore drills, DR site assets, DR host bootstrap, and live backup and DR plan packs
 - monitoring, diagnostics, reporting, visibility helpers, and the richer static `/_ops/monitor/` site path
-- maintenance, upgrade, regression, and rollback helpers
+- maintenance, upgrade, regression, rollback helpers, and live operations plan packs
 - PF, WireGuard, DNS, and Vultr DDNS baseline assets
 - optional Suricata, Brevo, SOGo, and SBOM layers
 - security hardening and authentication helpers for `doas` and SSH

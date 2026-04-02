@@ -1,30 +1,33 @@
 #!/bin/ksh
-set -e
-set -o pipefail
+set -eu
+( set -o pipefail ) 2>/dev/null && set -o pipefail
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
 PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
+PROFILE_LIB="${PROJECT_ROOT}/scripts/lib/operations-phase-profiles.ksh"
 
 [ -f "${COMMON_LIB}" ] || {
-  print -- "ERROR missing shared library: ${COMMON_LIB}" >&2
+  print -- "ERROR missing common library: ${COMMON_LIB}" >&2
+  exit 1
+}
+[ -f "${PROFILE_LIB}" ] || {
+  print -- "ERROR missing operations profile library: ${PROFILE_LIB}" >&2
   exit 1
 }
 
 . "${COMMON_LIB}"
+. "${PROFILE_LIB}"
 
-SYSTEM_CONF="${PROJECT_ROOT}/config/system.conf"
-OPS_DIR="${PROJECT_ROOT}/services/ops"
-BACKUP_DIR="${PROJECT_ROOT}/services/backup"
-MON_DIR="${PROJECT_ROOT}/services/monitoring"
-
-HEALTHCHECK="${OPS_DIR}/healthcheck.example.generated"
-RCCTL_REVIEW="${OPS_DIR}/rcctl-review.example.generated"
-BACKUP_PLAN="${BACKUP_DIR}/backup-plan.example.generated"
-LOG_SUMMARY="${MON_DIR}/log-summary.example.generated"
-OPS_SUMMARY="${OPS_DIR}/operations-summary.txt"
-
+PLAN_DIR="$(operations_profile_phase_dir 10)"
+DAILY_REVIEW="${PLAN_DIR}/daily-review.txt"
+WEEKLY_REVIEW="${PLAN_DIR}/weekly-review.txt"
+BACKUP_POSTURE="${PLAN_DIR}/backup-posture.txt"
+LOG_REVIEW="${PLAN_DIR}/log-review-plan.txt"
+MAINT_ENTRYPOINTS="${PLAN_DIR}/maintenance-entrypoints.txt"
+OPS_SUMMARY="${PLAN_DIR}/phase-10-summary.txt"
 SAVE_CONFIG="${SAVE_CONFIG:-no}"
+SYSTEM_CONF="${PROJECT_ROOT}/config/system.conf"
 
 collect_inputs() {
   load_project_config
@@ -59,61 +62,49 @@ check_commands() {
   require_command cat
   require_command grep
   require_command awk
-  require_command rcctl
-  require_command tar
-  require_command gzip
 }
 
 generate_files() {
-  mkdir -p "${OPS_DIR}" "${BACKUP_DIR}" "${MON_DIR}"
+  operations_profile_write_text "${DAILY_REVIEW}" "Daily operator review for ${MAIL_HOSTNAME}
+1. Run ./scripts/ops/daily-operator-review.ksh
+2. Review /var/log/maillog and /var/log/messages on the host
+3. Confirm alert target ${ALERT_EMAIL} still matches the intended operator workflow
+4. Check whether health checks are enabled: ${OPS_ENABLE_HEALTHCHECKS}
+5. Check whether log summary generation is enabled: ${OPS_ENABLE_LOG_SUMMARY}"
 
-  cat > "${HEALTHCHECK}" <<EOF
-#!/bin/ksh
-rcctl check smtpd || true
-rcctl check dovecot || true
-rcctl check nginx || true
-rcctl check redis || true
-rcctl check rspamd || true
-EOF
+  operations_profile_write_text "${WEEKLY_REVIEW}" "Weekly operator review for ${MAIL_HOSTNAME}
+1. Run ./scripts/ops/weekly-operator-review.ksh
+2. Review backup and DR readiness with ./scripts/ops/backup-dr-readiness-report.ksh --write
+3. Review maintenance readiness with ./scripts/ops/operations-readiness-report.ksh --write
+4. Review whether alerts remain enabled: ${OPS_ENABLE_ALERTS}
+5. Review retention target: ${OPS_RETENTION_DAYS} days"
 
-  cat > "${RCCTL_REVIEW}" <<EOF
-rcctl ls on
-rcctl get smtpd status || true
-rcctl get dovecot status || true
-rcctl get nginx status || true
-rcctl get rspamd status || true
-EOF
+  operations_profile_write_text "${BACKUP_POSTURE}" "Operations backup posture
+mode: ${OPS_BACKUP_MODE}
+retention days: ${OPS_RETENTION_DAYS}
+related backup and DR plan packs: ${PROJECT_ROOT}/.work/backup-dr/
+This phase does not create live backups. It prepares the operations posture and entrypoints for safe operator use."
 
-  cat > "${BACKUP_PLAN}" <<EOF
-Backup plan guidance
-Host: ${MAIL_HOSTNAME}
-Mode: ${OPS_BACKUP_MODE}
-Retention days: ${OPS_RETENTION_DAYS}
-
-Suggested backup targets:
-- /etc
-- /etc/ssl
-- /etc/ssl/private
-- /var/vmail
-- MariaDB dumps
-- /var/www
-- operational config rendered from this repo
-EOF
-
-  cat > "${LOG_SUMMARY}" <<EOF
-Log summary guidance
-Host: ${MAIL_HOSTNAME}
-Enabled: ${OPS_ENABLE_LOG_SUMMARY}
-
+  operations_profile_write_text "${LOG_REVIEW}" "Log review plan
+mail hostname: ${MAIL_HOSTNAME}
+alerts enabled: ${OPS_ENABLE_ALERTS}
+log summary enabled: ${OPS_ENABLE_LOG_SUMMARY}
 Suggested review targets:
 - /var/log/maillog
 - /var/log/messages
 - /var/log/nginx/*
 - /var/log/rspamd/*
-EOF
+- /var/log/clamav/*"
 
-  cat > "${OPS_SUMMARY}" <<EOF
-Phase 10 operations summary
+  operations_profile_write_text "${MAINT_ENTRYPOINTS}" "Maintenance and resilience entrypoints
+Daily review: ./scripts/ops/daily-operator-review.ksh
+Weekly review: ./scripts/ops/weekly-operator-review.ksh
+Maintenance report: ./scripts/ops/maintenance-run.ksh --report
+Maintenance apply: ./scripts/ops/maintenance-run.ksh --apply
+Operations readiness: ./scripts/ops/operations-readiness-report.ksh --write
+Post-install checks: ./scripts/verify/run-post-install-checks.ksh"
+
+  operations_profile_write_text "${OPS_SUMMARY}" "Phase 10 operations and resilience summary
 MAIL_HOSTNAME: ${MAIL_HOSTNAME}
 ADMIN_EMAIL: ${ADMIN_EMAIL}
 ALERT_EMAIL: ${ALERT_EMAIL}
@@ -122,7 +113,7 @@ OPS_RETENTION_DAYS: ${OPS_RETENTION_DAYS}
 OPS_ENABLE_ALERTS: ${OPS_ENABLE_ALERTS}
 OPS_ENABLE_HEALTHCHECKS: ${OPS_ENABLE_HEALTHCHECKS}
 OPS_ENABLE_LOG_SUMMARY: ${OPS_ENABLE_LOG_SUMMARY}
-EOF
+plan directory: ${PLAN_DIR}"
 }
 
 main() {
@@ -133,7 +124,7 @@ main() {
   check_commands
   generate_files
   log_info "phase 10 operations and resilience completed successfully"
-  log_info "next step: run ./scripts/phases/phase-10-verify.ksh"
+  log_info "generated live operations plan pack in ${PLAN_DIR}"
 }
 
 main "$@"

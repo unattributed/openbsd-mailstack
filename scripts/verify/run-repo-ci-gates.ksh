@@ -64,6 +64,7 @@ prepare_ci_environment() {
   export OPENBSD_MAILSTACK_ADVANCED_RENDER_ROOT="${TMP_ROOT}/advanced/rootfs"
   export OPENBSD_MAILSTACK_ADVANCED_SBOM_ROOT="${TMP_ROOT}/advanced/sbom"
   export OPENBSD_MAILSTACK_BACKUP_DR_WORK_ROOT="${TMP_ROOT}/backup-dr"
+  export OPENBSD_MAILSTACK_OPERATIONS_WORK_ROOT="${TMP_ROOT}/operations"
 }
 
 main() {
@@ -90,6 +91,10 @@ main() {
 
   run "${PROJECT_ROOT}/scripts/install/render-advanced-gap-configs.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-advanced-gap-assets.ksh"
+
+  run "${PROJECT_ROOT}/scripts/phases/phase-10-apply.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-10-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/ops/operations-readiness-report.ksh" --write
 
   run "${PROJECT_ROOT}/scripts/phases/phase-11-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-11-verify.ksh"

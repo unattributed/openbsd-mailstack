@@ -1,35 +1,29 @@
 #!/bin/ksh
-set -e
-set -o pipefail
+set -eu
+( set -o pipefail ) 2>/dev/null && set -o pipefail
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
 PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
+PROFILE_LIB="${PROJECT_ROOT}/scripts/lib/operations-phase-profiles.ksh"
 
 [ -f "${COMMON_LIB}" ] || {
-  print -- "ERROR missing shared library: ${COMMON_LIB}" >&2
+  print -- "ERROR missing common library: ${COMMON_LIB}" >&2
+  exit 1
+}
+[ -f "${PROFILE_LIB}" ] || {
+  print -- "ERROR missing operations profile library: ${PROFILE_LIB}" >&2
   exit 1
 }
 
 . "${COMMON_LIB}"
+. "${PROFILE_LIB}"
 
-OPS_DIR="${PROJECT_ROOT}/services/ops"
-BACKUP_DIR="${PROJECT_ROOT}/services/backup"
-MON_DIR="${PROJECT_ROOT}/services/monitoring"
+FAIL=0
+pass() { print -- "PASS $*"; }
+fail() { print -- "FAIL $*"; FAIL=$((FAIL + 1)); }
 
-HEALTHCHECK="${OPS_DIR}/healthcheck.example.generated"
-RCCTL_REVIEW="${OPS_DIR}/rcctl-review.example.generated"
-BACKUP_PLAN="${BACKUP_DIR}/backup-plan.example.generated"
-LOG_SUMMARY="${MON_DIR}/log-summary.example.generated"
-OPS_SUMMARY="${OPS_DIR}/operations-summary.txt"
-
-FAIL_COUNT=0
-WARN_COUNT=0
-
-pass() { print -- "[$(timestamp)] PASS  $*"; }
-warn() { print -- "[$(timestamp)] WARN  $*"; WARN_COUNT=$((WARN_COUNT + 1)); }
-fail() { print -- "[$(timestamp)] FAIL  $*"; FAIL_COUNT=$((FAIL_COUNT + 1)); }
-
+PLAN_DIR="$(operations_profile_phase_dir 10)"
 collect_inputs() {
   load_project_config
   prompt_value "MAIL_HOSTNAME" "Enter the public mail hostname, example mail.example.com"
@@ -55,21 +49,20 @@ main() {
   validate_yes_no "${OPS_ENABLE_HEALTHCHECKS}" && pass "OPS_ENABLE_HEALTHCHECKS is valid: ${OPS_ENABLE_HEALTHCHECKS}" || fail "OPS_ENABLE_HEALTHCHECKS is invalid"
   validate_yes_no "${OPS_ENABLE_LOG_SUMMARY}" && pass "OPS_ENABLE_LOG_SUMMARY is valid: ${OPS_ENABLE_LOG_SUMMARY}" || fail "OPS_ENABLE_LOG_SUMMARY is invalid"
 
-  for cmd in rcctl tar gzip grep awk mkdir cat; do
-    command_exists "${cmd}" && pass "required command present: ${cmd}" || fail "required command missing: ${cmd}"
-  done
-
-  for file in "${HEALTHCHECK}" "${RCCTL_REVIEW}" "${BACKUP_PLAN}" "${LOG_SUMMARY}" "${OPS_SUMMARY}"; do
-    [ -f "${file}" ] && pass "generated file exists: ${file}" || warn "generated file is missing: ${file}"
+  for _file in     "${PLAN_DIR}/daily-review.txt"     "${PLAN_DIR}/weekly-review.txt"     "${PLAN_DIR}/backup-posture.txt"     "${PLAN_DIR}/log-review-plan.txt"     "${PLAN_DIR}/maintenance-entrypoints.txt"     "${PLAN_DIR}/phase-10-summary.txt"     "${PROJECT_ROOT}/scripts/ops/daily-operator-review.ksh"     "${PROJECT_ROOT}/scripts/ops/weekly-operator-review.ksh"     "${PROJECT_ROOT}/scripts/ops/maintenance-preflight.ksh"     "${PROJECT_ROOT}/scripts/ops/maintenance-run.ksh"     "${PROJECT_ROOT}/scripts/ops/maintenance-regression.ksh"     "${PROJECT_ROOT}/scripts/ops/maintenance-rollback-plan.ksh"     "${PROJECT_ROOT}/scripts/ops/operations-readiness-report.ksh"     "${PROJECT_ROOT}/scripts/verify/run-post-install-checks.ksh"     "${PROJECT_ROOT}/scripts/verify/verify-maintenance-assets.ksh"     "${PROJECT_ROOT}/scripts/install/install-maintenance-assets.ksh"     "${PROJECT_ROOT}/maint/openbsd-syspatch.ksh"     "${PROJECT_ROOT}/maint/openbsd-pkg-upgrade.ksh"     "${PROJECT_ROOT}/maint/regression-test.ksh"     "${PROJECT_ROOT}/maint/rollback-on-failure.ksh"
+  do
+    [ -f "${_file}" ] && pass "found ${_file}" || fail "missing ${_file}"
+    if [ -f "${_file}" ] && ! operations_profile_check_no_placeholders "${_file}"; then
+      fail "unresolved placeholder token found in ${_file}"
+    fi
   done
 
   print
   print -- "Verification summary"
-  print -- "  FAIL count : ${FAIL_COUNT}"
-  print -- "  WARN count : ${WARN_COUNT}"
+  print -- "  FAIL count : ${FAIL}"
   print
 
-  [ "${FAIL_COUNT}" -eq 0 ]
+  [ "${FAIL}" -eq 0 ]
 }
 
 main "$@"

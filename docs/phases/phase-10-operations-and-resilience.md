@@ -84,8 +84,9 @@ The apply script can:
 
 - validate operations-related inputs
 - validate retention and toggle values
-- generate health check and service review helpers
-- generate backup and log summary notes
+- generate a live operations plan pack under `.work/operations/phase-10/`
+- write daily and weekly review plans
+- write backup posture, log review, and maintenance entrypoint notes
 - write an operations summary for review
 
 This phase does not claim to fully automate production operations by itself. It
@@ -132,7 +133,7 @@ Then continue with the wider public-safe checks:
 A successful result means:
 
 - operational settings are valid
-- helper files were generated
+- a live operations plan pack was generated under `.work/operations/phase-10/`
 - the repo now includes a public operations baseline
 - the host can adopt a repeatable daily and weekly review rhythm
 

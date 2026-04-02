@@ -70,3 +70,7 @@ The remaining private boundaries are now specific:
 ## Live backup and DR planning outputs
 
 Backup and DR planning output is now written into the gitignored live workspace under `.work/backup-dr/`. These artifacts are operator-specific working material, not tracked publishable repo examples.
+
+## Live operations planning outputs
+
+Operations and resilience planning output is now written into the gitignored live workspace under `.work/operations/`. These artifacts are operator-specific working material, not tracked publishable repo examples.

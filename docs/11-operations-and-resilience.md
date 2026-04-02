@@ -70,22 +70,23 @@ The apply script is intentionally conservative. It prepares the repo workflow by
 
 - validating operational settings
 - validating retention and alert values
-- confirming basic OpenBSD service tools exist
-- generating public-safe health check scripts
-- generating backup notes and monitoring summaries
-- writing an operational summary for review
+- generating a live operations plan pack under the gitignored `.work/operations/phase-10/` workspace
+- writing daily and weekly review plans
+- writing backup posture and log review plans
+- writing maintenance entrypoints and an operational summary for review
 
-The generated files are helper artifacts. They are intended to guide later live deployment and maintenance on OpenBSD 7.8.
+The generated files are operator-specific working artifacts. They are intended to guide later live deployment and maintenance on OpenBSD 7.8 without writing tracked planning output back into the publishable repo surface.
 
 ## Outputs created by Phase 10
 
-The apply script can create these local project files:
+The apply script can create these live operator files:
 
-- `services/ops/healthcheck.example.generated`
-- `services/ops/rcctl-review.example.generated`
-- `services/backup/backup-plan.example.generated`
-- `services/monitoring/log-summary.example.generated`
-- `services/ops/operations-summary.txt`
+- `.work/operations/phase-10/daily-review.txt`
+- `.work/operations/phase-10/weekly-review.txt`
+- `.work/operations/phase-10/backup-posture.txt`
+- `.work/operations/phase-10/log-review-plan.txt`
+- `.work/operations/phase-10/maintenance-entrypoints.txt`
+- `.work/operations/phase-10/phase-10-summary.txt`
 
 ## Verification and operator cadence
 

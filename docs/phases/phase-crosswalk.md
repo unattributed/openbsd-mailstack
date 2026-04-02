@@ -16,7 +16,7 @@ This document maps the public phase documents and scripts to the current public-
 | Phase 07, filtering and anti-abuse | materially usable | Rspamd, ClamAV, anti-abuse helpers, and phase-scoped summary and verify coverage |
 | Phase 08, webmail and admin access | materially usable | Roundcube, PostfixAdmin, nginx web-plane assets, and phase-scoped summary and verify coverage |
 | Phase 09, DNS and identity publishing | materially usable | DNS publishing guidance and shared DNS input model |
-| Phase 10, operations and resilience | materially usable | install, post-install, operator workflow, and resilience docs |
+| Phase 10, operations and resilience | materially usable | operator workflow, resilience docs, daily and weekly review entrypoints, and live operations plan packs |
 | Phase 11, backup and disaster recovery | materially usable | backup helpers, restore helpers, DR docs, and live plan packs |
 | Phase 12, advanced backup security and integrity | materially usable | archive protection, verification, backup hygiene, and live integrity plan packs |
 | Phase 13, off-host replication and restore testing | materially usable | off-host replication helpers, QEMU restore drill path, and live drill plan packs |

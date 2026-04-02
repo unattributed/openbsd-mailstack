@@ -68,7 +68,7 @@ The public repository now contains:
 - public-safe hardening and runtime secret layout helpers
 - optional Suricata, Brevo, SOGo, and SBOM layers
 - tracked sanitized rendered examples under `services/generated/rootfs/`
-- gitignored live operator render workspaces under `.work/`, including `.work/runtime/rootfs/`, `.work/network-exposure/rootfs/`, `.work/identity/`, and `.work/advanced/`
+- gitignored live operator render workspaces under `.work/`, including `.work/runtime/rootfs/`, `.work/network-exposure/rootfs/`, `.work/identity/`, `.work/advanced/`, and `.work/operations/`
 - operator-local SBOM and host inventory reports under `.work/advanced/sbom/`, with core runtime secret-bearing files forced to mode `0600` during render and install
 
 ## Practical operator outcome
@@ -80,7 +80,7 @@ With operator-provided data and external account setup, a new operator can use t
 3. render network exposure, identity, or advanced optional layers only into the gitignored `.work/` paths
 4. validate the baseline in QEMU
 5. apply and verify the phased deployment path on a real OpenBSD host
-6. run post-install checks, operations checks, maintenance checks, and backup workflows
+6. run post-install checks, generate live operations plan packs under `.work/operations/`, and use maintenance and backup workflows
 7. add optional advanced layers only when the base system is stable
 
 ## Operator input model
