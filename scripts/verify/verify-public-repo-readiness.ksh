@@ -28,6 +28,7 @@ for _file in \
   "${PROJECT_ROOT}/scripts/phases/phase-16-apply.ksh" \
   "${PROJECT_ROOT}/scripts/phases/phase-16-verify.ksh" \
   "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" \
+  "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh" \
   "${PROJECT_ROOT}/maint/doas-policy-baseline-check.ksh" \
   "${PROJECT_ROOT}/maint/doas-policy-transition.ksh" \
   "${PROJECT_ROOT}/maint/ssh-hardening-window.ksh" \
@@ -58,6 +59,12 @@ if "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" >/dev/nul
   pass "repository semantic integrity checks pass"
 else
   fail "repository semantic integrity checks reported a problem"
+fi
+
+if "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh" >/dev/null 2>&1; then
+  pass "rendered config integrity checks pass"
+else
+  fail "rendered config integrity checks reported a problem"
 fi
 
 [ "${FAIL}" -eq 0 ]

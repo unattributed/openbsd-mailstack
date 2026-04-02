@@ -33,6 +33,7 @@ Use this after a real deployment or a serious QEMU validation run:
 
 ```sh
 ./scripts/verify/run-post-install-checks.ksh
+./scripts/verify/verify-rendered-config-integrity.ksh
 ```
 
 ### Repo-only check
@@ -76,3 +77,14 @@ The post-install checker does not:
 - publish DNS
 - issue certificates
 - claim private parity where it does not exist
+
+
+## Rendered config integrity
+
+The repo and post-install validation surfaces now include a rendered config integrity verifier:
+
+```sh
+./scripts/verify/verify-rendered-config-integrity.ksh
+```
+
+This checks the tracked sanitized render tree, and any live `.work/` render trees that exist, for key service wiring patterns and unresolved uppercase placeholders.

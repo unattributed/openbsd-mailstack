@@ -76,6 +76,7 @@ main() {
 
   run "${PROJECT_ROOT}/scripts/install/render-core-runtime-configs.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh"
+  run "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh"
 
   run "${PROJECT_ROOT}/scripts/phases/phase-02-verify.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-03-verify.ksh"

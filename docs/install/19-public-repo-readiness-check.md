@@ -55,11 +55,18 @@ At minimum, the public checks should validate:
 - Python syntax for tracked Python helpers when a Python interpreter is available locally
 - the absence of unresolved `__PLACEHOLDER__` tokens in concrete generated examples
 - the continued use of gitignored `.work/` paths for live operator-generated outputs
+- essential service wiring patterns in tracked sanitized examples and live render trees
 
 The current repo-side semantic verifier is:
 
 ```sh
 ./scripts/verify/verify-repo-semantic-integrity.ksh
+```
+
+The current rendered config verifier is:
+
+```sh
+./scripts/verify/verify-rendered-config-integrity.ksh
 ```
 
 

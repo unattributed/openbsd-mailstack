@@ -145,6 +145,20 @@ run_repo_semantic_validation() {
   fi
 }
 
+run_rendered_config_validation() {
+  _script="${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh"
+  if [ ! -x "${_script}" ]; then
+    fail "rendered config verifier is missing or not executable: ${_script}"
+    return 0
+  fi
+
+  if "${_script}"; then
+    pass "rendered config verifier passed"
+  else
+    fail "rendered config verifier reported a problem"
+  fi
+}
+
 run_command_check() {
   _label="$1"
   shift
@@ -218,6 +232,7 @@ check_repo_state() {
   check_file_exists "${PROJECT_ROOT}/scripts/install/run-phase-sequence.ksh" "phase sequence runner present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh" "core runtime verifier present"
   check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" "repo semantic verifier present"
+  check_file_exists "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh" "rendered config verifier present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/postfix/main.cf" "live rendered postfix config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/dovecot/dovecot.conf" "live rendered dovecot config present"
   check_file_exists "${CORE_RENDER_ROOT}/etc/nginx/sites-available/main.conf" "live rendered nginx config present"
@@ -246,6 +261,7 @@ EOF2
   done
 
   run_repo_semantic_validation
+  run_rendered_config_validation
 
   load_project_config || true
 
