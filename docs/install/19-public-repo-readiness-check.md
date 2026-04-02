@@ -62,7 +62,25 @@ The current repo-side semantic verifier is:
 ./scripts/verify/verify-repo-semantic-integrity.ksh
 ```
 
-## E. Intentional boundaries
+
+## E. Automated public repo gates
+
+The repository now includes a public CI workflow for repo-only validation. That workflow should be able to run without private inputs or a live OpenBSD host.
+
+The local mirror of that workflow is:
+
+```sh
+./scripts/verify/run-repo-ci-gates.ksh
+```
+
+It should be able to:
+
+- create temporary example-backed operator inputs
+- render live runtime trees into temporary gitignored paths
+- run repo semantic integrity checks
+- exercise the public-safe render and phase surfaces that are valid to prove in CI
+
+## F. Intentional boundaries
 
 The following are still intentionally private:
 
@@ -71,7 +89,7 @@ The following are still intentionally private:
 - real secrets, PATs, API tokens, and private keys
 - site-specific control-plane doctrine
 
-## F. Final operator reality
+## G. Final operator reality
 
 The public repository is considered ready when the remaining work is local operator population of:
 

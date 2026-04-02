@@ -100,8 +100,15 @@ Examples:
 - dry-run execution for installer and phase tooling
 - QEMU or lab validation for install, verify, and upgrade paths
 - documentation walkthrough validation for onboarding changes
+- the GitHub Actions repo-only validation workflow for changes that affect public automation or validation behavior
 
 If something cannot be tested locally, say so clearly in the pull request.
+
+To mirror the current public CI gate locally, run:
+
+```sh
+./scripts/verify/run-repo-ci-gates.ksh
+```
 
 ## Pull Request Guidance
 

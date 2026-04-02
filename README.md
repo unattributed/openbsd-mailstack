@@ -134,7 +134,21 @@ Useful commands after the repository is populated with local inputs. The install
 ./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10
 ./scripts/verify/run-post-install-checks.ksh
 ./maint/validate-public-hardening-surface.ksh
+./scripts/verify/run-repo-ci-gates.ksh
 ```
+
+
+## Automated public repo gates
+
+The repository now includes a GitHub Actions workflow that runs repo-only validation on push and pull request for `main`.
+
+The local helper used by that workflow is:
+
+```sh
+./scripts/verify/run-repo-ci-gates.ksh
+```
+
+It renders live test output into temporary gitignored paths, validates the repo semantic checks, and exercises the public-safe render and phase surfaces that can be proven without a live OpenBSD host.
 
 ## Repository companions
 
