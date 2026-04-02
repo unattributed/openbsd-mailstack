@@ -8,6 +8,13 @@ project on OpenBSD 7.8.
 This phase prepares the host for later application phases that depend on
 MariaDB, especially PostfixAdmin and Roundcube.
 
+
+## Public implementation note
+
+In the current public repo, this phase uses the shared core runtime renderer, but it now also writes a targeted phase summary and uses a phase-scoped verify profile.
+
+That means the phase remains aligned to the shared render path while still asserting the specific templates and rendered assets that matter for this layer.
+
 ## Who this phase is for
 
 This phase is required for users who want:

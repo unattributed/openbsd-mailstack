@@ -5,6 +5,7 @@
 The public repository now provides a materially usable public-safe baseline for:
 
 - phase foundation and operator input handling
+- phase 02 through 08 now include phase-scoped summaries and targeted verify coverage on top of the shared core runtime renderer
 - core mail runtime rendering and staged example output
 - install order, QEMU validation, and first production deployment guidance
 - backup, disaster recovery, restore drills, DR site assets, and DR host bootstrap

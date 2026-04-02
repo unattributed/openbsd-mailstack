@@ -8,13 +8,13 @@ This document maps the public phase documents and scripts to the current public-
 |---|---|---|
 | Phase 00, foundation | materially usable | foundation docs, shared input model, apply and verify scripts |
 | Phase 01, network and external access | materially usable | PF, WireGuard, DNS, DDNS templates and helpers |
-| Phase 02, MariaDB baseline | materially usable | core runtime rendering, MariaDB templates, SQL baseline wiring |
-| Phase 03, PostfixAdmin and SQL wiring | materially usable | PostfixAdmin templates, SQL planning and runtime docs |
-| Phase 04, Postfix core and SQL integration | materially usable | Postfix templates, SQL-backed mail routing assets |
-| Phase 05, Dovecot auth and mailbox delivery | materially usable | Dovecot templates, mailbox delivery and auth wiring |
-| Phase 06, TLS and certificate automation | materially usable | staged TLS-related config wiring and deployment guidance |
-| Phase 07, filtering and anti-abuse | materially usable | Rspamd, ClamAV, anti-abuse, and related filtering helpers |
-| Phase 08, webmail and admin access | materially usable | Roundcube, PostfixAdmin, nginx web-plane assets |
+| Phase 02, MariaDB baseline | materially usable | MariaDB templates, shared core runtime rendering, and phase-scoped summary and verify coverage |
+| Phase 03, PostfixAdmin and SQL wiring | materially usable | PostfixAdmin SQL wiring assets, shared core runtime rendering, and phase-scoped summary and verify coverage |
+| Phase 04, Postfix core and SQL integration | materially usable | Postfix templates, SQL-backed mail routing assets, and phase-scoped summary and verify coverage |
+| Phase 05, Dovecot auth and mailbox delivery | materially usable | Dovecot templates, mailbox delivery and auth wiring, and phase-scoped summary and verify coverage |
+| Phase 06, TLS and certificate automation | materially usable | staged TLS-related config wiring, deployment guidance, and phase-scoped summary and verify coverage |
+| Phase 07, filtering and anti-abuse | materially usable | Rspamd, ClamAV, anti-abuse helpers, and phase-scoped summary and verify coverage |
+| Phase 08, webmail and admin access | materially usable | Roundcube, PostfixAdmin, nginx web-plane assets, and phase-scoped summary and verify coverage |
 | Phase 09, DNS and identity publishing | materially usable | DNS publishing guidance and shared DNS input model |
 | Phase 10, operations and resilience | materially usable | install, post-install, operator workflow, and resilience docs |
 | Phase 11, backup and disaster recovery | materially usable | backup helpers, restore helpers, DR docs |

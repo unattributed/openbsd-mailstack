@@ -88,6 +88,8 @@ doas env OPENBSD_MAILSTACK_NONINTERACTIVE=1 ./scripts/install/run-phase-sequence
 
 This executes each apply script in sequence and runs the matching verify script before advancing.
 
+Phases 02 through 08 still share the core runtime renderer, but they now emit targeted phase summaries and run phase-scoped verification for the specific assets that belong to each layer.
+
 ## Which phase range to use
 
 ### Phase 00 through Phase 03
