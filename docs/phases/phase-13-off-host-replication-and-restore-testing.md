@@ -12,10 +12,10 @@ Extend the Phase 11 and 12 baseline with off-host copy planning, restore drills,
 
 ## Outputs
 
-- generated off-host replication summary
-- generated restore drill summary
-- generated post-restore validation checklist
+- live off-host and drill plan pack under `.work/backup-dr/phase-13/`
+- post-restore validation checklist in the same gitignored work root
 - QEMU restore drill runner under `maint/qemu/`
+- readiness reporting through `scripts/ops/backup-dr-readiness-report.ksh`
 
 ## Run
 
@@ -31,5 +31,4 @@ Verify:
 
 ## Refinement
 
-Phase 13 can now be exercised from the unified backup runner and the DR host
-bootstrap workflow, not only from individual backup scripts.
+Phase 13 can now be exercised from a unified backup and DR readiness surface, not only from individual backup scripts and tracked generated notes.

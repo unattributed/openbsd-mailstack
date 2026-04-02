@@ -47,13 +47,16 @@ doas ksh scripts/install/provision-dr-site-host.ksh --apply
 - `/srv/openbsd-mailstack-dr/releases`
 - `/var/restore/openbsd-mailstack`
 - `/var/backups/openbsd-mailstack`
-- `/var/lib/openbsd-mailstack-dr`
-- `/var/log/openbsd-mailstack-dr`
+- `/var/lib/openbsd-mailstack`
 
-## Recommended Sequence
+## Related live planning outputs
 
-1. configure `dr-host.conf` and `dr-site.conf`
-2. run the dry run and review the output
-3. apply the bootstrap on the standby host
-4. run `scripts/install/install-backup-schedule-assets.ksh --dry-run`
-5. run a staged restore drill before any live failover
+The backup and DR phase pack now writes the live plan guidance under:
+
+- `.work/backup-dr/phase-11/`
+- `.work/backup-dr/phase-12/`
+- `.work/backup-dr/phase-13/`
+
+The readiness report is written under:
+
+- `.work/backup-dr/readiness/backup-dr-readiness.txt`

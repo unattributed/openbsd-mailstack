@@ -15,8 +15,8 @@ Extend the Phase 11 baseline with integrity and controlled restore behavior.
 
 ## Outputs
 
-- generated integrity workflow summary
-- generated restore mode summary
+- live integrity plan pack under `.work/backup-dr/phase-12/`
+- archive protection guidance tied to the actual helper scripts
 - verification helper usage guidance
 
 ## Run
@@ -33,6 +33,6 @@ Verify:
 
 ## Refinement
 
-Phase 12 now has a concrete helper for archive protection:
+Phase 12 now writes a gitignored live plan pack instead of tracked generated guidance. It also keeps a concrete helper for archive protection:
 
 - `scripts/ops/protect-backup-set.ksh`

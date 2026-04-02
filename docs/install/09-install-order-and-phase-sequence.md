@@ -108,7 +108,7 @@ Use this when you want the first broader public baseline, including DNS identity
 
 Use these after the early baseline is stable and you are ready to add:
 
-- backup and DR
+- backup and DR plan packs and readiness reporting
 - monitoring and maintenance
 - network exposure refinement
 - security hardening and runtime secret layout

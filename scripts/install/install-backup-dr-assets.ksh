@@ -16,7 +16,7 @@ esac
 LIBEXEC_DIR="/usr/local/libexec/openbsd-mailstack/backup-dr"
 SBIN_DIR="/usr/local/sbin"
 
-RUNTIME_SCRIPTS="backup-config.ksh backup-mariadb.ksh backup-mailstack.ksh backup-all.ksh protect-backup-set.ksh verify-backup-set.ksh restore-mailstack.ksh run-restore-drill.ksh replicate-backup-offhost.ksh"
+RUNTIME_SCRIPTS="backup-config.ksh backup-mariadb.ksh backup-mailstack.ksh backup-all.ksh protect-backup-set.ksh verify-backup-set.ksh restore-mailstack.ksh run-restore-drill.ksh replicate-backup-offhost.ksh backup-dr-readiness-report.ksh"
 INSTALL_HELPERS="install-backup-dr-assets.ksh install-dr-site-assets.ksh install-backup-schedule-assets.ksh provision-dr-site-host.ksh"
 
 run() {

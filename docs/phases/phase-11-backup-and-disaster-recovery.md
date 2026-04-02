@@ -19,10 +19,9 @@ Create a usable public backup and DR baseline.
 
 ## Outputs
 
-- generated backup scope summary
-- generated restore workflow summary
-- generated DR site provisioning summary
+- live backup and DR plan pack under `.work/backup-dr/phase-11/`
 - reusable backup, restore, and install helpers in `scripts/`
+- readiness reporting through `scripts/ops/backup-dr-readiness-report.ksh`
 
 ## Run
 
@@ -36,8 +35,12 @@ Verify:
 ./scripts/phases/phase-11-verify.ksh
 ```
 
+Readiness report:
+
+```sh
+./scripts/ops/backup-dr-readiness-report.ksh --write
+```
+
 ## Refinement
 
-Phase 11 now includes a public-safe standby host bootstrap path through
-`scripts/install/provision-dr-site-host.ksh`, in addition to the DR portal asset
-installer.
+Phase 11 now writes a live plan pack into a gitignored work root instead of tracked repo guidance files. It also includes a public-safe standby host bootstrap path through `scripts/install/provision-dr-site-host.ksh`, in addition to the DR portal asset installer.

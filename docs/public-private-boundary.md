@@ -65,3 +65,8 @@ The remaining private boundaries are now specific:
 - real operator identities, passwords, PATs, API tokens, and private keys
 - site-specific control-plane doctrine tied to a real deployment
 - provider-specific integrations that have not been generalized into operator-input-driven public-safe workflows
+
+
+## Live backup and DR planning outputs
+
+Backup and DR planning output is now written into the gitignored live workspace under `.work/backup-dr/`. These artifacts are operator-specific working material, not tracked publishable repo examples.

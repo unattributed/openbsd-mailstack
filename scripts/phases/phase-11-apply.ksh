@@ -5,15 +5,17 @@ set -eu
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
 PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
+PROFILE_LIB="${PROJECT_ROOT}/scripts/lib/backup-dr-phase-profiles.ksh"
 . "${COMMON_LIB}"
+. "${PROFILE_LIB}"
 
-BACKUP_DIR="${PROJECT_ROOT}/services/backup"
-SUMMARY_FILE="${BACKUP_DIR}/phase-11-summary.txt"
-SCOPE_FILE="${BACKUP_DIR}/backup-scope.generated"
-RESTORE_FILE="${BACKUP_DIR}/restore-workflow.generated"
-DR_SITE_FILE="${BACKUP_DIR}/dr-site-provisioning.generated"
-SCHEDULE_FILE="${BACKUP_DIR}/backup-schedule.generated"
-DR_HOST_FILE="${BACKUP_DIR}/dr-host-bootstrap.generated"
+PLAN_DIR="$(backupdr_profile_phase_dir 11)"
+SUMMARY_FILE="${PLAN_DIR}/phase-11-summary.txt"
+SCOPE_FILE="${PLAN_DIR}/backup-scope.txt"
+RESTORE_FILE="${PLAN_DIR}/restore-workflow.txt"
+DR_SITE_FILE="${PLAN_DIR}/dr-site-provisioning.txt"
+SCHEDULE_FILE="${PLAN_DIR}/backup-schedule.txt"
+DR_HOST_FILE="${PLAN_DIR}/dr-host-bootstrap.txt"
 
 load_project_config
 prompt_value "MAIL_HOSTNAME" "Enter the public mail hostname" "${MAIL_HOSTNAME:-mail.example.com}"
@@ -37,43 +39,31 @@ validate_yes_no "${DR_HOST_ENABLED}" || die "DR_HOST_ENABLED must be yes or no"
 validate_yes_no "${BACKUP_CRON_ENABLED}" || die "BACKUP_CRON_ENABLED must be yes or no"
 validate_hostname "${DR_SITE_SERVER_NAME}" || die "invalid DR_SITE_SERVER_NAME: ${DR_SITE_SERVER_NAME}"
 
-ensure_directory "${BACKUP_DIR}"
-cat > "${SCOPE_FILE}" <<EOF
-Backup scope for ${MAIL_HOSTNAME}
+backupdr_profile_write_text "${SCOPE_FILE}" "Backup scope for ${MAIL_HOSTNAME}
 config paths: ${BACKUP_CONFIG_PATHS}
 mail paths: ${BACKUP_MAIL_PATHS}
 runtime paths: ${BACKUP_RUNTIME_PATHS}
-databases: ${BACKUP_DATABASES}
-EOF
-cat > "${RESTORE_FILE}" <<EOF
-Restore workflow
+databases: ${BACKUP_DATABASES}"
+backupdr_profile_write_text "${RESTORE_FILE}" "Restore workflow
 1. doas ksh scripts/install/install-backup-dr-assets.ksh --apply
 2. doas ksh scripts/ops/verify-backup-set.ksh --run-dir <backup-run-dir>
-3. doas ksh scripts/ops/restore-mailstack.ksh --archive <archive> --sha256 <sha256-file>
+3. doas ksh scripts/ops/run-restore-drill.ksh --archive <archive> --sha256 <sha256-file>
 4. review the staged restore under ${RESTORE_STAGING_DIR}
-5. only after review, set RESTORE_ALLOW_OVERWRITE=yes and rerun with --apply-files if required
-EOF
-cat > "${DR_SITE_FILE}" <<EOF
-DR site provisioning
+5. only after review, set RESTORE_ALLOW_OVERWRITE=yes and rerun with scripts/ops/restore-mailstack.ksh --apply-files if required"
+backupdr_profile_write_text "${DR_SITE_FILE}" "DR site provisioning
 DR site enabled: ${DR_SITE_ENABLED}
 server name: ${DR_SITE_SERVER_NAME}
 Dry run: doas ksh scripts/install/install-dr-site-assets.ksh --dry-run
-Apply:   doas ksh scripts/install/install-dr-site-assets.ksh --apply
-EOF
-cat > "${SCHEDULE_FILE}" <<EOF
-Backup schedule provisioning
+Apply:   doas ksh scripts/install/install-dr-site-assets.ksh --apply"
+backupdr_profile_write_text "${SCHEDULE_FILE}" "Backup schedule provisioning
 Scheduled backups enabled: ${BACKUP_CRON_ENABLED}
 Dry run: doas ksh scripts/install/install-backup-schedule-assets.ksh --dry-run
-Apply:   doas ksh scripts/install/install-backup-schedule-assets.ksh --apply
-EOF
-cat > "${DR_HOST_FILE}" <<EOF
-DR host bootstrap
+Apply:   doas ksh scripts/install/install-backup-schedule-assets.ksh --apply"
+backupdr_profile_write_text "${DR_HOST_FILE}" "DR host bootstrap
 DR host enabled: ${DR_HOST_ENABLED}
 Dry run: doas ksh scripts/install/provision-dr-site-host.ksh --dry-run
-Apply:   doas ksh scripts/install/provision-dr-site-host.ksh --apply
-EOF
-cat > "${SUMMARY_FILE}" <<EOF
-Phase 11 backup and disaster recovery summary
+Apply:   doas ksh scripts/install/provision-dr-site-host.ksh --apply"
+backupdr_profile_write_text "${SUMMARY_FILE}" "Phase 11 backup and disaster recovery summary
 mail hostname: ${MAIL_HOSTNAME}
 backup root: ${BACKUP_ROOT}
 retention days: ${BACKUP_RETENTION_DAYS}
@@ -82,5 +72,6 @@ DR site enabled: ${DR_SITE_ENABLED}
 DR site server name: ${DR_SITE_SERVER_NAME}
 DR host enabled: ${DR_HOST_ENABLED}
 backup cron enabled: ${BACKUP_CRON_ENABLED}
-EOF
+plan directory: ${PLAN_DIR}"
 log_info "phase 11 backup and disaster recovery baseline completed"
+log_info "generated live plan pack in ${PLAN_DIR}"

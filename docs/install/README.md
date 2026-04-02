@@ -44,8 +44,9 @@ If you are new to the repository:
 4. render the live operator trees and inspect `.work/runtime/rootfs/`, `.work/network-exposure/rootfs/`, `.work/identity/`, or `.work/advanced/` as appropriate, using `services/generated/rootfs/` only as the sanitized example reference
 5. run the phase sequence through the baseline you want to test
 6. build the monitoring layer you want, including the richer static `/_ops/monitor/` site when needed
-7. run post-install checks and the targeted public hardening validation pass
-8. only then move to a real OpenBSD host
+7. generate live backup and DR plan packs under `.work/backup-dr/` when you are ready for phases 11 through 13
+8. run post-install checks and the targeted public hardening validation pass
+9. only then move to a real OpenBSD host
 
 ## Related documents outside this directory
 

@@ -94,3 +94,25 @@ backupdr_verify_archive_hash() {
   [ -n "${_expected}" ] || die "expected hash is empty in ${_sha_file}"
   [ "${_expected}" = "${_actual}" ] || die "archive hash mismatch for ${_archive}"
 }
+
+
+backupdr_plan_root() {
+  if [ -n "${OPENBSD_MAILSTACK_BACKUP_DR_WORK_ROOT:-}" ]; then
+    print -- "${OPENBSD_MAILSTACK_BACKUP_DR_WORK_ROOT}"
+    return 0
+  fi
+  print -- "${PROJECT_ROOT}/.work/backup-dr"
+}
+
+backupdr_phase_plan_dir() {
+  _phase_id="$1"
+  print -- "$(backupdr_plan_root)/phase-${_phase_id}"
+}
+
+backupdr_readiness_dir() {
+  print -- "$(backupdr_plan_root)/readiness"
+}
+
+backupdr_readiness_report_path() {
+  print -- "$(backupdr_readiness_dir)/backup-dr-readiness.txt"
+}
