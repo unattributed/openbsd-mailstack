@@ -121,7 +121,7 @@ Review [Project status](../project-status.md) and [Phase crosswalk](../phases/ph
 3. run the phase sequence
 4. install the rendered configs onto the host
 5. run post-install checks
-6. run the public-only validation pass
+6. run the targeted public hardening validation pass
 7. only then expose or depend on the host for wider use
 
 See [First production deployment sequence](11-first-production-deployment-sequence.md) for the detailed host order.

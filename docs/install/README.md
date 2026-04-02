@@ -30,7 +30,7 @@ This index is the main public install path for `openbsd-mailstack`.
 5. [Maintenance, upgrades, regression, and rollback](17-maintenance-upgrades-regression-and-rollback.md)
 6. [Advanced optional integrations and gap closures](18-advanced-optional-integrations-and-gap-closures.md)
 7. [Public repo readiness check](19-public-repo-readiness-check.md)
-8. [Public-only validation pass](20-public-only-validation-pass.md)
+8. [Targeted public hardening validation pass](20-targeted-public-hardening-validation-pass.md)
 9. [Security hardening and runtime secrets](21-security-hardening-and-runtime-secrets.md)
 10. [OpenBSD native ops monitoring site](22-openbsd-native-ops-monitoring-site.md)
 
@@ -44,7 +44,7 @@ If you are new to the repository:
 4. render the live operator trees and inspect `.work/runtime/rootfs/`, `.work/network-exposure/rootfs/`, `.work/identity/`, or `.work/advanced/` as appropriate, using `services/generated/rootfs/` only as the sanitized example reference
 5. run the phase sequence through the baseline you want to test
 6. build the monitoring layer you want, including the richer static `/_ops/monitor/` site when needed
-7. run post-install checks and the public-only validation pass
+7. run post-install checks and the targeted public hardening validation pass
 8. only then move to a real OpenBSD host
 
 ## Related documents outside this directory

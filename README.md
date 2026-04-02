@@ -42,7 +42,7 @@ Read these in order:
 6. [Quick start and usage paths](docs/install/08-quick-start-and-usage-paths.md)
 7. [Install order and phase sequence](docs/install/09-install-order-and-phase-sequence.md)
 8. [Public repo readiness check](docs/install/19-public-repo-readiness-check.md)
-9. [Public-only validation pass](docs/install/20-public-only-validation-pass.md)
+9. [Targeted public hardening validation pass](docs/install/20-targeted-public-hardening-validation-pass.md)
 10. [Security hardening and runtime secrets](docs/install/21-security-hardening-and-runtime-secrets.md)
 
 ## Documentation map
@@ -133,7 +133,7 @@ Useful commands after the repository is populated with local inputs. The install
 ./scripts/install/render-core-runtime-configs.ksh
 ./scripts/install/run-phase-sequence.ksh --phase-start 0 --phase-end 10
 ./scripts/verify/run-post-install-checks.ksh
-./maint/final-public-validation-pass.ksh
+./maint/validate-public-hardening-surface.ksh
 ```
 
 ## Repository companions

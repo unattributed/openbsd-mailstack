@@ -25,7 +25,7 @@ A new operator can now:
 4. validate the build path in QEMU
 5. apply and verify the phased deployment path on a real OpenBSD host
 6. use backup, DR, monitoring, the richer `/_ops/monitor/` path, and maintenance workflows from the public repo
-7. use the public-only validation pass to confirm the repo is internally coherent
+7. use the targeted public hardening validation pass to confirm the current publishable hardening surface is internally coherent
 
 ## What still depends on the operator
 
@@ -55,4 +55,4 @@ The best summary documents are:
 - [Documentation map](README.md)
 - [Phase crosswalk](phases/phase-crosswalk.md)
 - [Public repo readiness check](install/19-public-repo-readiness-check.md)
-- [Public-only validation pass](install/20-public-only-validation-pass.md)
+- [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)

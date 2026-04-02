@@ -11,7 +11,7 @@ This file is the documentation index for `openbsd-mailstack`.
 5. [Architecture and flow](architecture/01-project-architecture-and-flow.md)
 6. [Operator workflow](operations/01-operator-workflow.md)
 7. [Public repo readiness check](install/19-public-repo-readiness-check.md)
-8. [Public-only validation pass](install/20-public-only-validation-pass.md)
+8. [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)
 
 ## Core architecture and build flow
 
@@ -27,7 +27,7 @@ This file is the documentation index for `openbsd-mailstack`.
 - [First production deployment sequence](install/11-first-production-deployment-sequence.md)
 - [Post-install checks](install/12-post-install-checks.md)
 - [Public repo readiness check](install/19-public-repo-readiness-check.md)
-- [Public-only validation pass](install/20-public-only-validation-pass.md)
+- [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)
 - [Security hardening and runtime secrets](install/21-security-hardening-and-runtime-secrets.md)
 - [OpenBSD native ops monitoring site](install/22-openbsd-native-ops-monitoring-site.md)
 
@@ -68,4 +68,4 @@ Start with the [phase crosswalk](phases/phase-crosswalk.md), then use the phase 
 - [Project status](project-status.md)
 - [Public and private boundary](public-private-boundary.md)
 - [Public repo readiness check](install/19-public-repo-readiness-check.md)
-- [Public-only validation pass](install/20-public-only-validation-pass.md)
+- [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)

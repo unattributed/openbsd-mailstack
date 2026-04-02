@@ -1,24 +1,21 @@
 # Public-Only Validation Pass
 
-Run this after applying the latest public cleanup or gap-closure patch.
+This page is kept as a compatibility note.
 
-## Validation flow
+The older label, "public-only validation pass", was broader than the script's actual scope.
 
-From the repo root:
+Use the current document instead:
+
+- [Targeted public hardening validation pass](20-targeted-public-hardening-validation-pass.md)
+
+Use the current entrypoint instead:
 
 ```sh
-./scripts/phases/phase-15-apply.ksh
-./scripts/phases/phase-15-verify.ksh
-./scripts/phases/phase-16-apply.ksh
-./scripts/phases/phase-16-verify.ksh
-./maint/final-public-validation-pass.ksh
+./maint/validate-public-hardening-surface.ksh
 ```
 
-## Expected result
+The legacy command remains available as a compatibility wrapper:
 
-The repo should pass without:
-
-- private hostname references
-- tracked operator input files containing real values
-- missing phase 15 or 16 public-safe assets
-- malformed generated examples
+```sh
+./maint/final-public-validation-pass.ksh
+```
