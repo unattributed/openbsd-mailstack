@@ -76,12 +76,16 @@ password in cleartext.
 
 ## Outputs created by Phase 05
 
-The apply script can create these local project files:
+Phase 05 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/dovecot/dovecot-sql.conf.ext.example.generated`
-- `services/dovecot/dovecot-auth.conf.fragment.example.generated`
-- `services/dovecot/dovecot-mail.conf.fragment.example.generated`
-- `services/dovecot/dovecot-sql-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
+
+- `.work/runtime/rootfs/etc/dovecot/dovecot.conf`
+- `.work/runtime/rootfs/etc/dovecot/local.conf`
+- `.work/runtime/rootfs/etc/dovecot/dovecot-sql.conf.ext`
+- `.work/runtime/rootfs/etc/dovecot/conf.d/`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 

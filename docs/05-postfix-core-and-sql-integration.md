@@ -71,13 +71,17 @@ password in cleartext.
 
 ## Outputs created by Phase 04
 
-The apply script can create these local project files:
+Phase 04 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/postfix/main.cf.fragment.example.generated`
-- `services/postfix/mysql-virtual-domains.cf.example.generated`
-- `services/postfix/mysql-virtual-mailboxes.cf.example.generated`
-- `services/postfix/mysql-virtual-aliases.cf.example.generated`
-- `services/postfix/postfix-sql-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
+
+- `.work/runtime/rootfs/etc/postfix/main.cf`
+- `.work/runtime/rootfs/etc/postfix/master.cf`
+- `.work/runtime/rootfs/etc/postfix/mysql_virtual_domains_maps.cf`
+- `.work/runtime/rootfs/etc/postfix/mysql_virtual_mailbox_maps.cf`
+- `.work/runtime/rootfs/etc/postfix/mysql_virtual_alias_maps.cf`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 

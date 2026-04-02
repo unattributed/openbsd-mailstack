@@ -86,15 +86,17 @@ deployment on OpenBSD 7.8.
 
 ## Outputs created by Phase 08
 
-The apply script can create these local project files:
+Phase 08 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/nginx/roundcube-server.fragment.example.generated`
-- `services/nginx/postfixadmin-server.fragment.example.generated`
-- `services/nginx/rspamd-ui-server.fragment.example.generated`
-- `services/roundcube/roundcube-config-summary.txt`
-- `services/postfixadmin/postfixadmin-access-summary.txt`
-- `services/rspamd/rspamd-ui-access-summary.txt`
-- `services/nginx/web-access-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
+
+- `.work/runtime/rootfs/var/www/roundcubemail/config/config.inc.php`
+- `.work/runtime/rootfs/var/www/postfixadmin/config.local.php`
+- `.work/runtime/rootfs/etc/nginx/sites-available/main.conf`
+- `.work/runtime/rootfs/etc/nginx/sites-available/main-ssl.conf`
+- `.work/runtime/rootfs/etc/nginx/templates/rspamd.tmpl`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 

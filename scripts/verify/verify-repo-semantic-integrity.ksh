@@ -100,6 +100,27 @@ EOF2
   [ "${_found}" -eq 1 ] || pass "no unresolved placeholders found in concrete generated examples"
 }
 
+
+check_no_stale_generated_doc_references() {
+  if grep -RIn '\.example\.generated' "${PROJECT_ROOT}/README.md" "${PROJECT_ROOT}/docs" >/dev/null 2>&1; then
+    fail "stale .example.generated references remain in publishable documentation"
+  else
+    pass "no stale .example.generated references remain in publishable documentation"
+  fi
+}
+
+check_no_temp_path_leaks_in_tracked_generated_examples() {
+  _matches="$(mktemp /tmp/openbsd-mailstack-generated-leaks.XXXXXX)"
+  trap 'rm -f "${_matches}"' EXIT HUP INT TERM
+  if grep -RInE '/tmp/|/home/[^/]+/|/Users/[^/]+/' "${PROJECT_ROOT}/services/generated"/*.txt "${PROJECT_ROOT}/services/generated/README.md" >"${_matches}" 2>/dev/null; then
+    fail "tracked generated example summaries contain host-specific or temporary paths"
+  else
+    pass "tracked generated example summaries are free of host-specific temporary paths"
+  fi
+  rm -f "${_matches}"
+  trap - EXIT HUP INT TERM
+}
+
 check_render_root_defaults() {
   _core_root="$(core_runtime_render_root)"
   case "${_core_root}" in
@@ -130,6 +151,8 @@ print_summary() {
 main() {
   check_phase_coverage
   check_render_root_defaults
+  check_no_stale_generated_doc_references
+  check_no_temp_path_leaks_in_tracked_generated_examples
   check_ksh_syntax
   check_python_syntax
   check_unresolved_placeholders_in_concrete_examples

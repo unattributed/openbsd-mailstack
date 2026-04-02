@@ -101,14 +101,17 @@ deployment on OpenBSD 7.8.
 
 ## Outputs created by Phase 07
 
-The apply script can create these local project files:
+Phase 07 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/rspamd/worker-proxy.inc.example.generated`
-- `services/rspamd/worker-controller.inc.example.generated`
-- `services/rspamd/redis.inc.example.generated`
-- `services/rspamd/antivirus.conf.example.generated`
-- `services/postfix/rspamd-milter.fragment.example.generated`
-- `services/rspamd/filtering-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
+
+- `.work/runtime/rootfs/etc/rspamd/local.d/worker-proxy.inc`
+- `.work/runtime/rootfs/etc/rspamd/local.d/worker-controller.inc`
+- `.work/runtime/rootfs/etc/rspamd/local.d/redis.conf`
+- `.work/runtime/rootfs/etc/rspamd/local.d/antivirus.conf`
+- `.work/runtime/rootfs/etc/postfix/main.cf`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 

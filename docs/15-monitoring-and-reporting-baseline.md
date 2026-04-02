@@ -26,7 +26,7 @@ The public repo now includes:
 - an nginx monitoring location template under `services/nginx/`
 - a monitoring newsyslog managed block under `services/system/`
 - an example cron fragment under `services/monitoring/`
-- rendered example assets under `services/generated/rootfs/`
+- tracked sanitized monitoring example assets under `services/generated/rootfs/`, with live monitoring runtime output generated on-host under `/var/www/monitor/` and related operational paths
 
 ## Baseline outputs
 

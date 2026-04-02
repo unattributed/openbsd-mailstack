@@ -76,13 +76,16 @@ deployment on OpenBSD 7.8.
 
 ## Outputs created by Phase 06
 
-The apply script can create these local project files:
+Phase 06 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/nginx/tls-server.fragment.example.generated`
-- `services/postfix/tls-main.cf.fragment.example.generated`
-- `services/dovecot/tls.conf.fragment.example.generated`
-- `services/nginx/acme-client.example.generated`
-- `services/nginx/tls-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
+
+- `.work/runtime/rootfs/etc/nginx/templates/ssl.tmpl`
+- `.work/runtime/rootfs/etc/nginx/sites-available/main-ssl.conf`
+- `.work/runtime/rootfs/etc/postfix/main.cf`
+- `.work/runtime/rootfs/etc/dovecot/local.conf`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 

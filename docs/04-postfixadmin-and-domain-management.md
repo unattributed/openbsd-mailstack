@@ -76,13 +76,14 @@ work by:
 
 ## Outputs created by Phase 03
 
-The apply script can create these local project files:
+Phase 03 now uses the shared core runtime renderer and phase-scoped verification.
 
-- `services/postfixadmin/config.local.php.example.generated`
-- `services/postfixadmin/postfixadmin-sql-summary.txt`
+Review the live operator render under `.work/runtime/rootfs/`, especially:
 
-These are helper artifacts for the repo workflow. They are not intended to
-contain production secrets.
+- `.work/runtime/rootfs/var/www/postfixadmin/config.local.php`
+- `.work/runtime/rootfs/etc/postfixadmin/`
+
+Use `services/generated/rootfs/` only as the tracked sanitized example reference.
 
 ## Verification
 
