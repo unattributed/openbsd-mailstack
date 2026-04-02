@@ -54,7 +54,7 @@ Review the live operator tree under:
 
 - `.work/runtime/rootfs/`
 
-Use `services/generated/rootfs/` only as the tracked sanitized example tree. The live rendered secret-bearing files under `.work/runtime/rootfs/` are forced to mode `0600`.
+Use `services/generated/rootfs/` only as the tracked sanitized example tree. Live operator renders now stage under gitignored `.work/` paths by default, including `.work/runtime/rootfs/`, `.work/network-exposure/rootfs/`, `.work/identity/`, and `.work/advanced/`. The live rendered secret-bearing core runtime files under `.work/runtime/rootfs/` are forced to mode `0600`.
 
 ### 4. Choose validation path first
 

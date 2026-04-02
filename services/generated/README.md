@@ -8,8 +8,14 @@ This tree is a sanitized example render tree that documents expected filesystem 
 
 Some files in this example tree use secret-bearing filenames, but they contain placeholder values only. Do not treat this path as the live operator render destination.
 
-## Live operator render path
+## Live operator render paths
 
-`./scripts/install/render-core-runtime-configs.ksh` now renders live operator output into `.work/runtime/rootfs/` by default.
+The live operator render paths are now gitignored under `.work/` by default:
 
-That live tree may contain real passwords, hashes, hostnames, IP addresses, and other deployment-specific values. It is gitignored and intended to remain local to the operator checkout.
+- core runtime, `.work/runtime/rootfs/`
+- network exposure, `.work/network-exposure/rootfs/`
+- DNS and identity guidance, `.work/identity/`
+- advanced optional assets, `.work/advanced/rootfs/`
+- SBOM and host inventory reports, `.work/advanced/sbom/`
+
+These live trees may contain real passwords, hashes, hostnames, domains, IP addresses, application inventory, vulnerability scan results, and other deployment-specific values. They are intended to remain local to the operator checkout.

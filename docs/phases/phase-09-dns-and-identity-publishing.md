@@ -8,7 +8,7 @@ aligns with the rendered network layer.
 ## What Phase 09 now does
 
 - validates `MAIL_HOSTNAME`, `PRIMARY_DOMAIN`, and `DOMAINS`
-- generates DNS identity guidance files
+- generates DNS identity guidance files under `.work/identity/`
 - reuses the shared network exposure renderer so Unbound and DDNS assets stay aligned
 - supports DDNS preview mode without requiring a live API change
 

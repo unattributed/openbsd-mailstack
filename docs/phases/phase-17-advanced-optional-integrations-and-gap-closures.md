@@ -18,9 +18,9 @@ Extend the public repo with the highest-value remaining public-safe assets from 
 
 ## Outputs
 
-- rendered staged optional service assets under `services/generated/rootfs/`, separate from the live core runtime tree under `.work/runtime/rootfs/`
-- SBOM runtime output directory under `services/generated/sbom/`
-- advanced summary output under `services/generated/advanced-gap-summary.txt`
+- rendered live optional service assets under `.work/advanced/rootfs/`, separate from the live core runtime tree under `.work/runtime/rootfs/`
+- SBOM runtime output directory under `.work/advanced/sbom/`
+- advanced summary output under `.work/advanced/advanced-gap-summary.txt`
 
 ## Run
 

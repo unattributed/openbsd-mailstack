@@ -30,12 +30,14 @@ do
   check "${_file}"
 done
 
-check "${PROJECT_ROOT}/services/generated/rootfs/etc/suricata/suricata.yaml"
-check "${PROJECT_ROOT}/services/generated/rootfs/usr/local/sbin/brevo_webhook.py"
-check "${PROJECT_ROOT}/services/generated/rootfs/etc/sogo/sogo.conf"
-check "${PROJECT_ROOT}/services/generated/advanced-gap-summary.txt"
+ADVANCED_ROOT="${OPENBSD_MAILSTACK_ADVANCED_RENDER_ROOT:-${PROJECT_ROOT}/.work/advanced/rootfs}"
+ADVANCED_WORK_ROOT="$(dirname "${ADVANCED_ROOT}")"
+check "${ADVANCED_ROOT}/etc/suricata/suricata.yaml"
+check "${ADVANCED_ROOT}/usr/local/sbin/brevo_webhook.py"
+check "${ADVANCED_ROOT}/etc/sogo/sogo.conf"
+check "${ADVANCED_WORK_ROOT}/advanced-gap-summary.txt"
 
 [ "${FAIL}" -eq 0 ]
 
-check_contains "${PROJECT_ROOT}/services/generated/rootfs/etc/nginx/templates/openbsd-mailstack-brevo-webhook.locations.tmpl" "/etc/nginx/templates/control-plane-allow.tmpl"
-check_contains "${PROJECT_ROOT}/services/generated/rootfs/etc/nginx/templates/openbsd-mailstack-sogo.locations.tmpl" "/etc/nginx/templates/control-plane-allow.tmpl"
+check_contains "${ADVANCED_ROOT}/etc/nginx/templates/openbsd-mailstack-brevo-webhook.locations.tmpl" "/etc/nginx/templates/control-plane-allow.tmpl"
+check_contains "${ADVANCED_ROOT}/etc/nginx/templates/openbsd-mailstack-sogo.locations.tmpl" "/etc/nginx/templates/control-plane-allow.tmpl"

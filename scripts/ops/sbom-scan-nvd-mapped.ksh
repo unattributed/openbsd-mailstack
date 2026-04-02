@@ -240,10 +240,10 @@ need_cmd mktemp
 need_cmd install
 need_cmd sort
 
-[ -n "${INVENTORY_FILE}" ] || INVENTORY_FILE="${REPO_ROOT}/services/generated/sbom/host-inventory-${HOST_NAME}.json"
+[ -n "${INVENTORY_FILE}" ] || INVENTORY_FILE="${REPO_ROOT}/.work/advanced/sbom/host-inventory-${HOST_NAME}.json"
 [ -n "${EXCEPTIONS_FILE}" ] || EXCEPTIONS_FILE="${REPO_ROOT}/services/sbom/exceptions/exceptions.tsv"
-[ -n "${JSON_OUT}" ] || JSON_OUT="${REPO_ROOT}/services/generated/sbom/scan-report.json"
-[ -n "${TXT_OUT}" ] || TXT_OUT="${REPO_ROOT}/services/generated/sbom/scan-report.txt"
+[ -n "${JSON_OUT}" ] || JSON_OUT="${REPO_ROOT}/.work/advanced/sbom/scan-report.json"
+[ -n "${TXT_OUT}" ] || TXT_OUT="${REPO_ROOT}/.work/advanced/sbom/scan-report.txt"
 [ -n "${CPE_MAP_FILE}" ] || CPE_MAP_FILE="${REPO_ROOT}/services/sbom/components/cpe-map.tsv"
 [ -n "${MANUAL_COMPONENTS_FILE}" ] || MANUAL_COMPONENTS_FILE="${REPO_ROOT}/services/sbom/components/manual-components.tsv"
 

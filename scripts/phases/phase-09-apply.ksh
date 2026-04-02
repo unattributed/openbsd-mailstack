@@ -7,14 +7,15 @@ PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 . "${PROJECT_ROOT}/scripts/lib/common.ksh"
 . "${PROJECT_ROOT}/scripts/lib/network-exposure.ksh"
 
-DNS_DIR="${PROJECT_ROOT}/services/dns"
-DKIM_DIR="${PROJECT_ROOT}/services/dkim"
+IDENTITY_ROOT="$(identity_render_root)"
+DNS_DIR="${IDENTITY_ROOT}/dns"
+DKIM_DIR="${IDENTITY_ROOT}/dkim"
 SAVE_CONFIG="${SAVE_CONFIG:-no}"
 
-ZONE_RECORDS="${DNS_DIR}/zone-records.example.generated"
-MTA_STS_NOTES="${DNS_DIR}/mta-sts-notes.example.generated"
-IDENTITY_SUMMARY="${DNS_DIR}/identity-summary.txt"
-DKIM_RECORDS="${DKIM_DIR}/dkim-records.example.generated"
+ZONE_RECORDS="${DNS_DIR}/zone-records.generated"
+MTA_STS_NOTES="${DNS_DIR}/mta-sts-notes.generated"
+IDENTITY_SUMMARY="${IDENTITY_ROOT}/identity-summary.txt"
+DKIM_RECORDS="${DKIM_DIR}/dkim-records.generated"
 
 collect_inputs() {
   load_network_exposure_config
@@ -69,6 +70,15 @@ DDNS_ENABLED: ${DDNS_ENABLED}
 EOF
 }
 
+write_identity_notes() {
+  mkdir -p "${IDENTITY_ROOT}" || die "failed creating identity render root ${IDENTITY_ROOT}"
+  cat > "${IDENTITY_ROOT}/README.txt" <<EOF
+This directory contains live operator-rendered DNS and identity planning output.
+It may contain real hosted domains, hostnames, policy text, and deployment-specific identity guidance.
+Tracked public-safe DNS source templates remain under services/dns/.
+EOF
+}
+
 main() {
   print_phase_header "PHASE-09" "dns and identity publishing"
   collect_inputs
@@ -76,9 +86,10 @@ main() {
   if [ "${SAVE_CONFIG}" = "yes" ]; then
     save_network_exposure_configs
   fi
+  write_identity_notes
   generate_dns_files
   "${PROJECT_ROOT}/scripts/install/render-network-exposure-configs.ksh"
-  log_info "phase 09 completed, dns identity guidance and network-linked dns assets are rendered"
+  log_info "phase 09 completed, dns identity guidance rendered under ${IDENTITY_ROOT}, and network-linked dns assets are rendered under $(network_render_root)"
 }
 
 main "$@"

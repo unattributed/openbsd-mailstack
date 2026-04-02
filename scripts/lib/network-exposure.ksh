@@ -7,7 +7,9 @@ set -u
 NETWORK_CONF="${CONFIG_DIR}/network.conf"
 DNS_CONF="${CONFIG_DIR}/dns.conf"
 DDNS_CONF="${CONFIG_DIR}/ddns.conf"
-NETWORK_RENDER_ROOT_DEFAULT="${PROJECT_ROOT}/services/generated/rootfs"
+NETWORK_RENDER_ROOT_DEFAULT="${PROJECT_ROOT}/.work/network-exposure/rootfs"
+NETWORK_EXAMPLE_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
+IDENTITY_RENDER_ROOT_DEFAULT="${PROJECT_ROOT}/.work/identity"
 
 network_exposure_defaults() {
   : "${OPENBSD_VERSION:=7.8}"
@@ -112,7 +114,19 @@ save_network_exposure_configs() {
 }
 
 network_render_root() {
-  print -- "${OUTPUT_ROOT:-${NETWORK_RENDER_ROOT_DEFAULT}}"
+  if [ -n "${OUTPUT_ROOT:-}" ]; then
+    print -- "${OUTPUT_ROOT}"
+    return 0
+  fi
+  print -- "${OPENBSD_MAILSTACK_NETWORK_RENDER_ROOT:-${NETWORK_RENDER_ROOT_DEFAULT}}"
+}
+
+network_example_root() {
+  print -- "${NETWORK_EXAMPLE_ROOT}"
+}
+
+identity_render_root() {
+  print -- "${OPENBSD_MAILSTACK_IDENTITY_RENDER_ROOT:-${IDENTITY_RENDER_ROOT_DEFAULT}}"
 }
 
 render_pf_conf() {

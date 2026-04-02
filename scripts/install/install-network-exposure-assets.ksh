@@ -13,7 +13,7 @@ case "${MODE}" in
   *) die "usage: $0 --dry-run | --apply" ;;
 esac
 
-render_root="${PROJECT_ROOT}/services/generated/rootfs"
+render_root="$(network_render_root)"
 timestamp_id="$(date -u +%Y%m%dT%H%M%SZ)"
 backup_root="/var/backups/openbsd-mailstack/network-exposure/${timestamp_id}"
 

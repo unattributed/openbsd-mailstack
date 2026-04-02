@@ -7,7 +7,8 @@ PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 . "${PROJECT_ROOT}/scripts/lib/common.ksh"
 . "${PROJECT_ROOT}/scripts/lib/network-exposure.ksh"
 
-OUTPUT_ROOT="${OUTPUT_ROOT:-${PROJECT_ROOT}/services/generated/rootfs}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-$(network_render_root)}"
+EXAMPLE_ROOT="$(network_example_root)"
 SAVE_CONFIG="${SAVE_CONFIG:-no}"
 
 collect_missing_inputs() {
@@ -37,6 +38,30 @@ collect_missing_inputs() {
   fi
 }
 
+validate_output_root() {
+  if [ "${OUTPUT_ROOT}" = "${EXAMPLE_ROOT}" ] && [ "${OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER:-no}" != "yes" ]; then
+    die "refusing to render live network exposure output into tracked example root ${EXAMPLE_ROOT}, use the default .work path or set OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER=yes for an intentional sanitized refresh"
+  fi
+}
+
+write_render_notes() {
+  _parent="$(dirname "${OUTPUT_ROOT}")"
+  ensure_directory "${_parent}"
+  cat > "${_parent}/README.txt" <<EOF
+This directory contains live operator-rendered network exposure output.
+It may contain real hostnames, domains, IP addresses, DNS planning data, and provider-linked helper assets.
+Tracked public-safe example references remain under ${EXAMPLE_ROOT}.
+EOF
+  cat > "${_parent}/network-exposure-summary.txt" <<EOF
+Rendered live network exposure assets
+MAIL_HOSTNAME=${MAIL_HOSTNAME}
+PRIMARY_DOMAIN=${PRIMARY_DOMAIN}
+DOMAINS=${DOMAINS}
+PUBLIC_IPV4=${PUBLIC_IPV4}
+OUTPUT_ROOT=${OUTPUT_ROOT}
+EOF
+}
+
 main() {
   print_phase_header "PHASE-07" "render network exposure configs"
   collect_missing_inputs
@@ -45,8 +70,10 @@ main() {
     save_network_exposure_configs
     log_info "saved network, dns, and ddns config files"
   fi
+  validate_output_root
   render_network_exposure_tree "${OUTPUT_ROOT}"
-  log_info "rendered network exposure assets to ${OUTPUT_ROOT}"
+  write_render_notes
+  log_info "rendered live network exposure assets to ${OUTPUT_ROOT}"
 }
 
 main "$@"

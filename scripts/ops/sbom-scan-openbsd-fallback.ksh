@@ -82,10 +82,10 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-[ -n "${INVENTORY_FILE}" ] || INVENTORY_FILE="${REPO_ROOT}/services/generated/sbom/host-inventory-${HOST_NAME}.json"
+[ -n "${INVENTORY_FILE}" ] || INVENTORY_FILE="${REPO_ROOT}/.work/advanced/sbom/host-inventory-${HOST_NAME}.json"
 [ -n "${EXCEPTIONS_FILE}" ] || EXCEPTIONS_FILE="${REPO_ROOT}/services/sbom/exceptions/exceptions.tsv"
-[ -n "${JSON_OUT}" ] || JSON_OUT="${REPO_ROOT}/services/generated/sbom/scan-report.json"
-[ -n "${TXT_OUT}" ] || TXT_OUT="${REPO_ROOT}/services/generated/sbom/scan-report.txt"
+[ -n "${JSON_OUT}" ] || JSON_OUT="${REPO_ROOT}/.work/advanced/sbom/scan-report.json"
+[ -n "${TXT_OUT}" ] || TXT_OUT="${REPO_ROOT}/.work/advanced/sbom/scan-report.txt"
 
 [ -f "${INVENTORY_FILE}" ] || {
   echo "error: inventory file not found: ${INVENTORY_FILE}" >&2

@@ -26,7 +26,7 @@ check_file() {
 main() {
   load_network_exposure_config
   validate_network_exposure_inputs && pass "network exposure inputs are valid"
-  render_root="${PROJECT_ROOT}/services/generated/rootfs"
+  render_root="$(network_render_root)"
   check_file "${render_root}/etc/pf.conf"
   check_file "${render_root}/etc/pf.anchors/openbsd-mailstack-selfhost"
   if [ "${ENABLE_WIREGUARD}" = "yes" ]; then

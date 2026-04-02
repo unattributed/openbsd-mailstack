@@ -49,7 +49,7 @@ advanced_load_config() {
   : "${ENABLE_SBOM:=yes}"
   : "${SBOM_SCANNER_MODE:=fallback}"
   : "${SBOM_REPORT_EMAIL:=${ALERT_EMAIL}}"
-  : "${SBOM_REPORT_ROOT:=services/generated/sbom}"
+  : "${SBOM_REPORT_ROOT:=.work/advanced/sbom}"
   : "${SBOM_CRON_MINUTE:=40}"
   : "${SBOM_CRON_HOUR:=3}"
   : "${SBOM_NVD_API_KEY:=}"

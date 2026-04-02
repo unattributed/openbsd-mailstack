@@ -10,8 +10,41 @@ PROJECT_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/../.." && pwd -P)"
 advanced_load_config
 validate_advanced_inputs
 
-GEN_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
-SBOM_GEN="${PROJECT_ROOT}/services/generated/sbom"
+GEN_ROOT="${OPENBSD_MAILSTACK_ADVANCED_RENDER_ROOT:-${PROJECT_ROOT}/.work/advanced/rootfs}"
+SBOM_GEN="${OPENBSD_MAILSTACK_ADVANCED_SBOM_ROOT:-${PROJECT_ROOT}/.work/advanced/sbom}"
+ADVANCED_EXAMPLE_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
+ADVANCED_SBOM_EXAMPLE_ROOT="${PROJECT_ROOT}/services/generated/sbom"
+
+validate_output_roots() {
+  if [ "${GEN_ROOT}" = "${ADVANCED_EXAMPLE_ROOT}" ] && [ "${OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER:-no}" != "yes" ]; then
+    die "refusing to render live advanced optional assets into tracked example root ${ADVANCED_EXAMPLE_ROOT}, use the default .work path or set OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER=yes for an intentional sanitized refresh"
+  fi
+  if [ "${SBOM_GEN}" = "${ADVANCED_SBOM_EXAMPLE_ROOT}" ] && [ "${OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER:-no}" != "yes" ]; then
+    die "refusing to render live SBOM output into tracked example root ${ADVANCED_SBOM_EXAMPLE_ROOT}, use the default .work path or set OPENBSD_MAILSTACK_ALLOW_TRACKED_RENDER=yes for an intentional sanitized refresh"
+  fi
+}
+
+write_render_notes() {
+  _work_root="$(dirname "${GEN_ROOT}")"
+  ensure_directory "${_work_root}"
+  cat > "${_work_root}/README.txt" <<EOF
+This directory contains live operator-rendered advanced optional assets and SBOM reports.
+It may contain real hostnames, domains, IP addresses, application inventory, and vulnerability scan output.
+Tracked public-safe source assets remain under services/generated/, services/sbom/, and the service template trees.
+EOF
+  cat > "${_work_root}/advanced-gap-summary.txt" <<EOF
+Phase 17 advanced optional integrations and gap closures generated
+enable_suricata=${ENABLE_SURICATA}
+enable_brevo_webhook=${ENABLE_BREVO_WEBHOOK}
+enable_sogo=${ENABLE_SOGO}
+enable_sbom=${ENABLE_SBOM}
+sbom_scanner_mode=${SBOM_SCANNER_MODE}
+gen_root=${GEN_ROOT}
+sbom_root=${SBOM_GEN}
+EOF
+}
+
+validate_output_roots
 ensure_directory "${GEN_ROOT}/etc/suricata"
 ensure_directory "${GEN_ROOT}/var/lib/suricata/rules"
 ensure_directory "${GEN_ROOT}/usr/local/sbin"
@@ -52,13 +85,6 @@ scanner_mode=${SBOM_SCANNER_MODE}
 report_email=${SBOM_REPORT_EMAIL}
 EOF
 
-cat > "${PROJECT_ROOT}/services/generated/advanced-gap-summary.txt" <<EOF
-Phase 17 advanced optional integrations and gap closures generated
-enable_suricata=${ENABLE_SURICATA}
-enable_brevo_webhook=${ENABLE_BREVO_WEBHOOK}
-enable_sogo=${ENABLE_SOGO}
-enable_sbom=${ENABLE_SBOM}
-sbom_scanner_mode=${SBOM_SCANNER_MODE}
-EOF
+write_render_notes
 
-print -- "Phase 17 advanced assets rendered"
+print -- "Phase 17 advanced assets rendered into ${GEN_ROOT}"

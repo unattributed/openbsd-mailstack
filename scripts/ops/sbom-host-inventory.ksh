@@ -144,7 +144,7 @@ command -v pkg_info >/dev/null 2>&1 || {
   exit 1
 }
 
-[ -n "${OUT_FILE}" ] || OUT_FILE="${REPO_ROOT}/services/generated/sbom/host-inventory-${HOST_NAME}.json"
+[ -n "${OUT_FILE}" ] || OUT_FILE="${REPO_ROOT}/.work/advanced/sbom/host-inventory-${HOST_NAME}.json"
 [ -n "${CPE_MAP_FILE}" ] || CPE_MAP_FILE="${REPO_ROOT}/services/sbom/components/cpe-map.tsv"
 [ -n "${MANUAL_COMPONENTS_FILE}" ] || MANUAL_COMPONENTS_FILE="${REPO_ROOT}/services/sbom/components/manual-components.tsv"
 

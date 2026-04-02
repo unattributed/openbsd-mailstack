@@ -10,7 +10,7 @@ The public repo no longer stops at a router checklist alone. Phase 01 now:
 
 - validates the network and exposure model
 - saves network, DNS, and DDNS settings when requested
-- renders staged PF, WireGuard, Unbound, and DDNS assets under `services/generated/rootfs/`
+- renders live PF, WireGuard, Unbound, and DDNS assets under `.work/network-exposure/rootfs/`, while leaving `services/generated/rootfs/` as the tracked sanitized example reference
 - points operators at the install and verify helpers for later host-side use
 
 ## Inputs

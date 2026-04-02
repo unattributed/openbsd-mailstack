@@ -26,7 +26,7 @@ install_file() {
     as_root cp -p "${_src}" "${_dst}"
   fi
 }
-GEN_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
+GEN_ROOT="${OPENBSD_MAILSTACK_ADVANCED_RENDER_ROOT:-${PROJECT_ROOT}/.work/advanced/rootfs}"
 if [ "${ENABLE_SURICATA}" = "yes" ]; then
   install_file "${GEN_ROOT}/etc/suricata/suricata.yaml" "/etc/suricata/suricata.yaml"
   install_file "${GEN_ROOT}/etc/suricata/threshold.config" "/etc/suricata/threshold.config"

@@ -45,7 +45,7 @@ main() {
     log_info "saved network, dns, and ddns configuration"
   fi
   "${PROJECT_ROOT}/scripts/install/render-network-exposure-configs.ksh"
-  log_info "phase 01 completed, rendered staged network assets under services/generated/rootfs"
+  log_info "phase 01 completed, rendered live network assets under $(network_render_root), with services/generated/rootfs retained as the tracked sanitized example reference"
   log_info "next step: run ./scripts/phases/phase-01-verify.ksh"
 }
 

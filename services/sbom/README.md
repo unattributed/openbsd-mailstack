@@ -9,4 +9,4 @@ Included here:
 - `exceptions/exceptions.tsv.template`
 - runtime report ignore rules
 
-The public workflow generates reports under `services/generated/sbom/`.
+The public workflow now generates operator-local reports under `.work/advanced/sbom/` by default.

@@ -6,6 +6,8 @@ This document records what must stay private, what can be published after saniti
 
 The goal is to keep the public repo useful without leaking live deployment data or over-preserving private boundaries that are not actually necessary.
 
+Live operator-generated renders and reports now belong under gitignored `.work/` paths by default, not in tracked publishable trees.
+
 ## Boundary categories
 
 ### Category A, must remain private

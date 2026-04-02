@@ -26,12 +26,12 @@ Review these first:
 
 Review staged optional output under, distinct from the live core runtime tree at `.work/runtime/rootfs/`:
 
-- `services/generated/rootfs/etc/suricata/`
-- `services/generated/rootfs/etc/nginx/templates/`
+- `.work/advanced/rootfs/etc/suricata/`
+- `.work/advanced/rootfs/etc/nginx/templates/`
   - confirm Brevo and SOGo includes reference `/etc/nginx/templates/control-plane-allow.tmpl`, not the raw allowlist file
-- `services/generated/rootfs/etc/sogo/`
-- `services/generated/rootfs/usr/local/sbin/`
-- `services/generated/sbom/`
+- `.work/advanced/rootfs/etc/sogo/`
+- `.work/advanced/rootfs/usr/local/sbin/`
+- `.work/advanced/sbom/`
 
 ## Install optional assets onto a host
 

@@ -54,7 +54,7 @@ done
 }
 
 REPO_ROOT="$(cd "${REPO_ROOT}" && pwd -P)"
-[ -n "${OUT_FILE}" ] || OUT_FILE="${REPO_ROOT}/services/generated/sbom/source.spdx.json"
+[ -n "${OUT_FILE}" ] || OUT_FILE="${REPO_ROOT}/.work/advanced/sbom/source.spdx.json"
 
 TMP_LIST="/tmp/sbom-source-files.$$"
 TMP_ENTRIES="/tmp/sbom-source-entries.$$"
