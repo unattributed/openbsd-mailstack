@@ -55,13 +55,13 @@ else
   fail "repo secret guard reported a problem"
 fi
 
-if "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh" >/dev/null 2>&1; then
+if "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh"; then
   pass "repository semantic integrity checks pass"
 else
   fail "repository semantic integrity checks reported a problem"
 fi
 
-if "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh" >/dev/null 2>&1; then
+if "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh"; then
   pass "rendered config integrity checks pass"
 else
   fail "rendered config integrity checks reported a problem"
