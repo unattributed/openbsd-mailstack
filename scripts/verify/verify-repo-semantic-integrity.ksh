@@ -17,20 +17,9 @@ FAIL=0
 WARN=0
 PASS=0
 
-pass() {
-  print -- "[$(timestamp)] PASS  $*"
-  PASS=$((PASS + 1))
-}
-
-warn() {
-  print -- "[$(timestamp)] WARN  $*"
-  WARN=$((WARN + 1))
-}
-
-fail() {
-  print -- "[$(timestamp)] FAIL  $*"
-  FAIL=$((FAIL + 1))
-}
+pass() { print -- "[$(timestamp)] PASS  $*"; PASS=$((PASS + 1)); }
+warn() { print -- "[$(timestamp)] WARN  $*"; WARN=$((WARN + 1)); }
+fail() { print -- "[$(timestamp)] FAIL  $*"; FAIL=$((FAIL + 1)); }
 
 check_file() {
   _path="$1"
@@ -111,6 +100,7 @@ EOF2
   [ "${_found}" -eq 1 ] || pass "no unresolved placeholders found in concrete generated examples"
 }
 
+
 check_no_stale_generated_doc_references() {
   if grep -RIn '\.example\.generated' "${PROJECT_ROOT}/README.md" "${PROJECT_ROOT}/docs" >/dev/null 2>&1; then
     fail "stale .example.generated references remain in publishable documentation"
@@ -145,9 +135,7 @@ check_documentation_integrity() {
 }
 
 check_auxiliary_validation_scripts() {
-  for _checker in \
-    "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh" \
-    "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
+  for _checker in     "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh"     "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
   do
     if [ -x "${_checker}" ] || [ -f "${_checker}" ]; then
       if ksh "${_checker}"; then
