@@ -17,9 +17,20 @@ FAIL=0
 WARN=0
 PASS=0
 
-pass() { print -- "[$(timestamp)] PASS  $*"; PASS=$((PASS + 1)); }
-warn() { print -- "[$(timestamp)] WARN  $*"; WARN=$((WARN + 1)); }
-fail() { print -- "[$(timestamp)] FAIL  $*"; FAIL=$((FAIL + 1)); }
+pass() {
+  print -- "[$(timestamp)] PASS  $*"
+  PASS=$((PASS + 1))
+}
+
+warn() {
+  print -- "[$(timestamp)] WARN  $*"
+  WARN=$((WARN + 1))
+}
+
+fail() {
+  print -- "[$(timestamp)] FAIL  $*"
+  FAIL=$((FAIL + 1))
+}
 
 check_file() {
   _path="$1"
@@ -100,7 +111,6 @@ EOF2
   [ "${_found}" -eq 1 ] || pass "no unresolved placeholders found in concrete generated examples"
 }
 
-
 check_no_stale_generated_doc_references() {
   if grep -RIn '\.example\.generated' "${PROJECT_ROOT}/README.md" "${PROJECT_ROOT}/docs" >/dev/null 2>&1; then
     fail "stale .example.generated references remain in publishable documentation"
@@ -135,7 +145,9 @@ check_documentation_integrity() {
 }
 
 check_auxiliary_validation_scripts() {
-  for _checker in     "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh"     "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
+  for _checker in \
+    "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh" \
+    "${PROJECT_ROOT}/scripts/verify/verify-autonomous-installer-assets.ksh"
   do
     if [ -x "${_checker}" ] || [ -f "${_checker}" ]; then
       if ksh "${_checker}"; then
@@ -151,14 +163,35 @@ check_auxiliary_validation_scripts() {
 
 check_render_root_defaults() {
   _core_root="$(core_runtime_render_root)"
-  case "${_core_root}" in
-    "${PROJECT_ROOT}/.work/"*|"${PROJECT_ROOT}/.work")
-      pass "core runtime render root defaults to gitignored work area: ${_core_root}"
-      ;;
-    *)
-      fail "core runtime render root is not in the gitignored work area: ${_core_root}"
-      ;;
-  esac
+  _core_root_override_set=0
+
+  if [ "${OPENBSD_MAILSTACK_CORE_RENDER_ROOT+x}" = "x" ]; then
+    _core_root_override_set=1
+  fi
+
+  if [ "${_core_root_override_set}" -eq 1 ]; then
+    case "${_core_root}" in
+      /*)
+        if [ -n "${_core_root}" ]; then
+          pass "core runtime render root override accepted for this run: ${_core_root}"
+        else
+          fail "core runtime render root override resolved to an empty path"
+        fi
+        ;;
+      *)
+        fail "core runtime render root override must be an absolute path: ${_core_root}"
+        ;;
+    esac
+  else
+    case "${_core_root}" in
+      "${PROJECT_ROOT}/.work/"*|"${PROJECT_ROOT}/.work")
+        pass "core runtime render root defaults to gitignored work area: ${_core_root}"
+        ;;
+      *)
+        fail "core runtime render root is not in the gitignored work area: ${_core_root}"
+        ;;
+    esac
+  fi
 
   if grep -Eq '^\.work/$' "${PROJECT_ROOT}/.gitignore"; then
     pass ".work/ is ignored by git"
