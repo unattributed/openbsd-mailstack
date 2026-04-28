@@ -13,6 +13,12 @@ server {
 
     server_name __MAIL_HOSTNAME__ __WIREGUARD_BIND_IPV4__ 127.0.0.1;
 
+    # Reject unexpected Host headers instead of serving the default HTTPS
+    # application surface for arbitrary hostnames.
+    if ($host !~ ^(__MAIL_HOSTNAME__|__WIREGUARD_BIND_IPV4__|127\.0\.0\.1)$) {
+        return 421;
+    }
+
     # Default root for this vhost (inside chroot /var/www)
     # /htdocs is /var/www/htdocs on the real filesystem
     root /htdocs;
