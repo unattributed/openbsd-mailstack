@@ -1,5 +1,7 @@
 ssl_protocols TLSv1.2 TLSv1.3;
-ssl_ciphers EECDH+CHACHA20:EECDH+AESGCM:EDH+AESGCM:AES256+EECDH;
+# TLS 1.3 ciphers are negotiated by the TLS library. Keep TLS 1.2 explicit
+# and AEAD-only so legacy block-mode suites cannot be selected at the public edge.
+ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
 ssl_prefer_server_ciphers on;
 
 # Generate once if it does not exist:

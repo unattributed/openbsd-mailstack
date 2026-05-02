@@ -28,6 +28,8 @@ FAIL=0
 pass() { print -- "PASS $*"; }
 fail() { print -- "FAIL $*"; FAIL=1; }
 
+TLS12_AEAD_CIPHERS='ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256'
+
 check_file() {
   _file="$1"
   _label="$2"
@@ -53,6 +55,21 @@ check_regex() {
   fi
 }
 
+check_no_regex() {
+  _file="$1"
+  _regex="$2"
+  _label="$3"
+  if [ ! -f "${_file}" ]; then
+    fail "${_label} missing: ${_file}"
+    return 0
+  fi
+  if grep -Eiq "${_regex}" "${_file}"; then
+    fail "${_label} forbidden pattern found in ${_file}"
+  else
+    pass "${_label}"
+  fi
+}
+
 check_no_upper_placeholders() {
   _file="$1"
   _label="$2"
@@ -64,6 +81,32 @@ check_no_upper_placeholders() {
     fail "${_label} still contains unresolved uppercase placeholders: ${_file}"
   else
     pass "${_label} has no unresolved uppercase placeholders"
+  fi
+}
+
+check_nginx_tls_policy() {
+  tls_policy_root="$1"
+  tls_policy_label="$2"
+  tls_policy_ssl_template="${tls_policy_root}/etc/nginx/templates/ssl.tmpl"
+
+  if [ ! -f "${tls_policy_ssl_template}" ]; then
+    fail "${tls_policy_label} nginx TLS template missing: ${tls_policy_ssl_template}"
+    return 0
+  fi
+  if grep -Eq '^ssl_protocols TLSv1\.2 TLSv1\.3;$' "${tls_policy_ssl_template}"; then
+    pass "${tls_policy_label} nginx TLS protocols limited to TLS 1.2 and TLS 1.3"
+  else
+    fail "${tls_policy_label} nginx TLS protocol floor/ceiling not found in ${tls_policy_ssl_template}"
+  fi
+  if grep -Eq "^ssl_ciphers ${TLS12_AEAD_CIPHERS};$" "${tls_policy_ssl_template}"; then
+    pass "${tls_policy_label} nginx TLS 1.2 ciphers are explicit AEAD-only suites"
+  else
+    fail "${tls_policy_label} nginx TLS 1.2 AEAD cipher list not found in ${tls_policy_ssl_template}"
+  fi
+  if grep -Eiq '(^|[^A-Z0-9])CBC([^A-Z0-9]|$)|AES[0-9]*-SHA($|:)|AES256\+EECDH|EECDH\+AES|EDH\+AES' "${tls_policy_ssl_template}"; then
+    fail "${tls_policy_label} nginx TLS template contains CBC-capable broad cipher tokens: ${tls_policy_ssl_template}"
+  else
+    pass "${tls_policy_label} nginx TLS template has no CBC-capable broad cipher tokens"
   fi
 }
 
@@ -81,6 +124,7 @@ check_mail_root() {
   check_regex "${_root}/etc/dovecot/dovecot.conf" 'protocols *= *imap lmtp' "${_label} dovecot protocol set"
   check_regex "${_root}/etc/dovecot/local.conf" 'mail_location *= *maildir:' "${_label} dovecot maildir location"
   check_regex "${_root}/etc/nginx/sites-available/main-ssl.conf" 'include /etc/nginx/templates/ssl\.tmpl;' "${_label} nginx ssl template include"
+  check_nginx_tls_policy "${_root}" "${_label}"
   check_regex "${_root}/etc/rspamd/local.d/worker-proxy.inc" 'milter *= *yes;' "${_label} rspamd proxy milter enabled"
   check_regex "${_root}/etc/rspamd/local.d/worker-controller.inc" 'bind_socket *= *"' "${_label} rspamd controller bind configured"
   check_regex "${_root}/var/www/postfixadmin/config.local.php" "\$CONF\['configured'\] = true;" "${_label} postfixadmin configured flag"

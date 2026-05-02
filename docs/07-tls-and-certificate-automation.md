@@ -33,6 +33,11 @@ In that model:
 - hosted domains can still be `example.com`, `example.net`, and `example.org`
 - MX records for each domain can point to the same mail host
 
+The nginx public-edge TLS template is intentionally bounded to `TLSv1.2` and
+`TLSv1.3`. TLS 1.2 ciphers are listed explicitly as AEAD-only ECDHE suites
+using AES-GCM or ChaCha20-Poly1305. CBC-capable broad cipher aliases, including
+`AES256+EECDH`, are not part of the rendered baseline.
+
 ## Why this matters
 
 This keeps the public project easier to deploy and document because it avoids:
@@ -94,6 +99,8 @@ The verify script checks:
 - hostname and certificate settings are valid
 - required commands exist
 - generated helper files exist when expected
+- the tracked nginx TLS template keeps TLS 1.2/1.3 only and does not include
+  CBC-capable cipher aliases
 
 ## Recommended usage
 
