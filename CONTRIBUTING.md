@@ -10,7 +10,7 @@ Good contribution areas include:
 
 - installation and onboarding improvements
 - verification and regression tooling
-- OpenBSD 7.8 compatibility and reliability fixes
+- OpenBSD 7.9 compatibility and reliability fixes
 - documentation clarity
 - safer defaults and configuration validation
 - support for both single-domain and multi-domain deployments
@@ -136,7 +136,7 @@ If a change affects installation, verification, or recovery behavior, update the
 
 ## Version Target
 
-The active public baseline is OpenBSD `7.8`. Contributions should target that baseline unless a change is explicitly about future-version preparation or documented compatibility work.
+The active public baseline is OpenBSD `7.9`. Contributions should target that baseline unless a change is explicitly about future-version preparation or documented compatibility work.
 
 ## Questions and Proposals
 

@@ -56,12 +56,13 @@ By default, this installs the helpers but does not patch root cron automatically
 doas ./scripts/ops/maintenance-run.ksh --report
 ```
 
-This should:
+This:
 
 - confirm the repo is in a safe state for maintenance
 - run repo-secret and design-authority checks when enabled
 - capture a pre-change host snapshot
-- show what would be done next
+- previews pending base and package updates
+- runs package consistency and production regression checks without mutation
 
 ## Apply mode
 
@@ -73,7 +74,7 @@ This should:
 
 - run `maint/openbsd-syspatch.ksh --apply`
 - run `maint/openbsd-pkg-upgrade.ksh --apply`
-- run `maint/regression-test.ksh`
+- run `maint/production-regression.ksh --host`
 - print rollback guidance if a step fails
 
 ## QEMU rehearsal
@@ -81,13 +82,13 @@ This should:
 If you already have a running lab VM reachable through the existing SSH guard settings:
 
 ```sh
-ksh maint/qemu/lab-openbsd78-upgrade.ksh --report
+ksh maint/qemu/lab-openbsd79-maintenance.ksh --report
 ```
 
 Then, once satisfied:
 
 ```sh
-ksh maint/qemu/lab-openbsd78-upgrade.ksh --apply
+ksh maint/qemu/lab-openbsd79-maintenance.ksh --apply
 ```
 
 ## Weekly cadence

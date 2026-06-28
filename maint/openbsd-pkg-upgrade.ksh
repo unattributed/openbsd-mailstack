@@ -10,36 +10,61 @@ ts() { date "+%Y-%m-%dT%H:%M:%S%z"; }
 log() { print -- "[$(ts)] $*"; }
 need_root() { [ "$(id -u)" -eq 0 ] || { print -- "error: must run as root via doas" >&2; exit 1; }; }
 
+run_bounded() {
+  "$@" &
+  _command_pid=$!
+  (
+    sleep "${PKG_ADD_TIMEOUT_SECS}"
+    kill -INT "${_command_pid}" 2>/dev/null || true
+  ) &
+  _watchdog_pid=$!
+
+  set +e
+  wait "${_command_pid}"
+  _rc=$?
+  set -e
+  kill "${_watchdog_pid}" 2>/dev/null || true
+  wait "${_watchdog_pid}" 2>/dev/null || true
+  [ "${_rc}" -eq 130 ] && return 124
+  return "${_rc}"
+}
+
 run_pkg_add() {
-  if command -v timeout >/dev/null 2>&1; then
-    timeout -k 5 "${PKG_ADD_TIMEOUT_SECS}" pkg_add -u -I
-    return $?
-  fi
-  pkg_add -u -I
+  run_bounded pkg_add -u -I
+}
+
+run_pkg_preview() {
+  run_bounded pkg_add -u -n -I
 }
 
 need_root
 [ -f /etc/installurl ] || { print -- "error: /etc/installurl missing" >&2; exit 1; }
+[ "$(sysctl -n kern.osrelease)" = "7.9" ] || {
+  print -- "error: this maintenance baseline requires OpenBSD 7.9" >&2
+  exit 1
+}
 case "${ACTION}" in
   --check)
-    log "installurl"
-    cat /etc/installurl
-    log "package snapshot"
-    pkg_info -q | sort
+    log "previewing package updates"
+    run_pkg_preview
+    log "validating installed package consistency without repair"
+    pkg_check -n -I
     ;;
   --apply)
     log "running pkg_add -u -I"
-    if ! run_pkg_add; then
-      _rc=$?
+    set +e
+    run_pkg_add
+    _rc=$?
+    set -e
+    if [ "${_rc}" -ne 0 ]; then
       if [ "${_rc}" -eq 124 ] && [ "${ALLOW_PKG_TIMEOUT_CONTINUE}" = "1" ]; then
-        log "pkg_add timed out, continuing because ALLOW_PKG_TIMEOUT_CONTINUE=1"
-        exit 0
+        log "pkg_add timed out; package state must still pass pkg_check"
+      else
+        exit "${_rc}"
       fi
-      exit "${_rc}"
     fi
-    if command -v pkg_check-problems >/dev/null 2>&1; then
-      pkg_check-problems || true
-    fi
+    log "validating installed package consistency without repair"
+    pkg_check -n -I
     ;;
   *)
     print -- "usage: $0 [--check|--apply]" >&2

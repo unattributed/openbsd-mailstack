@@ -39,4 +39,4 @@ if [ -n "${RUN_ID}" ] && [ -d "${STATE_DIR}/runs/${RUN_ID}" ]; then
 fi
 print -- "5. restore repo-managed configs from the last known good commit or backup set"
 print -- "6. use the public backup and restore helpers if host config drift needs staged restoration"
-print -- "7. re-run maint/regression-test.ksh after each corrective action"
+print -- "7. re-run maint/production-regression.ksh --host after each corrective action"

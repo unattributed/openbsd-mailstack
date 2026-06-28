@@ -31,9 +31,10 @@ main() {
     scripts/ops/operations-readiness-report.ksh \
     maint/openbsd-syspatch.ksh \
     maint/openbsd-pkg-upgrade.ksh \
+    maint/production-regression.ksh \
     maint/regression-test.ksh \
     maint/rollback-on-failure.ksh \
-    maint/qemu/lab-openbsd78-upgrade.ksh; do
+    maint/qemu/lab-openbsd79-maintenance.ksh; do
     check_file "${_rel}"
   done
 }

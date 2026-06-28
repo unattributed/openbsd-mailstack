@@ -37,11 +37,23 @@ for _file in \
   check_file "${_file}"
 done
 
-if grep -RIn 'mail.blackbagsecurity.com' "${PROJECT_ROOT}/README.md" "${PROJECT_ROOT}/docs" "${PROJECT_ROOT}/config" "${PROJECT_ROOT}/services" >/dev/null 2>&1; then
-  fail "private hostname reference still present in publishable content"
-else
-  pass "no private hostname reference found in publishable content"
-fi
+_unexpected_hostname=0
+while IFS= read -r _path; do
+  [ -n "${_path}" ] || continue
+  _rel="${_path#${PROJECT_ROOT}/}"
+  case "${_rel}" in
+    docs/production-mail-blackbagsecurity.md|\
+    docs/operations/09-openbsd-79-sdlc-maintenance.md|\
+    docs/README.md|\
+    docs/12-backup-and-disaster-recovery.md|\
+    config/production-regression.conf.example|\
+    evidence/*) ;;
+    *) fail "production hostname outside approved sanitized surface: ${_rel}"; _unexpected_hostname=1 ;;
+  esac
+done <<EOF2
+$(grep -RIl 'mail.blackbagsecurity.com' "${PROJECT_ROOT}/README.md" "${PROJECT_ROOT}/docs" "${PROJECT_ROOT}/config" "${PROJECT_ROOT}/services" "${PROJECT_ROOT}/evidence" 2>/dev/null || true)
+EOF2
+[ "${_unexpected_hostname}" -eq 1 ] || pass "production hostname is limited to approved sanitized documentation and evidence"
 
 if grep -RIn '^-r -- ' "${PROJECT_ROOT}/services/generated/rootfs" >/dev/null 2>&1; then
   fail "malformed generated example prefix still present"

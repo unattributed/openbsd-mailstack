@@ -44,7 +44,7 @@ That is the intended public operating model.
 
 The remaining boundaries are specific and deliberate:
 
-- live production evidence, restore archives, and site-specific control-plane doctrine remain private
+- raw production evidence, restore archives, and site-specific control-plane doctrine remain private; bounded sanitized observations may be published
 - provider-specific integrations beyond the published public-safe set are not generalized here
 - real secrets, private keys, recovery payloads, and live production data remain out of Git by design
 

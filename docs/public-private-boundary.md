@@ -60,7 +60,7 @@ Can the behavior be expressed with reserved domains, placeholders, and operator-
 
 The remaining private boundaries are now specific:
 
-- live production evidence and incident artifacts
+- raw production evidence and incident artifacts
 - encrypted DR payloads and restore archives
 - real operator identities, passwords, PATs, API tokens, and private keys
 - site-specific control-plane doctrine tied to a real deployment

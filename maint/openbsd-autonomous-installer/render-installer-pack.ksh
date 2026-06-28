@@ -28,7 +28,7 @@ done
 . "${PROFILE}"
 
 : "${PROFILE_NAME:=default}"
-: "${OPENBSD_VERSION:=7.8}"
+: "${OPENBSD_VERSION:=7.9}"
 : "${SYSTEM_HOSTNAME:=mail.example.com}"
 : "${DNS_DOMAIN:=example.com}"
 : "${TIMEZONE:=UTC}"
@@ -47,7 +47,7 @@ done
 : "${MAILSTACK_REPO_CLONE_URL:=https://github.com/unattributed/openbsd-mailstack}"
 
 OUT_DIR="${BUILD_ROOT}/${PROFILE_NAME}"
-SITE_ROOT="${OUT_DIR}/site78_root"
+SITE_ROOT="${OUT_DIR}/site79_root"
 mkdir -p "${OUT_DIR}" "${SITE_ROOT}/root"
 
 render_template() {
@@ -56,17 +56,17 @@ render_template() {
   sed     -e "s|__SYSTEM_HOSTNAME__|${SYSTEM_HOSTNAME}|g"     -e "s|__DNS_DOMAIN__|${DNS_DOMAIN}|g"     -e "s|__ROOT_PASSWORD_BCRYPT__|${ROOT_PASSWORD_BCRYPT}|g"     -e "s|__OPERATOR_USER__|${OPERATOR_USER}|g"     -e "s|__OPERATOR_HOME__|${OPERATOR_HOME}|g"     -e "s|__PARROT_PUBKEY__|${PARROT_PUBKEY}|g"     -e "s|__TIMEZONE__|${TIMEZONE}|g"     -e "s|__LAN_IF_DEFAULT__|${LAN_IF_DEFAULT}|g"     -e "s|__LAN_NET_DEFAULT__|${LAN_NET_DEFAULT}|g"     -e "s|__HOST_IP_DEFAULT__|${HOST_IP_DEFAULT}|g"     -e "s|__HOST_IP_CIDR_REAL__|${HOST_IP_CIDR_REAL}|g"     -e "s|__HOST_GATEWAY_DEFAULT__|${HOST_GATEWAY_DEFAULT}|g"     -e "s|__NAMESERVER_DEFAULT__|${NAMESERVER_DEFAULT}|g"     -e "s|__AUTOINSTALL_HTTP_HOST__|${AUTOINSTALL_HTTP_HOST}|g"     -e "s|__AUTOINSTALL_HTTP_PORT__|${AUTOINSTALL_HTTP_PORT}|g"     -e "s|__MAILSTACK_REPO_CLONE_URL__|${MAILSTACK_REPO_CLONE_URL}|g"     "${in_file}" > "${out_file}"
 }
 
-render_template "${SCRIPT_DIR}/install.conf.78.lab.template" "${OUT_DIR}/install.conf.78.lab"
-render_template "${SCRIPT_DIR}/install.conf.78.real.template" "${OUT_DIR}/install.conf.78.real"
-render_template "${SCRIPT_DIR}/site78_root/install.site.template" "${SITE_ROOT}/install.site"
-render_template "${SCRIPT_DIR}/site78_root/root/phase00-firstboot.sh.template" "${SITE_ROOT}/root/phase00-firstboot.sh"
+render_template "${SCRIPT_DIR}/install.conf.79.lab.template" "${OUT_DIR}/install.conf.79.lab"
+render_template "${SCRIPT_DIR}/install.conf.79.real.template" "${OUT_DIR}/install.conf.79.real"
+render_template "${SCRIPT_DIR}/site79_root/install.site.template" "${SITE_ROOT}/install.site"
+render_template "${SCRIPT_DIR}/site79_root/root/phase00-firstboot.sh.template" "${SITE_ROOT}/root/phase00-firstboot.sh"
 
 cp "${SCRIPT_DIR}/disklabel-root-swap.template" "${OUT_DIR}/disklabel-root-swap.template"
 chmod 755 "${SITE_ROOT}/install.site" "${SITE_ROOT}/root/phase00-firstboot.sh"
 
 (
   cd "${SITE_ROOT}"
-  tar -czf "${OUT_DIR}/site78.tgz" .
+  tar -czf "${OUT_DIR}/site79.tgz" .
 )
 
 cat > "${OUT_DIR}/ACCOUNT-READINESS.md" <<EOF
@@ -83,10 +83,10 @@ LAN network default: ${LAN_NET_DEFAULT}
 Host IP default: ${HOST_IP_DEFAULT}
 
 Generated files:
-- install.conf.78.lab
-- install.conf.78.real
+- install.conf.79.lab
+- install.conf.79.real
 - disklabel-root-swap.template
-- site78.tgz
+- site79.tgz
 
 Reminder:
 - serve this directory over HTTP during autoinstall

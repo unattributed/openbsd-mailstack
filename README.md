@@ -1,6 +1,6 @@
 # openbsd-mailstack
 
-`openbsd-mailstack` is a public, operator-focused framework for building and maintaining a hardened OpenBSD 7.8 mail platform.
+`openbsd-mailstack` is a public, operator-focused framework for building and maintaining a hardened OpenBSD 7.9 mail platform.
 
 It publishes reusable documentation, configuration examples, phase scripts, maintenance helpers, and staged rendered assets for a single-host mail system built around:
 
@@ -20,7 +20,7 @@ It also includes public-safe operational layers for QEMU validation, autonomous 
 
 This repository is public by design.
 
-It is not a literal mirror of the private `openbsd-self-hosting` repository, and it does not publish live production secrets, evidence, restore archives, or site-specific control-plane doctrine.
+It is not a literal mirror of the private `openbsd-self-hosting` repository. It publishes only deliberately sanitized production observations, never raw evidence, secrets, restore archives, or site-specific control-plane doctrine.
 
 It is a materially complete public-safe baseline for building the same class of OpenBSD mail server with operator-supplied:
 
@@ -39,11 +39,12 @@ Read these in order:
 3. [Documentation map](docs/README.md)
 4. [Install guide](docs/install/README.md)
 5. [Architecture and flow](docs/architecture/01-project-architecture-and-flow.md)
-6. [Quick start and usage paths](docs/install/08-quick-start-and-usage-paths.md)
-7. [Install order and phase sequence](docs/install/09-install-order-and-phase-sequence.md)
-8. [Public repo readiness check](docs/install/19-public-repo-readiness-check.md)
-9. [Targeted public hardening validation pass](docs/install/20-targeted-public-hardening-validation-pass.md)
-10. [Security hardening and runtime secrets](docs/install/21-security-hardening-and-runtime-secrets.md)
+6. [Observed production and OSMAP integration](docs/production-mail-blackbagsecurity.md)
+7. [Quick start and usage paths](docs/install/08-quick-start-and-usage-paths.md)
+8. [Install order and phase sequence](docs/install/09-install-order-and-phase-sequence.md)
+9. [Public repo readiness check](docs/install/19-public-repo-readiness-check.md)
+10. [Targeted public hardening validation pass](docs/install/20-targeted-public-hardening-validation-pass.md)
+11. [Security hardening and runtime secrets](docs/install/21-security-hardening-and-runtime-secrets.md)
 
 ## Documentation map
 
@@ -55,6 +56,7 @@ Use these sections as the main navigation layer:
 - [Architecture docs](docs/architecture/01-project-architecture-and-flow.md)
 - [Configuration wiring](docs/configuration/core-runtime-and-config-wiring.md)
 - [Project status and boundaries](docs/project-status.md)
+- [OpenBSD 7.9 maintenance runbook](docs/operations/09-openbsd-79-sdlc-maintenance.md)
 
 ## Current public scope
 
@@ -117,7 +119,7 @@ See:
 
 The public repository still intentionally excludes:
 
-- live production evidence and operational telemetry from the private deployment
+- raw production evidence and operational telemetry from the private deployment
 - encrypted recovery payloads and private restore archives
 - real API keys, PATs, passwords, private keys, and runtime secret values
 - site-specific control-plane doctrine and private automation overlays
@@ -139,6 +141,7 @@ Useful commands after the repository is populated with local inputs. The install
 ./scripts/verify/verify-lab-assets.ksh
 ./scripts/verify/verify-autonomous-installer-assets.ksh
 ./maint/validate-public-hardening-surface.ksh
+./maint/production-regression.ksh --repo-only
 ./scripts/verify/run-repo-ci-gates.ksh
 ```
 

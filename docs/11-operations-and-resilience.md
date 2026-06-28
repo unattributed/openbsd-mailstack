@@ -75,7 +75,7 @@ The apply script is intentionally conservative. It prepares the repo workflow by
 - writing backup posture and log review plans
 - writing maintenance entrypoints and an operational summary for review
 
-The generated files are operator-specific working artifacts. They are intended to guide later live deployment and maintenance on OpenBSD 7.8 without writing tracked planning output back into the publishable repo surface.
+The generated files are operator-specific working artifacts. They are intended to guide later live deployment and maintenance on OpenBSD 7.9 without writing tracked planning output back into the publishable repo surface.
 
 ## Outputs created by Phase 10
 

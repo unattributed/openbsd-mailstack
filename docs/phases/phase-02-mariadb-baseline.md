@@ -3,7 +3,7 @@
 ## Purpose
 
 Phase 02 establishes the SQL baseline for the public `openbsd-mailstack`
-project on OpenBSD 7.8.
+project on OpenBSD 7.9.
 
 This phase prepares the host for later application phases that depend on
 MariaDB, especially PostfixAdmin and Roundcube.
@@ -87,7 +87,7 @@ Before running this phase:
 
 - Phase 00 should already be complete
 - Phase 01 should already be complete
-- the host must be OpenBSD 7.8
+- the host must be OpenBSD 7.9
 - the project must be run from the repository root
 
 ## Run the phase

@@ -50,9 +50,9 @@ main() {
 
   if [ "${MODE}" = "report" ]; then
     log_info "report mode, no host changes applied"
-    log_info "would run: maint/openbsd-syspatch.ksh --apply"
-    log_info "would run: maint/openbsd-pkg-upgrade.ksh --apply"
-    log_info "would run: maint/regression-test.ksh"
+    ksh "${PROJECT_ROOT}/maint/openbsd-syspatch.ksh" --check
+    ksh "${PROJECT_ROOT}/maint/openbsd-pkg-upgrade.ksh" --check
+    ksh "${PROJECT_ROOT}/maint/production-regression.ksh" --host --evidence-dir "${_run_dir}/regression"
     write_maintenance_result "${RUN_ID}" "REPORT" "preflight and snapshot completed"
     exit 0
   fi
@@ -70,13 +70,14 @@ main() {
   fi
 
   if [ "${MAINTENANCE_ENABLE_REGRESSION}" = "yes" ]; then
-    if ! ksh "${PROJECT_ROOT}/maint/regression-test.ksh"; then
+    if ! ksh "${PROJECT_ROOT}/maint/production-regression.ksh" --host --evidence-dir "${_run_dir}/regression"; then
       write_maintenance_result "${RUN_ID}" "FAIL" "regression checks failed"
       [ "${MAINTENANCE_AUTO_ROLLBACK_PLAN}" = "yes" ] && ksh "${PROJECT_ROOT}/maint/rollback-on-failure.ksh" --run-id "${RUN_ID}" || true
       exit 1
     fi
   fi
 
+  record_snapshot_checksums "${_run_dir}"
   write_maintenance_result "${RUN_ID}" "PASS" "maintenance apply completed successfully"
   log_info "maintenance apply completed successfully"
 }

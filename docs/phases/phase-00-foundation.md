@@ -5,7 +5,7 @@
 Phase 00 prepares the public `openbsd-mailstack` project foundation, config model,
 and first-run operator baseline.
 
-This phase assumes the operator is starting from a clean OpenBSD 7.8 host and is
+This phase assumes the operator is starting from a clean OpenBSD 7.9 host and is
 preparing the local repository configuration needed for later phases.
 
 ## External Prerequisites
@@ -72,7 +72,7 @@ Do not edit the scripts themselves to change deployment values.
 Before running this phase:
 
 - external prerequisite documentation should be completed
-- the host should be OpenBSD 7.8
+- the host should be OpenBSD 7.9
 - the repository should be present locally
 - the operator should know the target hostname and primary domain
 

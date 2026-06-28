@@ -105,8 +105,8 @@ EOF
 }
 
 is_core_runtime_secret_path() {
-  _path="$1"
-  case "${_path}" in
+  _secret_path="$1"
+  case "${_secret_path}" in
     */etc/postfix/mysql_virtual_domains_maps.cf|etc/postfix/mysql_virtual_domains_maps.cf) return 0 ;;
     */etc/postfix/mysql_virtual_mailbox_maps.cf|etc/postfix/mysql_virtual_mailbox_maps.cf) return 0 ;;
     */etc/postfix/mysql_virtual_alias_maps.cf|etc/postfix/mysql_virtual_alias_maps.cf) return 0 ;;
@@ -181,7 +181,12 @@ prompt_value() {
   _default_value="${3:-}"
   eval "_current_value=\${${_var_name}:-}"
   [ -n "${_current_value}" ] && return 0
-  is_noninteractive && die "required setting ${_var_name} is missing and interactive prompting is disabled"
+  if is_noninteractive; then
+    [ -n "${_default_value}" ] || die "required setting ${_var_name} is missing and interactive prompting is disabled"
+    eval "${_var_name}=\${_default_value}"
+    export "${_var_name}"
+    return 0
+  fi
   if [ -n "${_default_value}" ]; then
     printf "%s [%s]: " "${_prompt_text}" "${_default_value}" >&2
   else

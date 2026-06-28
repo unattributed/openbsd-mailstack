@@ -10,13 +10,16 @@ This file is the documentation index for `openbsd-mailstack`.
 4. [Install guide](install/README.md)
 5. [Architecture and flow](architecture/01-project-architecture-and-flow.md)
 6. [Operator workflow](operations/01-operator-workflow.md)
-7. [Public repo readiness check](install/19-public-repo-readiness-check.md)
-8. [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)
+7. [Observed production and OSMAP integration](production-mail-blackbagsecurity.md)
+8. [OpenBSD 7.9 SDLC maintenance](operations/09-openbsd-79-sdlc-maintenance.md)
+9. [Public repo readiness check](install/19-public-repo-readiness-check.md)
+10. [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)
 
 ## Core architecture and build flow
 
 - [Project architecture and flow](architecture/01-project-architecture-and-flow.md)
 - [Core runtime and config wiring](configuration/core-runtime-and-config-wiring.md)
+- [Observed production and OSMAP integration](production-mail-blackbagsecurity.md)
 
 ## Install and validation
 
@@ -58,6 +61,7 @@ This file is the documentation index for `openbsd-mailstack`.
 - [Maintenance, upgrades, and regression](operations/06-maintenance-upgrades-and-regression.md)
 - [Advanced ops and optional integrations](operations/07-advanced-ops-and-optional-integrations.md)
 - [Security hardening and secrets operations](operations/08-security-hardening-and-secrets-ops.md)
+- [OpenBSD 7.9 SDLC maintenance](operations/09-openbsd-79-sdlc-maintenance.md)
 
 ## Phase documents
 
@@ -69,3 +73,4 @@ Start with the [phase crosswalk](phases/phase-crosswalk.md), then use the phase 
 - [Public and private boundary](public-private-boundary.md)
 - [Public repo readiness check](install/19-public-repo-readiness-check.md)
 - [Targeted public hardening validation pass](install/20-targeted-public-hardening-validation-pass.md)
+- [Sanitized production evidence](../evidence/20260628T030937Z/README.md)

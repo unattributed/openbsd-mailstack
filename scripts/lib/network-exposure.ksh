@@ -12,7 +12,7 @@ NETWORK_EXAMPLE_ROOT="${PROJECT_ROOT}/services/generated/rootfs"
 IDENTITY_RENDER_ROOT_DEFAULT="${PROJECT_ROOT}/.work/identity"
 
 network_exposure_defaults() {
-  : "${OPENBSD_VERSION:=7.8}"
+  : "${OPENBSD_VERSION:=7.9}"
   : "${MAIL_HOSTNAME:=mail.example.com}"
   : "${PRIMARY_DOMAIN:=example.com}"
   : "${DOMAINS:=example.com}"

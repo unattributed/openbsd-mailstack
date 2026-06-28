@@ -12,12 +12,12 @@ LIB="${PROJECT_ROOT}/scripts/lib/maintenance-regression.ksh"
 main() {
   load_maintenance_settings
   print_phase_header "MAINT-REGRESSION" "maintenance regression checks"
-  if [ -x "${PROJECT_ROOT}/maint/regression-test.ksh" ]; then
-    ksh "${PROJECT_ROOT}/maint/regression-test.ksh"
+  if [ -x "${PROJECT_ROOT}/maint/production-regression.ksh" ]; then
+    ksh "${PROJECT_ROOT}/maint/production-regression.ksh" --host
   elif [ -x "${PROJECT_ROOT}/maint/verify-mailstack.ksh" ]; then
     ksh "${PROJECT_ROOT}/maint/verify-mailstack.ksh"
   else
-    die "no regression helper found in maint/"
+    die "no production regression helper found in maint/"
   fi
 }
 

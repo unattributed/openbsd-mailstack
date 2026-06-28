@@ -43,7 +43,7 @@ main() {
   _qemu_dir="${PROJECT_ROOT}/maint/qemu"
   _example="${_qemu_dir}/qemu-lab.conf.example"
 
-  for _file in     "${_qemu_dir}/README.md"     "${_qemu_dir}/qemu-lab.conf.example"     "${_qemu_dir}/fetch-openbsd-amd64-media.ksh"     "${_qemu_dir}/lab-install.sh"     "${_qemu_dir}/lab-install.expect"     "${_qemu_dir}/lab-bootstrap.expect"     "${_qemu_dir}/lab-ssh-bootstrap.expect"     "${_qemu_dir}/lab-openbsd78-build.ksh"     "${_qemu_dir}/lab-phase-runner.ksh"     "${_qemu_dir}/lab-ssh-guard.ksh"     "${_qemu_dir}/lab-vm-ssh.ksh"     "${_qemu_dir}/vm-phase-report-runner.ksh"     "${_qemu_dir}/lab-dr-restore-runner.ksh"     "${_qemu_dir}/lab-openbsd78-upgrade.ksh"
+  for _file in     "${_qemu_dir}/README.md"     "${_qemu_dir}/qemu-lab.conf.example"     "${_qemu_dir}/fetch-openbsd-amd64-media.ksh"     "${_qemu_dir}/lab-install.sh"     "${_qemu_dir}/lab-install.expect"     "${_qemu_dir}/lab-bootstrap.expect"     "${_qemu_dir}/lab-ssh-bootstrap.expect"     "${_qemu_dir}/lab-openbsd79-build.ksh"     "${_qemu_dir}/lab-phase-runner.ksh"     "${_qemu_dir}/lab-ssh-guard.ksh"     "${_qemu_dir}/lab-vm-ssh.ksh"     "${_qemu_dir}/vm-phase-report-runner.ksh"     "${_qemu_dir}/lab-dr-restore-runner.ksh"     "${_qemu_dir}/lab-openbsd79-maintenance.ksh"
   do
     check_file "${_file}" "qemu asset present"
   done

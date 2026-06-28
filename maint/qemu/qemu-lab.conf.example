@@ -3,14 +3,14 @@
 # Copy to qemu-lab.conf.local and adjust as needed.
 # Do not commit local overrides.
 
-OPENBSD_VERSION="7.8"
+OPENBSD_VERSION="7.9"
 OPENBSD_ARCH="amd64"
 OPENBSD_MIRROR="https://cdn.openbsd.org/pub/OpenBSD"
 
 QEMU_ISO_DIR="/home/foo/VMs/iso"
 QEMU_VM_DIR="/home/foo/VMs/openbsd-mail"
 QEMU_DISK="/home/foo/VMs/openbsd-mail/disk-lab.qcow2"
-QEMU_ISO="/home/foo/VMs/iso/install78.iso"
+QEMU_ISO="/home/foo/VMs/iso/install79.iso"
 QEMU_MEM="4096"
 QEMU_SMP="2"
 

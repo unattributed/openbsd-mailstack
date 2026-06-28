@@ -22,6 +22,7 @@ main() {
   for _src in \
     maint/openbsd-syspatch.ksh \
     maint/openbsd-pkg-upgrade.ksh \
+    maint/production-regression.ksh \
     maint/regression-test.ksh \
     maint/rollback-on-failure.ksh \
     maint/drift-check.ksh \

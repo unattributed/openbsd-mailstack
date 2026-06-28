@@ -25,7 +25,7 @@ You should already have:
 
 Confirm the host has:
 
-- OpenBSD 7.8
+- OpenBSD 7.9
 - network connectivity
 - your administrative access model
 - the local repo checkout

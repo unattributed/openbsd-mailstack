@@ -107,7 +107,7 @@ It should be able to:
 
 The following are still intentionally private:
 
-- live production evidence
+- raw production evidence
 - encrypted DR payloads and restore archives
 - real secrets, PATs, API tokens, and private keys
 - site-specific control-plane doctrine

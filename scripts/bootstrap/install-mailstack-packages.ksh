@@ -13,7 +13,7 @@ COMMON_LIB="${PROJECT_ROOT}/scripts/lib/common.ksh"
 
 . "${COMMON_LIB}"
 
-: "${OPENBSD_VERSION:=7.8}"
+: "${OPENBSD_VERSION:=7.9}"
 : "${OPENBSD_MAILSTACK_PACKAGE_LIST:=
 postfix-3.10.1p3v0-mysql
 mariadb-server-11.4.7v1
@@ -106,7 +106,7 @@ print_notes() {
   print -- "Package bootstrap notes"
   print -- "  - This script installs the core package baseline for the QEMU lab proof."
   print -- "  - It intentionally does not attempt to source-install PostfixAdmin."
-  print -- "  - Review package versions when moving from 7.8 release packages to packages-stable or snapshots."
+  print -- "  - Review package versions when moving from 7.9 release packages to packages-stable or snapshots."
   print
 }
 

@@ -18,7 +18,6 @@ COMMON_LIB="${SCRIPT_DIR}/common.ksh"
 : "${REGRESSION_PROBE_TO:=}"
 : "${PKG_ADD_TIMEOUT_SECS:=1800}"
 : "${ALLOW_PKG_TIMEOUT_CONTINUE:=0}"
-: "${SYSPATCH_FALLBACK_URL:=https://cdn.openbsd.org/pub/OpenBSD}"
 : "${MAINTENANCE_REQUIRE_CLEAN_GIT:=yes}"
 : "${MAINTENANCE_ENABLE_SECRET_GUARD:=yes}"
 : "${MAINTENANCE_ENABLE_DESIGN_AUTHORITY:=yes}"
@@ -98,6 +97,16 @@ record_host_snapshot() {
   if command_exists df; then
     df -h > "${_dest_dir}/df-h.txt" 2>&1 || true
   fi
+  record_snapshot_checksums "${_dest_dir}"
+}
+
+record_snapshot_checksums() {
+  _dest_dir="$1"
+  command_exists sha256 || return 0
+  (
+    cd "${_dest_dir}"
+    find . -type f ! -name SHA256 -maxdepth 2 -print | sort | xargs sha256
+  ) > "${_dest_dir}/SHA256"
 }
 
 maintenance_result_file() {

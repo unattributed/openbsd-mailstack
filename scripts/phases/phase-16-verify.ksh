@@ -2,13 +2,14 @@
 set -eu
 
 PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)"
-OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+HARDENING_ROOT="${OPENBSD_MAILSTACK_HARDENING_RENDER_ROOT:-${PROJECT_ROOT}/services/generated/rootfs}"
+OUT_DIR="${HARDENING_ROOT}/etc/examples/openbsd-mailstack"
 FAIL=0
 
 pass() { print -- "PASS $*"; }
 fail() { print -- "FAIL $*"; FAIL=1; }
 
-for _f in   "${PROJECT_ROOT}/maint/runtime-secret-layout.ksh"   "${PROJECT_ROOT}/maint/repo-secret-guard.ksh"   "${PROJECT_ROOT}/services/secrets/etc/examples/postfixadmin-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/examples/sogo-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/postfixadmin/secrets.php.template"   "${PROJECT_ROOT}/services/secrets/etc/roundcube/secrets.inc.php.template"   "${PROJECT_ROOT}/services/generated/rootfs/etc/postfixadmin/secrets.php.example"   "${PROJECT_ROOT}/services/generated/rootfs/etc/roundcube/secrets.inc.php.example"   "${OUT_DIR}/postfixadmin-db.env"   "${OUT_DIR}/sogo-db.env"   "${OUT_DIR}/runtime-secret-paths.txt"   "${OUT_DIR}/runtime-secret-permissions.txt"   "${OUT_DIR}/rotation-checklist.txt"   "${OUT_DIR}/phase-16-summary.txt"; do
+for _f in   "${PROJECT_ROOT}/maint/runtime-secret-layout.ksh"   "${PROJECT_ROOT}/maint/repo-secret-guard.ksh"   "${PROJECT_ROOT}/services/secrets/etc/examples/postfixadmin-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/examples/sogo-db.env.template"   "${PROJECT_ROOT}/services/secrets/etc/postfixadmin/secrets.php.template"   "${PROJECT_ROOT}/services/secrets/etc/roundcube/secrets.inc.php.template"   "${HARDENING_ROOT}/etc/postfixadmin/secrets.php.example"   "${HARDENING_ROOT}/etc/roundcube/secrets.inc.php.example"   "${OUT_DIR}/postfixadmin-db.env"   "${OUT_DIR}/sogo-db.env"   "${OUT_DIR}/runtime-secret-paths.txt"   "${OUT_DIR}/runtime-secret-permissions.txt"   "${OUT_DIR}/rotation-checklist.txt"   "${OUT_DIR}/phase-16-summary.txt"; do
   if [ -f "${_f}" ]; then
     pass "${_f} exists"
   else

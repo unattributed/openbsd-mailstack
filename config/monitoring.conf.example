@@ -16,8 +16,8 @@ MONITORING_PATCH_NGINX=no
 
 MONITORING_PATCH_NEWSYSLOG=no
 MONITORING_NEWSYSLOG_CONF=/etc/newsyslog.conf
-MONITORING_NEWSYSLOG_MARKER_BEGIN=# begin openbsd-mailstack monitoring managed block
-MONITORING_NEWSYSLOG_MARKER_END=# end openbsd-mailstack monitoring managed block
+MONITORING_NEWSYSLOG_MARKER_BEGIN="# begin openbsd-mailstack monitoring managed block"
+MONITORING_NEWSYSLOG_MARKER_END="# end openbsd-mailstack monitoring managed block"
 
 MONITORING_INSTALL_CRON_SNIPPET=yes
 MONITORING_PATCH_ROOT_CRONTAB=no

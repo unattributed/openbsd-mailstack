@@ -16,7 +16,7 @@ This policy does not cover private recovery backends, operator vaults, encrypted
 
 The supported public baseline is:
 
-- OpenBSD `7.8`
+- OpenBSD `7.9`
 - the current `main` branch
 
 Security fixes should target the active public baseline first. Legacy internal trees, private recovery repositories, and superseded deployment artifacts are not part of the supported public surface unless explicitly stated otherwise.

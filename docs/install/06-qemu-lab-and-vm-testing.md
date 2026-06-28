@@ -69,7 +69,7 @@ These defaults are used in the example scripts, but can be overridden with envir
 - `lab-install.expect`
 - `lab-bootstrap.expect`
 - `lab-ssh-bootstrap.expect`
-- `lab-openbsd78-build.ksh`
+- `lab-openbsd79-build.ksh`
 - `lab-phase-runner.ksh`
 - `lab-ssh-guard.ksh`
 - `lab-vm-ssh.ksh`
@@ -91,13 +91,13 @@ cp maint/qemu/qemu-lab.conf.example maint/qemu/qemu-lab.conf.local
 ### 2. Fetch OpenBSD media
 
 ```sh
-ksh maint/qemu/fetch-openbsd-amd64-media.ksh --release 7.8
+ksh maint/qemu/fetch-openbsd-amd64-media.ksh --release 7.9
 ```
 
 ### 3. Build the lab VM
 
 ```sh
-ksh maint/qemu/lab-openbsd78-build.ksh
+ksh maint/qemu/lab-openbsd79-build.ksh
 ```
 
 ### 4. Run the first public baseline inside the VM

@@ -1,4 +1,5 @@
 #!/bin/ksh
+# OpenBSD 7.9 first-boot entrypoint.
 set -euo pipefail
 
 MODE="${1:-real}"

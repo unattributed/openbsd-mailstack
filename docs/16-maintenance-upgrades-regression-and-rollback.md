@@ -9,7 +9,7 @@ It turns later maintenance work from private doctrine into a reusable operator b
 
 - a tracked example for maintenance policy inputs
 - public-safe wrappers for `syspatch` and `pkg_add -u`
-- regression checks after host changes
+- production-aligned regression checks after host changes
 - rollback-oriented guidance that starts from a recorded pre-change snapshot
 - optional cron installation for weekly maintenance review
 - a QEMU lab upgrade rehearsal path
@@ -35,9 +35,9 @@ The public repo is intentionally conservative.
 - `scripts/verify/verify-maintenance-assets.ksh`
 - `maint/openbsd-syspatch.ksh`
 - `maint/openbsd-pkg-upgrade.ksh`
-- `maint/regression-test.ksh`
+- `maint/production-regression.ksh`
 - `maint/rollback-on-failure.ksh`
-- `maint/qemu/lab-openbsd78-upgrade.ksh`
+- `maint/qemu/lab-openbsd79-maintenance.ksh`
 
 ## Typical usage
 
@@ -72,4 +72,4 @@ The public repo instead makes rollback explicit:
 ## QEMU-first maintenance testing
 
 Use the existing lab workflow to test maintenance changes before touching a real host.
-The new helper `maint/qemu/lab-openbsd78-upgrade.ksh` syncs the public repo into a running lab VM and executes the maintenance workflow there.
+The helper `maint/qemu/lab-openbsd79-maintenance.ksh` syncs the public repo into a running 7.9 lab VM and executes the maintenance workflow there.

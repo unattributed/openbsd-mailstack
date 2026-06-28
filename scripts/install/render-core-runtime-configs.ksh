@@ -161,6 +161,8 @@ render_core() {
 
   copy_tree_contents "${PROJECT_ROOT}/services/nginx/etc/nginx/conf-available" "${OUTPUT_ROOT}/etc/nginx/conf-available"
   copy_tree_contents "${PROJECT_ROOT}/services/nginx/etc/nginx/templates" "${OUTPUT_ROOT}/etc/nginx/templates"
+  render_template_file "${PROJECT_ROOT}/services/nginx/etc/nginx/templates/postfixadmin.tmpl" "${OUTPUT_ROOT}/etc/nginx/templates/postfixadmin.tmpl"     "MAIL_HOSTNAME=${MAIL_HOSTNAME}"
+  render_template_file "${PROJECT_ROOT}/services/nginx/etc/nginx/templates/roundcube.tmpl" "${OUTPUT_ROOT}/etc/nginx/templates/roundcube.tmpl"     "MAIL_HOSTNAME=${MAIL_HOSTNAME}"
   render_template_file "${PROJECT_ROOT}/services/nginx/etc/nginx/templates/rspamd.tmpl.template" "${OUTPUT_ROOT}/etc/nginx/templates/rspamd.tmpl"     "RSPAMD_CONTROLLER_BIND=${RSPAMD_CONTROLLER_BIND}" "WIREGUARD_SUBNET=${WIREGUARD_SUBNET}"
   render_template_file "${PROJECT_ROOT}/services/nginx/etc/nginx/templates/ssl.tmpl.template" "${OUTPUT_ROOT}/etc/nginx/templates/ssl.tmpl"     "TLS_CERT_PATH_FULLCHAIN=${TLS_CERT_PATH_FULLCHAIN}" "TLS_CERT_PATH_KEY=${TLS_CERT_PATH_KEY}"
   render_template_file "${PROJECT_ROOT}/services/nginx/etc/nginx/sites-available/main.conf.template" "${OUTPUT_ROOT}/etc/nginx/sites-available/main.conf"

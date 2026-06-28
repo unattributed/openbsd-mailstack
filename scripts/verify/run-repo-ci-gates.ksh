@@ -66,6 +66,7 @@ prepare_ci_environment() {
   export OPENBSD_MAILSTACK_BACKUP_DR_WORK_ROOT="${TMP_ROOT}/backup-dr"
   export OPENBSD_MAILSTACK_OPERATIONS_WORK_ROOT="${TMP_ROOT}/operations"
   export OPENBSD_MAILSTACK_AUTOINSTALL_BUILD_ROOT="${TMP_ROOT}/autoinstall-build"
+  export OPENBSD_MAILSTACK_HARDENING_RENDER_ROOT="${TMP_ROOT}/hardening/rootfs"
 }
 
 main() {
@@ -73,6 +74,7 @@ main() {
 
   run "${PROJECT_ROOT}/scripts/verify/verify-documentation-integrity.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-repo-semantic-integrity.ksh"
+  run "${PROJECT_ROOT}/maint/production-regression.ksh" --repo-only --evidence-dir "${TMP_ROOT}/production-regression"
   run "${PROJECT_ROOT}/scripts/verify/verify-public-repo-readiness.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-lab-assets.ksh"
   run "${PROJECT_ROOT}/maint/openbsd-autonomous-installer/guided-profile-builder.ksh" --noninteractive --output "${TMP_ROOT}/installer-profile.local.env"
@@ -83,12 +85,19 @@ main() {
   run "${PROJECT_ROOT}/scripts/verify/verify-core-runtime-assets.ksh"
   run "${PROJECT_ROOT}/scripts/verify/verify-rendered-config-integrity.ksh"
 
+  run "${PROJECT_ROOT}/scripts/phases/phase-02-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-02-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-03-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-03-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-04-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-04-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-05-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-05-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-06-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-06-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-07-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-07-verify.ksh"
+  run "${PROJECT_ROOT}/scripts/phases/phase-08-apply.ksh"
   run "${PROJECT_ROOT}/scripts/phases/phase-08-verify.ksh"
 
   run "${PROJECT_ROOT}/scripts/install/render-network-exposure-configs.ksh"

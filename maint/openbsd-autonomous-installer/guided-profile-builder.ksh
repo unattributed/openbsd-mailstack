@@ -54,7 +54,7 @@ derive_home() {
 mkdir -p "$(dirname "${PROFILE_OUT}")"
 
 PROFILE_NAME="$(prompt_default PROFILE_NAME 'Profile name' 'default')"
-OPENBSD_VERSION="$(prompt_default OPENBSD_VERSION 'OpenBSD version' '7.8')"
+OPENBSD_VERSION="$(prompt_default OPENBSD_VERSION 'OpenBSD version' '7.9')"
 OPENBSD_ARCH="$(prompt_default OPENBSD_ARCH 'OpenBSD architecture' 'amd64')"
 SYSTEM_HOSTNAME="$(prompt_default SYSTEM_HOSTNAME 'System hostname' 'mail.example.com')"
 DNS_DOMAIN="$(prompt_default DNS_DOMAIN 'DNS domain' 'example.com')"

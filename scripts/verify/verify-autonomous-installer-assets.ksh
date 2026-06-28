@@ -59,13 +59,13 @@ check_build_outputs() {
   for _dir in "${BUILD_ROOT}"/*; do
     [ -d "${_dir}" ] || continue
     _found=1
-    check_file "${_dir}/install.conf.78.lab" "installer build output"
-    check_file "${_dir}/install.conf.78.real" "installer build output"
+    check_file "${_dir}/install.conf.79.lab" "installer build output"
+    check_file "${_dir}/install.conf.79.real" "installer build output"
     check_file "${_dir}/disklabel-root-swap.template" "installer build output"
-    check_file "${_dir}/site78.tgz" "installer build output"
+    check_file "${_dir}/site79.tgz" "installer build output"
     check_file "${_dir}/ACCOUNT-READINESS.md" "installer build output"
-    [ -f "${_dir}/install.conf.78.lab" ] && check_no_placeholders "${_dir}/install.conf.78.lab" "installer lab config"
-    [ -f "${_dir}/install.conf.78.real" ] && check_no_placeholders "${_dir}/install.conf.78.real" "installer real config"
+    [ -f "${_dir}/install.conf.79.lab" ] && check_no_placeholders "${_dir}/install.conf.79.lab" "installer lab config"
+    [ -f "${_dir}/install.conf.79.real" ] && check_no_placeholders "${_dir}/install.conf.79.real" "installer real config"
     [ -f "${_dir}/ACCOUNT-READINESS.md" ] && check_no_placeholders "${_dir}/ACCOUNT-READINESS.md" "installer readiness summary"
   done
   [ "${_found}" -eq 1 ] || pass "autonomous installer build root exists but contains no rendered profiles yet"
@@ -75,7 +75,7 @@ main() {
   _dir="${PROJECT_ROOT}/maint/openbsd-autonomous-installer"
   _example="${_dir}/installer-profile.example.env"
 
-  for _file in     "${_dir}/README.md"     "${_dir}/installer-profile.example.env"     "${_dir}/guided-profile-builder.ksh"     "${_dir}/render-installer-pack.ksh"     "${_dir}/install.conf.78.lab.template"     "${_dir}/install.conf.78.real.template"     "${_dir}/disklabel-root-swap.template"     "${_dir}/serve-autoinstall.sh"     "${_dir}/site78_root/install.site.template"     "${_dir}/site78_root/root/phase00-firstboot.sh.template"
+  for _file in     "${_dir}/README.md"     "${_dir}/installer-profile.example.env"     "${_dir}/guided-profile-builder.ksh"     "${_dir}/render-installer-pack.ksh"     "${_dir}/install.conf.79.lab.template"     "${_dir}/install.conf.79.real.template"     "${_dir}/disklabel-root-swap.template"     "${_dir}/serve-autoinstall.sh"     "${_dir}/site79_root/install.site.template"     "${_dir}/site79_root/root/phase00-firstboot.sh.template"
   do
     check_file "${_file}" "autonomous installer asset present"
   done

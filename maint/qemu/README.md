@@ -19,13 +19,13 @@ It exists so operators can:
 - `lab-install.expect`
 - `lab-bootstrap.expect`
 - `lab-ssh-bootstrap.expect`
-- `lab-openbsd78-build.ksh`
+- `lab-openbsd79-build.ksh`
 - `lab-phase-runner.ksh`
 - `lab-ssh-guard.ksh`
 - `lab-vm-ssh.ksh`
 - `vm-phase-report-runner.ksh`
 - `lab-dr-restore-runner.ksh`
-- `lab-openbsd78-upgrade.ksh`
+- `lab-openbsd79-maintenance.ksh`
 
 ## Workflow summary
 
@@ -37,7 +37,7 @@ It exists so operators can:
 6. run phases inside the VM
 7. collect and review reports
 8. run a staged restore rehearsal with `lab-dr-restore-runner.ksh`
-9. rehearse maintenance and upgrade flow with `lab-openbsd78-upgrade.ksh`
+9. rehearse maintenance flow with `lab-openbsd79-maintenance.ksh`
 
 ## Notes
 

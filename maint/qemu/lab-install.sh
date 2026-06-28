@@ -2,7 +2,7 @@
 set -eu
 
 DISK=${QEMU_DISK:-/home/foo/VMs/openbsd-mail/disk-lab.qcow2}
-OPENBSD_VERSION=${OPENBSD_VERSION:-7.8}
+OPENBSD_VERSION=${OPENBSD_VERSION:-7.9}
 OPENBSD_IMG_TAG=${OPENBSD_IMG_TAG:-$(printf '%s' "${OPENBSD_VERSION}" | tr -d '.')}
 ISO=${QEMU_ISO:-/home/foo/VMs/iso/install${OPENBSD_IMG_TAG}.iso}
 MEM=${QEMU_MEM:-4096}

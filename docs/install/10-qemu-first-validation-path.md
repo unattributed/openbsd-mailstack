@@ -36,8 +36,8 @@ Use the public QEMU assets under `maint/qemu/`.
 For the initial walkthrough, start with:
 
 ```sh
-ksh maint/qemu/fetch-openbsd-amd64-media.ksh --release 7.8
-ksh maint/qemu/lab-openbsd78-build.ksh
+ksh maint/qemu/fetch-openbsd-amd64-media.ksh --release 7.9
+ksh maint/qemu/lab-openbsd79-build.ksh
 ```
 
 ### 3. Sync the repo into the VM

@@ -74,4 +74,6 @@ The installer copies rendered static pages into the nginx publish root, renders 
 
 ## What remains intentionally unresolved
 
-The public repo does not publish private off-host repository state, encrypted production payloads, or live host evidence. Those remain operator-owned inputs and are documented as such.
+The public repo does not publish private off-host repository state, encrypted production payloads, or raw live-host evidence. Those remain operator-owned inputs.
+
+For the production-specific restore units and OSMAP boundary, see [mail.blackbagsecurity.com production and OSMAP integration](production-mail-blackbagsecurity.md). Public evidence is limited to sanitized status, metadata, and checksums.

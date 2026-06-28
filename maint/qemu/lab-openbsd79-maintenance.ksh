@@ -14,7 +14,7 @@ MODE="report"
 
 usage() {
   cat <<'EOF2'
-usage: lab-openbsd78-upgrade.ksh [--report|--apply]
+usage: lab-openbsd79-maintenance.ksh [--report|--apply]
 
 This script expects a reachable lab VM and reuses the SSH guard settings from
 maint/qemu/lab-ssh-guard.ksh. It syncs the public repo into the lab guest and

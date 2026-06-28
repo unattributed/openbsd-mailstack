@@ -36,11 +36,23 @@ if command -v git >/dev/null 2>&1 && git -C "${REPO_ROOT}" rev-parse --is-inside
   else
     pass "no tracked private key markers found in publishable files"
   fi
-  if git -C "${REPO_ROOT}" grep -n 'mail.blackbagsecurity.com' -- README.md docs config services >/dev/null 2>&1; then
-    fail "tracked publishable files still contain the private deployment hostname"
-  else
-    pass "no private deployment hostname markers found in publishable files"
-  fi
+  _unexpected_hostname=0
+  while IFS= read -r _path; do
+    [ -n "${_path}" ] || continue
+    _rel="${_path#${REPO_ROOT}/}"
+    case "${_rel}" in
+      docs/production-mail-blackbagsecurity.md|\
+      docs/operations/09-openbsd-79-sdlc-maintenance.md|\
+      docs/README.md|\
+      docs/12-backup-and-disaster-recovery.md|\
+      config/production-regression.conf.example|\
+      evidence/*) ;;
+      *) fail "production hostname outside approved sanitized surface: ${_rel}"; _unexpected_hostname=1 ;;
+    esac
+  done <<EOF
+$(grep -RIl 'mail.blackbagsecurity.com' "${REPO_ROOT}/README.md" "${REPO_ROOT}/docs" "${REPO_ROOT}/config" "${REPO_ROOT}/services" "${REPO_ROOT}/evidence" 2>/dev/null || true)
+EOF
+  [ "${_unexpected_hostname}" -eq 1 ] || pass "production hostname is limited to approved sanitized documentation and evidence"
   if git -C "${REPO_ROOT}" check-ignore -q "${CORE_RUNTIME_RENDER_ROOT_REL}"; then
     pass "live core runtime render root is gitignored: ${CORE_RUNTIME_RENDER_ROOT_REL}"
   else

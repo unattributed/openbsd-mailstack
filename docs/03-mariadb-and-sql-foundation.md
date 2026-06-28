@@ -19,7 +19,7 @@ This phase prepares a clean MariaDB baseline for those later steps.
 
 Phase 02 focuses on:
 
-- checking that the host is still on OpenBSD 7.8
+- checking that the host is still on OpenBSD 7.9
 - collecting the SQL settings needed for the mail stack
 - documenting the database names and service users
 - preparing a public-safe SQL planning baseline

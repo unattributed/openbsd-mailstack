@@ -2,7 +2,7 @@
 set -eu
 ( set -o pipefail ) 2>/dev/null && set -o pipefail
 
-RELEASE="7.8"
+RELEASE="7.9"
 ARCH="amd64"
 MIRROR="https://cdn.openbsd.org/pub/OpenBSD"
 DEST_DIR="/home/foo/VMs/iso"
@@ -11,7 +11,7 @@ FETCH_MINIROOT=0
 
 usage() {
   cat <<'USAGE'
-usage: fetch-openbsd-amd64-media.ksh [--release 7.8] [--dest-dir DIR] [--fetch-miniroot]
+usage: fetch-openbsd-amd64-media.ksh [--release 7.9] [--dest-dir DIR] [--fetch-miniroot]
 USAGE
 }
 

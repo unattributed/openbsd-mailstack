@@ -23,7 +23,7 @@ It provides:
 - guided profile builder
 - renderer script
 - lab and real install.conf generation
-- site78.tgz generation
+- site79.tgz generation
 - first-boot bootstrap template
 - local HTTP serving helper
 - disklabel template
@@ -62,10 +62,10 @@ It creates a local untracked profile file, prompts for the required values, and 
 - `installer-profile.example.env`
 - `guided-profile-builder.ksh`
 - `render-installer-pack.ksh`
-- `install.conf.78.lab.template`
-- `install.conf.78.real.template`
-- `site78_root/install.site.template`
-- `site78_root/root/phase00-firstboot.sh.template`
+- `install.conf.79.lab.template`
+- `install.conf.79.real.template`
+- `site79_root/install.site.template`
+- `site79_root/root/phase00-firstboot.sh.template`
 - `serve-autoinstall.sh`
 - `disklabel-root-swap.template`
 
@@ -109,9 +109,9 @@ maint/openbsd-autonomous-installer/build/<profile-name>/
 
 Generated outputs include:
 
-- `install.conf.78.lab`
-- `install.conf.78.real`
-- `site78.tgz`
+- `install.conf.79.lab`
+- `install.conf.79.real`
+- `site79.tgz`
 - `ACCOUNT-READINESS.md`
 
 ## Design notes

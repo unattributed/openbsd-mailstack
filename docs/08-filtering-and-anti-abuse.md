@@ -97,7 +97,7 @@ The apply script is intentionally conservative. It prepares the repo workflow by
 - generating a filtering summary file for operator review
 
 The generated files are helper artifacts. They are meant to guide later live
-deployment on OpenBSD 7.8.
+deployment on OpenBSD 7.9.
 
 ## Outputs created by Phase 07
 

@@ -1,5 +1,5 @@
 # config/system.conf.example
-OPENBSD_VERSION="7.8"
+OPENBSD_VERSION="7.9"
 MAIL_HOSTNAME="mail.example.com"
 PRIMARY_DOMAIN="example.com"
 ADMIN_EMAIL="ops@example.com"

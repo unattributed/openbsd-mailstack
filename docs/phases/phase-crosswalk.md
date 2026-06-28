@@ -36,7 +36,7 @@ This document maps the public phase documents and scripts to the current public-
 
 The remaining gaps are intentional boundaries, not missing core migration work:
 
-- live production evidence, recovery archives, and site-specific control-plane doctrine remain private
+- raw production evidence, recovery archives, and site-specific control-plane doctrine remain private
 - provider-specific integrations beyond the published public-safe set are not generalized here
 - operators still need to supply their own identities, secrets, private keys, and exposure policy
 

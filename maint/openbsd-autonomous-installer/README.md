@@ -40,12 +40,12 @@ The profile file itself is local and untracked. The build directory is generated
 - `installer-profile.example.env`
 - `guided-profile-builder.ksh`
 - `render-installer-pack.ksh`
-- `install.conf.78.lab.template`
-- `install.conf.78.real.template`
+- `install.conf.79.lab.template`
+- `install.conf.79.real.template`
 - `disklabel-root-swap.template`
 - `serve-autoinstall.sh`
-- `site78_root/install.site.template`
-- `site78_root/root/phase00-firstboot.sh.template`
+- `site79_root/install.site.template`
+- `site79_root/root/phase00-firstboot.sh.template`
 
 ## Safety rule
 

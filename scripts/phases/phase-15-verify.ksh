@@ -2,7 +2,8 @@
 set -eu
 
 PROJECT_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)"
-OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+HARDENING_ROOT="${OPENBSD_MAILSTACK_HARDENING_RENDER_ROOT:-${PROJECT_ROOT}/services/generated/rootfs}"
+OUT_DIR="${HARDENING_ROOT}/etc/examples/openbsd-mailstack"
 FAIL=0
 
 pass() { print -- "PASS $*"; }

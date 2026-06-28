@@ -14,7 +14,6 @@ REGRESSION_PROBE_TO="ops@example.net"
 # Timeouts and behavior controls.
 PKG_ADD_TIMEOUT_SECS="1800"
 ALLOW_PKG_TIMEOUT_CONTINUE="0"
-SYSPATCH_FALLBACK_URL="https://cdn.openbsd.org/pub/OpenBSD"
 
 # Safety controls.
 MAINTENANCE_REQUIRE_CLEAN_GIT="yes"

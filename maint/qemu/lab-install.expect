@@ -2,7 +2,7 @@
 set timeout 1800
 
 set disk [expr {[info exists ::env(QEMU_DISK)] ? $::env(QEMU_DISK) : "/home/foo/VMs/openbsd-mail/disk-lab.qcow2"}]
-set version [expr {[info exists ::env(OPENBSD_VERSION)] ? $::env(OPENBSD_VERSION) : "7.8"}]
+set version [expr {[info exists ::env(OPENBSD_VERSION)] ? $::env(OPENBSD_VERSION) : "7.9"}]
 set tag [string map {. ""} $version]
 set iso [expr {[info exists ::env(QEMU_ISO)] ? $::env(QEMU_ISO) : "/home/foo/VMs/iso/install${tag}.iso"}]
 set mem [expr {[info exists ::env(QEMU_MEM)] ? $::env(QEMU_MEM) : "4096"}]

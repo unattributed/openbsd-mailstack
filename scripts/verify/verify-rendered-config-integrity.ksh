@@ -98,7 +98,7 @@ check_nginx_tls_policy() {
   else
     fail "${tls_policy_label} nginx TLS protocol floor/ceiling not found in ${tls_policy_ssl_template}"
   fi
-  if grep -Eq "^ssl_ciphers ${TLS12_AEAD_CIPHERS};$" "${tls_policy_ssl_template}"; then
+  if grep -Fqx "ssl_ciphers ${TLS12_AEAD_CIPHERS};" "${tls_policy_ssl_template}"; then
     pass "${tls_policy_label} nginx TLS 1.2 ciphers are explicit AEAD-only suites"
   else
     fail "${tls_policy_label} nginx TLS 1.2 AEAD cipher list not found in ${tls_policy_ssl_template}"
@@ -127,8 +127,8 @@ check_mail_root() {
   check_nginx_tls_policy "${_root}" "${_label}"
   check_regex "${_root}/etc/rspamd/local.d/worker-proxy.inc" 'milter *= *yes;' "${_label} rspamd proxy milter enabled"
   check_regex "${_root}/etc/rspamd/local.d/worker-controller.inc" 'bind_socket *= *"' "${_label} rspamd controller bind configured"
-  check_regex "${_root}/var/www/postfixadmin/config.local.php" "\$CONF\['configured'\] = true;" "${_label} postfixadmin configured flag"
-  check_regex "${_root}/var/www/roundcubemail/config/config.inc.php" "\$config\['default_host'\] = 'ssl://" "${_label} roundcube default host configured"
+  check_regex "${_root}/var/www/postfixadmin/config.local.php" "\\\$CONF\\['configured'\\] = true;" "${_label} postfixadmin configured flag"
+  check_regex "${_root}/var/www/roundcubemail/config/config.inc.php" "\\\$config\\['default_host'\\] = 'ssl://" "${_label} roundcube default host configured"
 
   check_no_upper_placeholders "${_root}/etc/postfix/main.cf" "${_label} postfix main.cf"
   check_no_upper_placeholders "${_root}/etc/dovecot/local.conf" "${_label} dovecot local.conf"

@@ -49,7 +49,7 @@ fi
 collect_inputs() {
   load_project_config
 
-  prompt_value "OPENBSD_VERSION" "Enter the supported OpenBSD version for this deployment" "7.8"
+  prompt_value "OPENBSD_VERSION" "Enter the supported OpenBSD version for this deployment" "7.9"
   prompt_value "MAIL_HOSTNAME" "Enter the mail server hostname, example mail.example.com"
   prompt_value "PRIMARY_DOMAIN" "Enter the primary mail domain, example example.com"
   prompt_value "DOMAINS" "Enter all hosted domains as a space-separated list, example example.com example.net example.org" "${PRIMARY_DOMAIN:-example.com}"

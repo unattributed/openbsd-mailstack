@@ -21,12 +21,14 @@ load_project_config
 : "${RUNTIME_SECRET_FILE_MODE:=0600}"
 : "${RUNTIME_SECRET_DIR_MODE:=0700}"
 
-OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+HARDENING_ROOT="${OPENBSD_MAILSTACK_HARDENING_RENDER_ROOT:-${PROJECT_ROOT}/services/generated/rootfs}"
+OUT_DIR="${HARDENING_ROOT}/etc/examples/openbsd-mailstack"
 mkdir -p "${OUT_DIR}"
 install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/examples/postfixadmin-db.env.template" "${OUT_DIR}/postfixadmin-db.env"
 install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/examples/sogo-db.env.template" "${OUT_DIR}/sogo-db.env"
-install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/postfixadmin/secrets.php.template" "${PROJECT_ROOT}/services/generated/rootfs/etc/postfixadmin/secrets.php.example"
-install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/roundcube/secrets.inc.php.template" "${PROJECT_ROOT}/services/generated/rootfs/etc/roundcube/secrets.inc.php.example"
+install -d "${HARDENING_ROOT}/etc/postfixadmin" "${HARDENING_ROOT}/etc/roundcube"
+install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/postfixadmin/secrets.php.template" "${HARDENING_ROOT}/etc/postfixadmin/secrets.php.example"
+install -m 0644 "${PROJECT_ROOT}/services/secrets/etc/roundcube/secrets.inc.php.template" "${HARDENING_ROOT}/etc/roundcube/secrets.inc.php.example"
 
 cat > "${OUT_DIR}/runtime-secret-paths.txt" <<EOF
 Runtime secret layout

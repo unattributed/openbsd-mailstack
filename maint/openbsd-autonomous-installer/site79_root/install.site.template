@@ -1,4 +1,5 @@
 #!/bin/sh
+# OpenBSD 7.9 site set entrypoint.
 set -e
 
 if [ -f /etc/rc.firsttime ]; then

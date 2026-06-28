@@ -19,7 +19,11 @@ load_project_config
 prompt_value "BACKUP_ENABLE_SIGNIFY" "Enable signify signing, yes or no" "${BACKUP_ENABLE_SIGNIFY:-no}"
 prompt_value "BACKUP_SIGNIFY_SECRET_KEY" "Enter the signify secret key path" "${BACKUP_SIGNIFY_SECRET_KEY:-/root/.signify/openbsd-mailstack-backup.sec}"
 prompt_value "BACKUP_ENABLE_GPG" "Enable GPG encryption, yes or no" "${BACKUP_ENABLE_GPG:-no}"
-prompt_value "BACKUP_GPG_RECIPIENT" "Enter the GPG recipient, leave empty if disabled" "${BACKUP_GPG_RECIPIENT:-}"
+if [ "${BACKUP_ENABLE_GPG}" = "yes" ]; then
+  prompt_value "BACKUP_GPG_RECIPIENT" "Enter the GPG recipient"
+else
+  BACKUP_GPG_RECIPIENT=""
+fi
 prompt_value "BACKUP_MANIFEST_MODE" "Enter the manifest mode" "${BACKUP_MANIFEST_MODE:-sha256}"
 prompt_value "RESTORE_ALLOW_OVERWRITE" "Allow direct overwrite, yes or no" "${RESTORE_ALLOW_OVERWRITE:-no}"
 

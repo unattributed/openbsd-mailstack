@@ -4,6 +4,8 @@
 
 This workflow is the operator-facing day-2 path for OpenBSD updates and safe change validation.
 
+The controlling command sequence and official references are in [OpenBSD 7.9 SDLC maintenance](09-openbsd-79-sdlc-maintenance.md).
+
 ## Baseline routine
 
 1. confirm backup and DR tooling is working
@@ -46,7 +48,7 @@ doas ./scripts/ops/maintenance-rollback-plan.ksh
 - `pkg_info -q | sort`
 - `rcctl check postfix dovecot rspamd redis clamd freshclam nginx`
 - latest maintenance snapshot under `MAINTENANCE_STATE_DIR`
-- output from `maint/regression-test.ksh`
+- output from `maint/production-regression.ksh --host`
 
 ## Lab-first recommendation
 

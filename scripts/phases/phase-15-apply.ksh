@@ -26,7 +26,8 @@ load_project_config
 : "${AUTH_ROUNDCUBE_SECOND_FACTOR:=evaluate}"
 : "${AUTH_POSTFIXADMIN_SECOND_FACTOR:=evaluate}"
 
-OUT_DIR="${PROJECT_ROOT}/services/generated/rootfs/etc/examples/openbsd-mailstack"
+HARDENING_ROOT="${OPENBSD_MAILSTACK_HARDENING_RENDER_ROOT:-${PROJECT_ROOT}/services/generated/rootfs}"
+OUT_DIR="${HARDENING_ROOT}/etc/examples/openbsd-mailstack"
 mkdir -p "${OUT_DIR}"
 
 ${PROJECT_ROOT}/maint/doas-policy-baseline-check.ksh --render > "${OUT_DIR}/doas.conf.baseline"

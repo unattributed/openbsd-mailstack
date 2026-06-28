@@ -4,8 +4,8 @@ set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-: "${OPENBSD_VERSION:=7.8}"
-: "${QEMU_ISO:=/home/foo/VMs/iso/install78.iso}"
+: "${OPENBSD_VERSION:=7.9}"
+: "${QEMU_ISO:=/home/foo/VMs/iso/install79.iso}"
 
 echo "Building OpenBSD ${OPENBSD_VERSION} lab VM"
 echo "Expected install media: ${QEMU_ISO}"
